@@ -22,8 +22,11 @@ public abstract class PostServlet extends JEEZServlet{
 		try{
 			Map<String, String>params = beforeBusiness(request,response);
 			if(params!=null) 	
-				doBusiness(request,response,params);
-			
+				afterBusiness(
+						request,response,
+						doBusiness(request,response,params),
+						true
+						);
 		}
 		//TODO Solution temporaire car du code de service peut provoquer la mm except : au moment de faire les annotations deplacer cette exc au niveau des convertions des params pour fit avec la signature du service
 		catch (IllegalArgumentException e){

@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
 import fr.aj.jeez.servlet.template.JEEZServlet;
 
 /**
@@ -24,7 +26,8 @@ public abstract class GetServlet extends JEEZServlet{
 			if(params!=null) 	
 				afterBusiness(
 						request,response,
-						doBusiness(request,response,params)
+						doBusiness(request,response,params),
+						true
 						);
 		} 
 		//TODO Solution temporaire car du code de service peut provoquer la mm except : au moment de faire les annotations deplacer cette exc au niveau des convertions des params pour fit avec la signature du service
@@ -44,6 +47,12 @@ public abstract class GetServlet extends JEEZServlet{
 			HttpServletResponse response
 			) throws ServletException, IOException {
 		doGet(request, response);
+	}
+
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
