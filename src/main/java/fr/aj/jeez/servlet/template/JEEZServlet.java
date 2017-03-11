@@ -11,9 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
 
 import fr.aj.jeez.servlet.interfaces.IJEEZServlet;
+import fr.aj.jeez.servlet.tests.GlobalTest;
 import fr.aj.jeez.servlet.tools.MapRefiner;
 
 /**
@@ -38,6 +41,7 @@ implements IJEEZServlet{
 	 *  taken into account by the underlying service*/
 	protected Set<String> opnIn=new HashSet<String>(); //Incoming optional parameters names
 
+	//N'est pas tres important cote server mais pour generer le client , c'est indispensable de savoir l'integalite des noms de params qu'ue servlet peut retourner (pour generer le reviver)
 	/**
 	 * The set of outgoing additional parameters names  
 	 *  taken into account by the underlying service*/
@@ -47,9 +51,9 @@ implements IJEEZServlet{
 	protected Map<String, String> beforeBusiness(
 			HttpServletRequest request,
 			HttpServletResponse response
-			)throws IOException, JSONException {
+			)throws IOException {
 
-		response.setContentType("text/plain");
+		response.setContentType("text/plain"); 
 
 		Map<String,String>incommingParams=MapRefiner.refine(request.getParameterMap());
 
@@ -102,12 +106,26 @@ implements IJEEZServlet{
 	}
 	
 	
+	protected void afterBusiness(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			JSONObject result
+			)throws IOException {	
+		
+		Result junit_result = JUnitCore.runClasses(GlobalTest.class);
+		for (Failure failure : junit_result.getFailures() )
+		if(){
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
+		}
+		
+	}
+	
+	
 	//TODO check if it is necessary to check for null or undefined or other
 	private boolean paramIsFilled(Map<String,String>params, String param){
 		if(params.containsKey(param))
 			return !(params.get(param).equals(""));
 		return false;
 	}
-	
 	
 }
