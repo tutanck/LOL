@@ -31,7 +31,7 @@ public class MapRefiner {
 		 * @note we use List instead of Set just to facilitate Arrays conversions 
 		 * (with Arrays.asList)
 		 * @param bigMap
-		 * @param subKeys
+		 * @param subKeysTab
 		 * @return */
 		public static Map<String,String> subMap(Map<String,String> bigMap,String[]subKeysTab){
 			Map<String,String> smallMap = new HashMap<>();
@@ -71,7 +71,7 @@ public class MapRefiner {
 		 * One branch will contains all entries whose key is in subKeyTab
 		 * The other branch will contains all entries in initial bigMap except whose key is in subKeyTab   
 		 * @param bigMap
-		 * @param subKeysTab
+		 * @param keyMap
 		 * @return  */
 		public static Map<String,String> renameMapKeys(Map<String,String> bigMap, 
 				Map<String,String> keyMap){
