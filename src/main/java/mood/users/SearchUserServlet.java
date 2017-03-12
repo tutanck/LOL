@@ -1,6 +1,7 @@
 package mood.users;
 
 import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,11 +23,12 @@ public class SearchUserServlet extends GetServlet {
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"query"}));}
 		
 	@Override
-	public void doBusiness(HttpServletRequest request,
-			HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request,
+								 HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 		//response.getWriter().print(User.searchUser(params.get("skey"),
 	//			request.getParameter("query")));
+		return new JSONObject();
 	}
 
 	

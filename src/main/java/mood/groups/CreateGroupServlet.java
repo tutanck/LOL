@@ -8,24 +8,26 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import services.business.Groups;
-import servlets.tools.templates.online.OnlinePostServlet;
+import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
-public class CreateGroupServlet extends OnlinePostServlet {
+public class CreateGroupServlet extends PostServlet {
 	private static final long serialVersionUID = 1L;
 	public CreateGroupServlet() {super();}
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		super.epn=new HashSet<>(Arrays.asList(new String[]{"name","members"}));}
+		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"name","members"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, 
-			Map<String, String> params)throws Exception {
-		response.getWriter().print(Groups.createGroup(
-				params.get("skey"),
-				request.getParameter("name"),
-				request.getParameter("members")));}
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response,
+								 Map<String, String> params)throws Exception {
+		//response.getWriter().print(Groups.createGroup(
+//				params.get("skey"),
+//				request.getParameter("name"),
+	//			request.getParameter("members")));
+		return new JSONObject();
+	}
 
 }

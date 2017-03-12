@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 
 public class RemoveMemberServlet extends PostServlet {
@@ -21,10 +22,11 @@ public class RemoveMemberServlet extends PostServlet {
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"id","member"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, 
-			Map<String, String> params)throws Exception {
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response,
+								 Map<String, String> params)throws Exception {
 		//response.getWriter().print(Groups.removeMember(
 	//			request.getParameter("id"),	request.getParameter("member")));
+		return new JSONObject();
 	}
 
 }

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 /**
  * * @author Anagbla Jean */
@@ -23,9 +24,10 @@ public class ConfirmAccountServlet extends PostServlet {
 		super.epnIn= new HashSet<>(Arrays.asList(new String[]{"ckey"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 		//User.confirmUser(request.getParameter("ckey"));
 		//response.sendRedirect("signin.jsp");
+		return new JSONObject();
 		}
 }

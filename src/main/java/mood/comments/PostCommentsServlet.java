@@ -1,6 +1,7 @@
 package mood.comments;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -23,9 +24,10 @@ public class PostCommentsServlet extends PostServlet {
 
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 		//response.getWriter().print(Comments.postComments(
 	//			request.getParameter("pid")));
+		return new JSONObject();
     }
 }

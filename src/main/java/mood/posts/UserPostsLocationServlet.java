@@ -1,6 +1,7 @@
 package mood.posts;
 
 import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -13,9 +14,10 @@ public class UserPostsLocationServlet extends GetServlet {
 	public UserPostsLocationServlet() {super();}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 	//		response.getWriter().print(Posts.userPostsLocation(params.get("skey")));
+		return new JSONObject();
 	}
 }
 

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 
 public class AcceptFriendshipServlet extends PostServlet {
@@ -21,9 +22,10 @@ public class AcceptFriendshipServlet extends PostServlet {
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"uid"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 	//	response.getWriter().print(Friends.acceptFriend(params));
+		return new JSONObject();
 	}
 
 }

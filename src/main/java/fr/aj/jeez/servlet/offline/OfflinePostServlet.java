@@ -1,7 +1,6 @@
 package fr.aj.jeez.servlet.offline;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,20 +16,15 @@ public abstract class OfflinePostServlet extends PostServlet{
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-			if(!requireToBeConnected(request, response, false))
-				return;
-			
-			Map<String, String>params = beforeBusiness(request,response);
-			if(params!=null) 	
-				doBusiness(request,response,params);
-			//else nothing to do : all is already done in beforeBusiness
-			
+			if(requireToBeConnected(request, response, false))
+				super.doPost(request, response);
+
 		} catch (Exception e){
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "AN INTERNAL SERVER ERROR OCCURRED");
 		}
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);}

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
 
 public class GetAllPostsLocationServlet extends GetServlet {
@@ -13,8 +14,10 @@ public class GetAllPostsLocationServlet extends GetServlet {
 	public GetAllPostsLocationServlet() {super();}
 	
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 	//	response.getWriter().print(Posts.getAllPostsLocation());
+
+		return new JSONObject();
 	}
 }

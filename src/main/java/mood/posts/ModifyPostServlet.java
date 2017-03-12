@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 public class ModifyPostServlet extends PostServlet {
 	private static final long serialVersionUID = 1L;
@@ -20,12 +21,13 @@ public class ModifyPostServlet extends PostServlet {
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"id","updt"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 		//response.getWriter().print(Posts.modifyPost(
 		//		params.get("skey"),
 		//		request.getParameter("id"),
 		//		request.getParameter("updt")));
+		return new JSONObject();
 		}
  			
 }

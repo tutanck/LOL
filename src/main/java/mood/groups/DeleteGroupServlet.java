@@ -8,21 +8,23 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import services.business.Groups;
-import servlets.tools.templates.online.OnlinePostServlet;
+import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
-public class DeleteGroupServlet extends OnlinePostServlet {
+
+public class DeleteGroupServlet extends PostServlet {
 	private static final long serialVersionUID = 1L;
 	public DeleteGroupServlet() {super();}
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		super.epn=new HashSet<>(Arrays.asList(new String[]{"id"}));}
+		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"id"}));}
 
-	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, 
-			Map<String, String> params)throws Exception {
-		response.getWriter().print(Groups.deleteGroup(
-				request.getParameter("id")));}
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response,
+								 Map<String, String> params)throws Exception {
+		//response.getWriter().print(Groups.deleteGroup(
+		//		request.getParameter("id")));
+		return new JSONObject();
+	}
 }

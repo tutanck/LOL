@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
 public class QMatchingMyPostsLocationServlet extends GetServlet {
 	private static final long serialVersionUID = 1L;
@@ -20,10 +21,11 @@ public class QMatchingMyPostsLocationServlet extends GetServlet {
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"q"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 		//response.getWriter().print(SearchPosts.QMatchingMyPostsLocation(
 	//			 params.get("skey"),request.getParameter("q")));
+		return new JSONObject();
 	}
 
 }

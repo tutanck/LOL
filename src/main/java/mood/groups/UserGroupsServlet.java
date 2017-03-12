@@ -5,17 +5,19 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import services.business.Groups;
-import servlets.tools.templates.online.OnlineGetServlet;
+import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
-public class UserGroupsServlet extends OnlineGetServlet {
+
+public class UserGroupsServlet extends GetServlet {
 	private static final long serialVersionUID = 1L;
 	public UserGroupsServlet() {super();}
 
-	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, 
-			Map<String, String> params)throws Exception {
-		response.getWriter().print(Groups.userGroups(
-				params.get("skey")));}
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response,
+								 Map<String, String> params)throws Exception {
+		//response.getWriter().print(Groups.userGroups(
+		//		params.get("skey")));
+		return new JSONObject();
+	}
 
 }

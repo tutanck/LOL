@@ -1,6 +1,7 @@
 package mood.users.pp;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -13,9 +14,10 @@ public class GetPpServlet extends PostServlet {
 	public GetPpServlet() {super();}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 		//response.getWriter().print(UserPlacesProfile.getPp(
 		//		params.get("skey")));
+		return new JSONObject();
 		}
 }

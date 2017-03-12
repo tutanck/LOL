@@ -22,10 +22,18 @@ public abstract class PostServlet extends JEEZServlet{
 		try{
 			Map<String, String>params = beforeBusiness(request,response);
 			if(params!=null) 	
-				doBusiness(request,response,params);
-			//else nothing to do : all is already done in beforeBusiness
-
-		} catch (Exception e){
+				afterBusiness(
+						request,response,
+						doBusiness(request,response,params),
+						true
+						);
+		}
+		//TODO Solution temporaire car du code de service peut provoquer la mm except : au moment de faire les annotations deplacer cette exc au niveau des convertions des params pour fit avec la signature du service
+		catch (IllegalArgumentException e){
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
+		}
+		catch (Exception e){
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "AN INTERNAL SERVER ERROR OCCURRED");
 		}

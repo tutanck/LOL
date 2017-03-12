@@ -1,6 +1,7 @@
 package mood.searchposts;
 
 import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,10 +22,12 @@ public class QMatchingAllPostsServlet extends GetServlet {
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"q"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 		//response.getWriter().print(SearchPosts.QMatchingAllPosts(
 				//request.getParameter("q")));
+		return new JSONObject();
+
 	}
 
 }

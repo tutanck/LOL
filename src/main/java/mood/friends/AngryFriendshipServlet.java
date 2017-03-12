@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 public class AngryFriendshipServlet extends PostServlet {
 	private static final long serialVersionUID = 1L;
@@ -20,9 +21,10 @@ public class AngryFriendshipServlet extends PostServlet {
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"fid"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 	//	response.getWriter().print(Friends.deleteFriend(params));
+		return new JSONObject();
 	}
 
 }

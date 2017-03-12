@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
 public class UserMembershipServlet extends GetServlet {
 	private static final long serialVersionUID = 1L;
@@ -21,10 +22,11 @@ public class UserMembershipServlet extends GetServlet {
 
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, 
-			Map<String, String> params)throws Exception {
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response,
+								 Map<String, String> params)throws Exception {
 		//response.getWriter().print(Groups.userMembership(
 	//			request.getParameter("uid")));
+		return new JSONObject();
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
 /**
  * * @author Anagbla Jean */
@@ -22,8 +23,10 @@ public class AccessRecoveryServlet extends GetServlet {
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"email"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response,
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response,
 			Map<String, String> params) throws Exception{
 		//response.getWriter().print(User.accessRecover(request.getParameter("email")));
-		}
+		return new JSONObject();
+
+	}
 }

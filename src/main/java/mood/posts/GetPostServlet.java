@@ -8,22 +8,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import services.business.Posts;
-import servlets.tools.templates.online.OnlineGetServlet;
+import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
-public class GetPostServlet extends OnlineGetServlet {
+public class GetPostServlet extends GetServlet {
 	private static final long serialVersionUID = 1L;
 	public GetPostServlet() {super();}
 	
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		super.epn=new HashSet<>(Arrays.asList(new String[]{"id"}));}
+		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"id"}));}
 
 	
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
-		response.getWriter().print(Posts.getPost(
-				params.get("skey"),request.getParameter("id")));}
+	//	response.getWriter().print(Posts.getPost(
+	//			params.get("skey"),request.getParameter("id")));
+		return new JSONObject();
+	}
 }

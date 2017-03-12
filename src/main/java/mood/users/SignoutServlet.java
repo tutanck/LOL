@@ -18,10 +18,11 @@ public class SignoutServlet extends PostServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 		//JSONObject res=User.logout(params);
 
 //		response.sendRedirect("signin.jsp");
+		return new JSONObject();
 	}
 }

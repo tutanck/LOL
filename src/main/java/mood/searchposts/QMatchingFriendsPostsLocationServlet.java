@@ -8,22 +8,25 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import services.business.SearchPosts;
-import servlets.tools.templates.online.OnlineGetServlet;
+import fr.aj.jeez.servlet.basic.GetServlet;
+import org.json.JSONObject;
 
-public class QMatchingFriendsPostsLocationServlet extends OnlineGetServlet {
+
+public class QMatchingFriendsPostsLocationServlet extends GetServlet {
 	private static final long serialVersionUID = 1L;
 	public QMatchingFriendsPostsLocationServlet() {super();}
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		super.epn=new HashSet<>(Arrays.asList(new String[]{"q"}));}
+		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"q"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
-		response.getWriter().print(SearchPosts.QMatchingFriendsPostsLocation(
-				 params.get("skey"),request.getParameter("q")));}
+	//	response.getWriter().print(SearchPosts.QMatchingFriendsPostsLocation(
+	//			 params.get("skey"),request.getParameter("q")));
+		return new JSONObject();
+	}
 
 }

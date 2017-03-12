@@ -1,6 +1,7 @@
 package mood.groups;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,9 +22,10 @@ public class GroupMembersServlet extends PostServlet {
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"id"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, 
-			Map<String, String> params)throws Exception {
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response,
+								 Map<String, String> params)throws Exception {
 		//response.getWriter().print(Groups.groupMembers(
 	//			request.getParameter("id")));
+		return new JSONObject();
 	}
 }

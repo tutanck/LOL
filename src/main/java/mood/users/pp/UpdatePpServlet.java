@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 
 public class UpdatePpServlet extends PostServlet {
@@ -21,10 +22,11 @@ public class UpdatePpServlet extends PostServlet {
  		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"places"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
 			throws Exception {
 	//	response.getWriter().print(UserPlacesProfile.updatePp(
 	//			params.get("skey"),
 	//			request.getParameter("places")));
+		return new JSONObject();
 	}
 }

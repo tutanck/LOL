@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import org.json.JSONObject;
 
 /**
  * * @author Anagbla Jean */
@@ -22,8 +23,10 @@ public class RegistrationServlet extends PostServlet {
 		super.epnIn= new HashSet<>(Arrays.asList(new String[]{"username","pass","email"}));}
 
 	@Override
-	public void doBusiness(HttpServletRequest request, 
-			HttpServletResponse response, Map<String, String> params)
+	public JSONObject doBusiness(HttpServletRequest request,
+								 HttpServletResponse response, Map<String, String> params)
 			throws Exception {
-		//response.getWriter().print(User.registration(params));}
+		//response.getWriter().print(User.registration(params));
+		return new JSONObject();
+	}
 }
