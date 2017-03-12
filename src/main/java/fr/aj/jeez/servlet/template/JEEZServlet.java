@@ -11,22 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import tools.services.ServiceToolBox;
 import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
-import org.junit.runner.notification.Failure;
 
 import fr.aj.jeez.servlet.interfaces.IJEEZServlet;
 import fr.aj.jeez.servlet.tools.MapRefiner;
 
 /**
  * * @author Anagbla Joan */
-public abstract class JEEZServlet  
-extends HttpServlet 
-implements IJEEZServlet{
+public abstract class JEEZServlet
+		extends HttpServlet
+		implements IJEEZServlet{
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -51,21 +49,16 @@ implements IJEEZServlet{
 	protected Set<String> opnOut=new HashSet<String>(); //Outgoing optional parameters names
 
 
-	/**
-	 * Useful for tests on what the service produce as result */
-	private JSONObject result;
-
-
 	protected Map<String, String> beforeBusiness(
 			HttpServletRequest request,
 			HttpServletResponse response
-			)throws IOException {
+	)throws IOException {
 
-		response.setContentType("text/plain"); 
+		response.setContentType("text/plain");
 
 		Map<String,String>incommingParams=MapRefiner.refine(request.getParameterMap());
 
-		Map<String,String>supportedParams= new HashMap<>();	
+		Map<String,String>supportedParams= new HashMap<>();
 
 		for(String expected : epnIn){
 			if(!paramIsFilled(incommingParams,expected)){
@@ -88,7 +81,7 @@ implements IJEEZServlet{
 			HttpServletRequest request,
 			HttpServletResponse response,
 			boolean require
-			)throws IOException {
+	)throws IOException {
 
 		boolean succeeded = true;
 
@@ -107,37 +100,27 @@ implements IJEEZServlet{
 				##trouver un moyen pour les pb cause par le send de l'http error si cette methode est redefinie
 				par l'user idem pour beforeBusiness  : au pire les passer en final */
 		}else
-			if(session!=null)
-				succeeded=false; //Should not have been connected once
+		if(session!=null)
+			succeeded=false; //Should not have been connected once
 
 		return succeeded;
 	}
 
 
 	protected void afterBusiness(
-			HttpServletRequest request,
+			HttpServletRequest request, //just a precaution (useless for now)
 			HttpServletResponse response,
 			JSONObject result,
-			boolean debug 
-			)throws IOException {	
+			boolean debug
+	)throws IOException {
 
-		this.result=result;
-
-		Result junit_result = JUnitCore.runClasses(JEEZServlet.class);
-
-		if(junit_result.getFailureCount()>0){
-			response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "THIS SERVICE IS CURRENTLY UNAVAILABLE");
-
-			if(debug)
-				(new Thread(){
-					public void run() {
-						for (Failure failure : junit_result.getFailures())
-							System.err.println("junit-faillure: "+failure);//TODO replace or supply with logs or else
-					}
-				}).start();
-
+		if(!resultWellFormed(result)) {
+			response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "SERVICE CURRENTLY UNAVAILABLE");
+			System.err.println("{result} should at least contain all keys in {epnOut}");
 			return;
 		}
+
+		response.getWriter().print(result);
 	}
 
 	//TODO check if it is necessary to check for null or undefined or other
@@ -150,22 +133,11 @@ implements IJEEZServlet{
 
 
 
-	//TODO passer a une map pour typer les key du result et anisi verifier le typage static 
-	@Test
-	public void ResultShouldContainExpected(){
-		Assert.assertTrue(
-				"{result} should at least contain all keys in {epnOut}",
-				//resultWellFormed()
-				true
-				);
-	}
-
-
+	//TODO passer a une map pour typer les key du result et anisi verifier le typage static
 	//TODO verifier le typage des key du resultat 
-	private boolean resultWellFormed(){
-		if(result==null) return false;
-		if(result.length()==0) return false;
-
+	private boolean resultWellFormed(
+			JSONObject result
+	){
 		boolean resultWellFormed=true;
 		for(String expected : epnOut)
 			if(!result.has(expected)){
