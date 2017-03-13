@@ -6,40 +6,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mongodb.DBCollection;
+import fr.aj.jeez.tools.MapRefiner;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import db.mongo.UserPlacesProfileDB;
-import db.sqldb.business.FriendDB;
-import db.sqldb.business.UserDB;
-import db.sqldb.creator.tabledefs.UsersDef;
-import db.sqldb.regina.CRUD;
-import db.sqldb.regina.CSRShuttleBus;
-import db.sqldb.regina.THINGS;
-import db.tools.DBToolBox;
-import db.tools.DbException;
-import services.tools.ServiceCodes;
-import services.tools.MapRefiner;
-import services.tools.SendEmail;
-import services.tools.ServiceCaller;
-import services.tools.ServicesToolBox;
-import services.tools.SessionManager;
-import services.tools.ShouldNeverOccurException;
-import services.tools.lingua.Lingua;
-import services.tools.lingua.StringNotFoundException;
+import mood.users.db.UserPlacesProfileDB;
+import mood.friends.db.FriendDB;
+import mood.users.db.UserDB;
+
+import regina.THINGS;
+import tools.db.DBToolBox;
+import tools.db.DbException;
+import tools.services.ServiceCodes;
+import tools.mailing.SendEmail;
+import tools.services.ServiceCaller;
+import tools.services.ServicesToolBox;
+import tools.services.ShouldNeverOccurException;
+import tools.lingua.Lingua;
+import tools.lingua.StringNotFoundException;
 
 /**
  * @author AJoan
  * Service classes are much more meaningful now , because DB access is automatic
- * This classes will take more significant decision on how their process and dispatch income data
+ * This classes will take more significant decision on how their process and dispatch incoming data
  * to DB instead of just forwarding the DataBus as fast as possible without proper inspection.*/
 public class User{
 
-	private static String table=UsersDef.table;
 	private static String caller=User.class.getName();
-	private static String basedir="http://vps335304.ovh.net:8080/Momento/";
-	//"http://localhost:8080/Momento/";
+	private static DBCollection collection = UserDB.collection;
 
 	/**
 	 * @description Users registration service : register a new user
@@ -47,34 +43,23 @@ public class User{
 	 * @return
 	 * @throws DbException 
 	 * @throws JSONException */
-	public static JSONObject registration(Map<String, String> url_parameters) throws DbException, JSONException {
+	public static JSONObject registration(
+			Map<String,String> url_parameters
+	) throws DbException, JSONException {
+
 		String nexturl="/Momento/signin.jsp";
 		//check if username exists
-		Map<String,String> smallMap=MapRefiner.subMap(url_parameters,new String[]{"username"});
-		if(THINGS.matchTHINGS(smallMap,table,caller))
+		if(THINGS.exists(MapRefiner.subJSON(url_parameters,new String[]{"username"}),collection,caller))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
 					"Username already used!",ServiceCodes.USERNAME_IS_TAKEN);
 
 		//check if email is used
-		Map<String,String> smallMap2=MapRefiner.subMap(url_parameters,new String[]{"email"});
-		if(THINGS.matchTHINGS(smallMap2,table,caller))
+		if(THINGS.exists(MapRefiner.subJSON(url_parameters,new String[]{"email"}),collection,caller))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
 					"Email already used!",ServiceCodes.EMAIL_IS_TAKEN);
 
-		//generate uid
-		Map<String,String>uidMap=new HashMap<>();
-		String uid;
-		do{
-			uidMap.clear(); //Reset uidMap
-			uid=db.tools.DBToolBox.generateMD5ID();
-			uidMap.put("uid",uid);
-		}while(THINGS.matchTHINGS(uidMap, table, caller));		
-
-		url_parameters.put("uid", uid);
-
 		//add user in database
-		THINGS.addTHINGS(MapRefiner.subMap(url_parameters,new String[]{
-				"uid","username","pass","email"}),table,caller);
+		THINGS.add(MapRefiner.subJSON(url_parameters,new String[]{"username","pass","email"}),collection,caller);
 
 		try {SendEmail.sendMail(url_parameters.get("email"),
 				Lingua.get("welcomeMailSubject","fr-FR"),
@@ -83,7 +68,7 @@ public class User{
 		catch (StringNotFoundException e) { 
 			System.out.println("Dictionary Error : Mail not send");
 			e.printStackTrace();} 
-		System.out.println(ServiceCaller.whichServletIsAsking().hashCode());//TODO remove
+
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
 				new JSONObject()
 				.put("nexturl",nexturl)				
@@ -106,8 +91,8 @@ public class User{
 		String uid = null;
 
 		//check username & password existence and compatibility
-		if(THINGS.matchTHINGS(MapRefiner.subMap(url_parameters,new String[]{"username"
-				,"pass"}),table,caller)){
+		if(THINGS.exists(MapRefiner.subMap(url_parameters, new String[]{"username"
+				, "pass"}), table, caller)){
 			System.out.println(1);//Debug
 			//Get uid (user ID) from associated username
 			CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(

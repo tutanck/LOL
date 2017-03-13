@@ -2,110 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5401cc22-f995-4fd6-bbaa-5fcec5ca5b2c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_mail_1_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mongodb_mongo_java_driver_2_13_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mapreduce/DFDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mapreduce/MapReduce.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mapreduce/ObjetRSV.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mapreduce/TFDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/api/apis/DataIledefranceFr.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/api/db/ApiDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/api/services/ApiServices.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/api/servlets/ApiServlet.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/comments/db/CommentsDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/comments/services/Comments.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/friends/db/FriendDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/friends/services/Friends.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/groups/db/GroupsDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/groups/services/Groups.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/messenger/db/MessengerDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/messenger/services/Messenger.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/db/PostsDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/services/Posts.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/db/SearchPostsDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/services/Search.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/services/SearchPosts.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/users/db/MarkDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/users/db/UserDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/users/db/UserPlacesProfileDB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/users/services/User.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/users/services/UserMarks.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/mood/users/services/UserPlacesProfile.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/api/ApiGetter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/api/ApiRegister.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/db/BasicDBListFI.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/db/Coordinates.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/db/DBConnectionManager.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/db/DBToolBox.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/db/DbException.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/db/QueryString.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/db/Sprint.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/lingua/Lingua.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/lingua/StringNotFoundException.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/mailing/SendEmail.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/services/ServiceCaller.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/services/ServiceCallerTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/services/ServiceCodes.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/services/ServiceToolBox.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/tools/services/ShouldNeverOccurException.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/comments/CommentPostServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/comments/servlets/CommentPostServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/comments/ComnentsHeadInfosServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/comments/servlets/ComnentsHeadInfosServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/comments/DeleteCommentServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/comments/servlets/DeleteCommentServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/comments/ModifyCommentServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/comments/servlets/ModifyCommentServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/comments/PostCommentsServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/comments/servlets/PostCommentsServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/friends/AcceptFriendshipServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/friends/servlets/AcceptFriendshipServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/friends/AddFriendServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/friends/servlets/AddFriendServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/friends/AngryFriendshipServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/friends/servlets/AngryFriendshipServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/friends/FriendListServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/friends/servlets/FriendListServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/groups/AddMemberServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/groups/servlets/AddMemberServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/groups/CreateGroupServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/groups/servlets/CreateGroupServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/groups/DeleteGroupServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/groups/servlets/DeleteGroupServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/groups/GroupMembersServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/groups/servlets/GroupMembersServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/groups/RemoveMemberServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/groups/servlets/RemoveMemberServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/groups/UserGroupsServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/groups/servlets/UserGroupsServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/groups/UserMembershipServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/groups/servlets/UserMembershipServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/messenger/ConversationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/messenger/servlets/ConversationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/messenger/InterlocutorsServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/messenger/servlets/InterlocutorsServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/messenger/NewPrivateMessageServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/messenger/servlets/NewPrivateMessageServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/AddPostServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/AddPostServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/DeletePostServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/DeletePostServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/FriendsPostsLocationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/FriendsPostsLocationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/FriendsPostsServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/FriendsPostsServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/GetAllPostsLocationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/GetAllPostsLocationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/GetAllPostsServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/GetAllPostsServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/GetPostServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/GetPostServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/LikePostServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/LikePostServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/ModifyPostServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/ModifyPostServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/PostsLocationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/PostsLocationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/PublicPostsLocationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/PublicPostsLocationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/UserPostsLocationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/UserPostsLocationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/posts/UserPostsServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/posts/servlets/UserPostsServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/searchposts/QMatchingAllPostsLocationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/servlets/QMatchingAllPostsLocationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/searchposts/QMatchingAllPostsServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/servlets/QMatchingAllPostsServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/searchposts/QMatchingFriendsPostsLocationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/servlets/QMatchingFriendsPostsLocationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/searchposts/QMatchingFriendsPostsServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/servlets/QMatchingFriendsPostsServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/searchposts/QMatchingMyPostsLocationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/servlets/QMatchingMyPostsLocationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/searchposts/QMatchingMyPostsServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/servlets/QMatchingMyPostsServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/searchposts/QMatchingPublicPostsLocationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/searchposts/servlets/QMatchingPublicPostsLocationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/GetProfileServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/GetProfileServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/GetShortInfosServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/GetShortInfosServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/SearchUserServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/SearchUserServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/SignoutServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/SignoutServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/UpdateProfileServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/UpdateProfileServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/pp/GetPpServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/pp/GetPpServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/pp/UpdatePpServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/pp/UpdatePpServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/welcome/AccessRecoveryServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/AccessRecoveryServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/welcome/ConfirmAccountServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/ConfirmAccountServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/welcome/RegistrationServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/RegistrationServlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/welcome/Servlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/Servlet.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/welcome/SigninServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/SigninServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/mood_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/mood_war_exploded.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/regina/THINGS.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/Servlet.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/tools/MapRefiner.java" afterPath="$PROJECT_DIR$/src/main/java/fr/aj/jeez/tools/MapRefiner.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/tools/services/ServiceToolBox.java" afterPath="$PROJECT_DIR$/src/main/java/tools/services/ServicesToolBox.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mood.iml" afterPath="$PROJECT_DIR$/mood.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/template/JEEZServlet.java" afterPath="$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/template/JEEZServlet.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/mood/comments/db/CommentsDB.java" afterPath="$PROJECT_DIR$/src/main/java/mood/comments/db/CommentsDB.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/mood/users/db/UserDB.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/db/UserDB.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/mood/users/services/User.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/services/User.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/SigninServlet.java" afterPath="$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/SigninServlet.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -132,31 +38,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CommentsDB.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CommentsDB.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/mood/comments/db/CommentsDB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GroupsDB.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/mood/groups/db/GroupsDB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MessengerDB.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/mood/messenger/db/MessengerDB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="136">
+              <caret line="20" column="98" lean-forward="true" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="98" />
               <folding />
             </state>
           </provider>
@@ -165,77 +51,88 @@
       <file leaf-file-name="PostsDB.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/mood/posts/db/PostsDB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SearchPostsDB.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/mood/searchposts/db/SearchPostsDB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserPlacesProfileDB.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/db/UserPlacesProfileDB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DFDB.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/mapreduce/DFDB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="119">
+              <caret line="24" column="4" lean-forward="false" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
               <folding>
-                <marker date="1489323871050" expanded="true" signature="5207:5219" ph="DELETE FROM " />
-                <marker date="1489323871050" expanded="true" signature="5378:5479" ph="INSERT INTO missingValue... " />
+                <element signature="imports" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MapReduce.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/mapreduce/MapReduce.java">
+      <file leaf-file-name="ServiceCaller.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/services/ServiceCaller.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="493">
+              <caret line="29" column="52" lean-forward="false" selection-start-line="29" selection-start-column="52" selection-end-line="29" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SigninServlet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/SigninServlet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="430">
+              <caret line="29" column="25" lean-forward="false" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RegistrationServlet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/RegistrationServlet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="22" column="92" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="22" selection-end-column="92" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/services/User.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="527">
+              <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MapRefiner.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/fr/aj/jeez/tools/MapRefiner.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2261">
+              <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserDB.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/db/UserDB.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="17" column="10" lean-forward="false" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="THINGS.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/regina/THINGS.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
-              <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+              <caret line="6" column="28" lean-forward="false" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
               <folding>
-                <marker date="1489323871165" expanded="true" signature="1216:1303" ph="SELECT tf FR... missingValue" />
-                <marker date="1489323871165" expanded="true" signature="1583:1634" ph="SELECT df FR... missingValue" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjetRSV.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/mapreduce/ObjetRSV.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TFDB.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/mapreduce/TFDB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-269">
-              <caret line="66" column="34" lean-forward="true" selection-start-line="66" selection-start-column="34" selection-end-line="66" selection-end-column="34" />
-              <folding>
-                <marker date="1489323871230" expanded="true" signature="3968:3980" ph="DELETE FROM " />
-                <marker date="1489323871230" expanded="true" signature="4259:4411" ph="INSERT INTO missingValue... " />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -249,6 +146,11 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>syste</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -266,18 +168,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/mood/comments/PostCommentsServlet.java" />
-        <option value="$PROJECT_DIR$/src/main/java/mood/comments/ModifyCommentServlet.java" />
-        <option value="$PROJECT_DIR$/src/main/java/mood/comments/DeleteCommentServlet.java" />
-        <option value="$PROJECT_DIR$/src/main/java/mood/comments/CommentPostServlet.java" />
-        <option value="$PROJECT_DIR$/src/main/java/mood/comments/ComnentsHeadInfosServlet.java" />
         <option value="$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/template/tests/ExpectedResultTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/tests/ExpectedResultTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/test/ExpectedResultTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/users/welcome/Servlet.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/users/welcome/SigninServlet.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/api/ApiServlet.java" />
-        <option value="$PROJECT_DIR$/src/main/java/mood/api/servlets/ApiServlet.java" />
         <option value="$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/tools/ServicesToolBox.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ServiceCallerTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/db/ApiGetter.java" />
@@ -291,7 +187,6 @@
         <option value="$PROJECT_DIR$/src/main/java/tools/services/ServletsToolBox.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/services/ServiceToolBox.java" />
         <option value="$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/template/JEEZServlet.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/services/ServiceCodes.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/db/QueryString.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/db/DBToolBox.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/db/DBConnectionManager.java" />
@@ -305,18 +200,25 @@
         <option value="$PROJECT_DIR$/src/main/java/mood/users/services/UserPlacesProfile.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/friends/services/Friends.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/api/services/ApiServices.java" />
-        <option value="$PROJECT_DIR$/src/main/java/mood/users/db/UserDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/users/db/MarkDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/friends/db/FriendDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/api/db/ApiDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/api/apis/DataIledefranceFr.java" />
-        <option value="$PROJECT_DIR$/src/main/java/mood/comments/db/CommentsDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/groups/db/GroupsDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/messenger/db/MessengerDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/posts/db/PostsDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/searchposts/db/SearchPostsDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mood/users/db/UserPlacesProfileDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/mapreduce/DFDB.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mood/api/servlets/ApiServlet.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/services/ServiceCodes.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/SigninServlet.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mood/comments/db/CommentsDB.java" />
+        <option value="$PROJECT_DIR$/src/main/java/regina/CRUD.java" />
+        <option value="$PROJECT_DIR$/src/main/java/regina/THINGS.java" />
+        <option value="$PROJECT_DIR$/src/main/java/fr/aj/jeez/tools/MapRefiner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mood/users/db/UserDB.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mood/users/services/User.java" />
       </list>
     </option>
   </component>
@@ -371,7 +273,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -428,26 +329,8 @@
               <option name="myItemId" value="tools" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="mood" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LOL" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
+              <option name="myItemId" value="services" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -473,13 +356,318 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="mapreduce" />
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="db" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regina" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="users" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="users" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="welcome" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="users" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="users" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="db" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="comments" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="comments" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="db" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mood" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LOL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -494,19 +682,19 @@
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java" />
-      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\mood\users\db" />
-      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\mood\searchposts\db" />
-      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\mood\posts\db" />
-      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\mood\messenger\db" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\fr\aj\jeez\servlet" />
       <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\tests\java" />
       <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main" />
       <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\fr\aj\jeez\servlet\template" />
       <recent name="C:\Users\Joan\IntelliJSpace\LOL\src" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\regina" />
+      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java" />
+      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\mood\users\db" />
+      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\mood\searchposts\db" />
+      <recent name="C:\Users\Joan\IntelliJSpace\LOL\src\main\java\mood\posts\db" />
     </key>
   </component>
   <component name="RunManager" selected="Tomcat Server.moodyserv">
@@ -1006,11 +1194,13 @@
       <updated>1489279206604</updated>
       <workItem from="1489279221855" duration="8306000" />
       <workItem from="1489318497182" duration="5339000" />
+      <workItem from="1489346718127" duration="11690000" />
+      <workItem from="1489439404760" duration="6266000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13645000" />
+    <option name="totallyTimeSpent" value="31601000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1023,7 +1213,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1320" height="784" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1046,8 +1236,8 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32872504" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32872504" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32872504" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26587301" sideWeight="0.86789554" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26587301" sideWeight="0.13210446" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27380952" sideWeight="0.84792626" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27380952" sideWeight="0.15207373" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.50800914" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1056,7 +1246,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37019968" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32872504" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1074,89 +1264,11 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/Servlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="12" column="75" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="75" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/basic/PostServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="13" column="45" lean-forward="false" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/SigninServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="15" column="38" lean-forward="false" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/mood/api/servlets/ApiServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/api/ApiGetter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/tools/MapRefiner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="96" column="60" lean-forward="false" selection-start-line="96" selection-start-column="60" selection-end-line="96" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ServicesToolBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/SessionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-425">
-          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/MapRefiner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1273">
-          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/aj/jeez/servlet/template/JEEZServlet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="828">
           <caret line="131" column="0" lean-forward="false" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1165,32 +1277,8 @@
         <state relative-caret-position="2">
           <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/services/ServiceCaller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/services/ServiceCallerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/services/ServiceCodes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="61" lean-forward="false" selection-start-line="2" selection-start-column="61" selection-end-line="2" selection-end-column="61" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1198,17 +1286,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/services/ServiceToolBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1637">
-          <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1216,7 +1293,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1224,7 +1300,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1240,7 +1315,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="20" column="36" lean-forward="false" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1248,7 +1322,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="13" column="19" lean-forward="false" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1272,7 +1345,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1280,9 +1352,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1338,7 +1407,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1370,15 +1438,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/db/UserDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1402,19 +1461,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/mood/api/apis/DataIledefranceFr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/mood/comments/db/CommentsDB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1434,15 +1484,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/mood/posts/db/PostsDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1450,7 +1494,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1458,7 +1504,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1486,20 +1534,153 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/mapreduce/ObjetRSV.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
+        <state relative-caret-position="289">
           <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/mapreduce/TFDB.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-269">
-          <caret line="66" column="34" lean-forward="true" selection-start-line="66" selection-start-column="34" selection-end-line="66" selection-end-column="34" />
+        <state relative-caret-position="765">
+          <caret line="66" column="34" lean-forward="false" selection-start-line="66" selection-start-column="34" selection-end-line="66" selection-end-column="34" />
           <folding>
             <marker date="1489323871230" expanded="true" signature="3968:3980" ph="DELETE FROM " />
             <marker date="1489323871230" expanded="true" signature="4259:4411" ph="INSERT INTO missingValue... " />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/services/ServicesToolBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="50" column="32" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mood/api/servlets/ApiServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="34" column="8" lean-forward="false" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/services/ServiceCallerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding>
+            <element signature="e#300#301#0" expanded="false" />
+            <element signature="e#322#323#0" expanded="false" />
+            <element signature="e#369#370#0" expanded="false" />
+            <element signature="e#399#400#0" expanded="false" />
+            <element signature="e#446#447#0" expanded="false" />
+            <element signature="e#476#477#0" expanded="false" />
+            <element signature="e#520#521#0" expanded="false" />
+            <element signature="e#550#551#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/services/ServiceCodes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="8" lean-forward="false" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/services/ServiceCaller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="52" lean-forward="false" selection-start-line="29" selection-start-column="52" selection-end-line="29" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/Servlet.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/RegistrationServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="22" column="92" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="22" selection-end-column="92" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/regina/CRUD.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/mood/posts/db/PostsDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="24" column="4" lean-forward="false" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/regina/THINGS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="28" lean-forward="false" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/servlets/welcome/SigninServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="29" column="25" lean-forward="false" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/json/json/20160810/json-20160810-sources.jar!/org/json/JSONObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="241" column="11" lean-forward="false" selection-start-line="241" selection-start-column="11" selection-end-line="241" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fr/aj/jeez/tools/MapRefiner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2261">
+          <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/db/UserDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="17" column="10" lean-forward="false" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mood/users/services/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mood/comments/db/CommentsDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="20" column="98" lean-forward="true" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="98" />
+          <folding />
         </state>
       </provider>
     </entry>

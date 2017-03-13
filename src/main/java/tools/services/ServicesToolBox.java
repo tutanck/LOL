@@ -20,7 +20,7 @@ import org.json.JSONObject;
 /** 
  * @author AJoan
  * **@goodToKnow ! FLUENT STYLE CODE*/
-public class ServiceToolBox {
+public class ServicesToolBox {
 
 	/**
 	 * @description return a predefined JSONObject containing

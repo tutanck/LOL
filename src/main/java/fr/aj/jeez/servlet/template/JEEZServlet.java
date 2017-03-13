@@ -11,14 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import tools.services.ServiceToolBox;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import fr.aj.jeez.servlet.interfaces.IJEEZServlet;
-import fr.aj.jeez.servlet.tools.MapRefiner;
+import fr.aj.jeez.tools.MapRefiner;
 
 /**
  * * @author Anagbla Joan */

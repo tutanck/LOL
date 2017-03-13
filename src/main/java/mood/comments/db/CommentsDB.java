@@ -31,7 +31,8 @@ public class CommentsDB {
 				.append("pid",pid)
 				.append("authid",uid)
 				.append("date",new Date())
-				.append("com",com));}
+				.append("com",com));
+	}
 
 
 	/**

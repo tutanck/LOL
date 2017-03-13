@@ -1,21 +1,21 @@
 package mood.users.db;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Map;
 
-import db.sqldb.regina.CRUD;
-import db.sqldb.regina.CSRShuttleBus;
-import db.sqldb.regina.THINGS;
-import db.tools.DbException;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import tools.db.DBConnectionManager;
+import tools.db.DbException;
 
 
 /**
  * @author AJoan
- * THINGS's Father (old db programming model (without using ORM) )
  */
 public class UserDB {
 
-	private final static String businessTable ="USERS";	
+	public static DBCollection collection = DBConnectionManager.getMongoDBCollection("users");
 
 	/**
 	 * @METHODE_NAME 		 addUser
@@ -23,16 +23,19 @@ public class UserDB {
 	 * @param username
 	 * @param pass
 	 * @param email
-	 * @throws DbException
-	 */
-	public static void addUser(String username,String pass,String email) throws DbException{ 
-		String uid;
-		do
-			uid=db.tools.DBToolBox.generateMD5ID();
-		while(uidExists(uid));
-		CRUD.CRUDPush(
-				"INSERT INTO "+businessTable+" values ('"+uid+"', '"+username+"' , '"+pass+"' , '"+email+"') ;"
-				,"addUser");
+	 * @throws DbException */
+	public static void addUser(
+			String username,
+			String pass,
+			String email
+	) throws DbException{
+		collection.insert(
+				new BasicDBObject()
+						.append("username",username)
+						.append("pass",pass)
+						.append("email",email)
+						.append("_date","now()")
+						.append("confirmed",false));
 	}
 
 	/**
@@ -48,12 +51,12 @@ public class UserDB {
 	 * @throws DbException
 	 */
 	public static void updateUserInfo(String uid, String username,String pass,String email,
-			String lastname,String firstname,String birthdate,String phone) throws DbException{ 
+									  String lastname,String firstname,String birthdate,String phone) throws DbException{
 		CRUD.CRUDPush(
 				"UPDATE "+businessTable+" SET username='"+username+"' ,"
 						+ " pass='"+pass+"' , email='"+email+"' , lastname='"+lastname+"' , firstname='"+firstname+"' , "
 						+ " birthdate='"+birthdate+"' , phone='"+phone+"' WHERE uid='"+uid+"' ;"
-						,"updateUserInfo");	 
+				,"updateUserInfo");
 	}
 
 
@@ -121,7 +124,7 @@ public class UserDB {
 		catch (SQLException e) {throw new DbException(
 				"@?getUidByUsername SQLError : " + e.getMessage());}
 		return "";//Not a result
-	} 
+	}
 
 	/**
 	 * @METHODE_NAME 		getUidByUsername
@@ -131,14 +134,14 @@ public class UserDB {
 	 * @return
 	 * @throws DbException
 	 */
-	public static String getUidByUsername(Map<String,String> where,String table) throws DbException {		
+	public static String getUidByUsername(Map<String,String> where,String table) throws DbException {
 		CSRShuttleBus csr = CRUD.CRUDPull(THINGS.getTHINGS(where,table));
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getString("uid");}
 		catch (SQLException e) {throw new DbException(
 				"@?getUidByUsername SQLError : " + e.getMessage());}
 		return "";//Not a result
-	} 
+	}
 
 
 
@@ -177,8 +180,8 @@ public class UserDB {
 					"@?getUsernameById SQLError : " + e.getMessage());}
 		return "";
 	}
-	
-	
+
+
 	/**
 	 * METHODE NAME 		: getFirstnameById
 	 * DESCRIPTION 			: return user's firstname from user id
@@ -191,12 +194,12 @@ public class UserDB {
 				"SELECT * FROM "+businessTable+" WHERE uid='"+uid+"';");
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getString("firstname");
-		csr.close();}
+			csr.close();}
 		catch (SQLException e) {throw new DbException(
 				"getIdentitybyId SQL Error: " + e.getMessage());}
 		return "";
 	}
-	
+
 	/**
 	 * METHODE NAME 		: getLastnameById
 	 * DESCRIPTION 			: return user's firstname from user id
@@ -209,7 +212,7 @@ public class UserDB {
 				"SELECT * FROM "+businessTable+" WHERE uid='"+uid+"' ;");
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getString("lastname");
-		csr.close();}
+			csr.close();}
 		catch (SQLException e) {throw new DbException(
 				"getIdentitybyId SQL Error: " + e.getMessage());}
 		return "";
@@ -220,10 +223,10 @@ public class UserDB {
 	 * METHODE NAME 		: confirmUser
 	 * DESCRIPTION 			: confirm an user account (email is checked)
 	 * @param id
-	 * @throws DbException 
+	 * @throws DbException
 	 * @throws SQLException	 */
 	public static void confirmUser(String uid) throws DbException {
-		CRUD.CRUDPush( "UPDATE USERS SET " + 
+		CRUD.CRUDPush( "UPDATE USERS SET " +
 				"status='confirmed' WHERE uid = '" + uid+ "' ;","confirmUser");	}
 
 
@@ -231,8 +234,8 @@ public class UserDB {
 	 * METHODE NAME 		: isUserConfirmed
 	 * DESCRIPTION 			: check if user account is confirmed (email is checked)
 	 * @param id
-	 * @return 
-	 * @throws DbException 
+	 * @return
+	 * @throws DbException
 	 * @throws SQLException	 */
 	public static Boolean isConfirmed(String uid) throws DbException {
 		return CRUD.CRUDCheck("SELECT * FROM USERS WHERE status='confirmed'"
@@ -242,5 +245,5 @@ public class UserDB {
 		return CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE username LIKE '"+query+"%' "
 						+ "AND uid <> '"+uid+"' ;");}
-		
+
 }
