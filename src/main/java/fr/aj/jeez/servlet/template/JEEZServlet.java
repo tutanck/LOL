@@ -1,7 +1,6 @@
 package fr.aj.jeez.servlet.template;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -45,29 +44,36 @@ public abstract class JEEZServlet
 	protected Set<String> opnOut=new HashSet<String>(); //Outgoing optional parameters names
 
 
-	protected Map<String, String> beforeBusiness(
+	protected JSONObject beforeBusiness(
 			HttpServletRequest request,
 			HttpServletResponse response
 	)throws IOException {
 
 		response.setContentType("text/plain");
 
-		Map<String,String>incommingParams=MapRefiner.refine(request.getParameterMap());
+		JSONObject supportedParams= new JSONObject();
 
-		Map<String,String>supportedParams= new HashMap<>();
+		Map<String,String>incomingParams=MapRefiner.refine(request.getParameterMap());
 
-		for(String expected : epnIn){
-			if(!paramIsFilled(incommingParams,expected)){
+		for(String expected : epnIn) {
+			JSONObject res = paramIsValid(incomingParams,expected,supportedParams,true);
+			if (!res.getBoolean("valid")){
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
 				return null;
 			}
-			//Copy the supported parameters into a restricted map (contains only epn and opn)
-			supportedParams.put(expected, incommingParams.get(expected));
+			//update the supported parameters
+			supportedParams = (JSONObject) res.get("supportedParams");
 		}
 
-		for(String optional : opnIn)
-			if(paramIsFilled(incommingParams,optional))
-				supportedParams.put(optional, incommingParams.get(optional));
+		for(String optional : opnIn){
+			JSONObject res = paramIsValid(incomingParams,optional,supportedParams,false);
+			if (!res.getBoolean("valid")){
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
+				return null;
+			}
+			//update the supported parameters
+			supportedParams = (JSONObject) res.get("supportedParams");
+		}
 
 		return supportedParams;
 	}
@@ -115,22 +121,79 @@ public abstract class JEEZServlet
 			System.err.println("{result} should at least contain all keys in {epnOut}");
 			return;
 		}
-
 		response.getWriter().print(result);
 	}
 
+
 	//TODO check if it is necessary to check for null or undefined or other
-	private boolean paramIsFilled(Map<String,String>params, String param){
-		if(params.containsKey(param))
-			return !(params.get(param).equals(""));
-		return false;
+	private JSONObject paramIsValid(
+			Map<String,String>incomingParams,
+			String typedParameterNameString,
+			JSONObject supportedParams,
+			boolean strict
+	) {
+		JSONObject notValid = new JSONObject()
+				.put("valid", false)
+				.put("supportedParams", supportedParams); //no parameter added
+
+		JSONObject noChanges= new JSONObject()
+				.put("valid", true)
+				.put("supportedParams", supportedParams); //no parameter added
+
+		//name|string --> {[0]:name(paramName) , [1]:string(paramType)}
+		String[] typedParameterNameTab = typedParameterNameString.split("|");
+		String paramName = typedParameterNameTab[0];
+
+		//availability test
+		if(!incomingParams.containsKey(paramName)
+				|| incomingParams.get(paramName).equals(""))
+			if (strict)
+				return notValid;
+			else
+				return noChanges;
+
+		//typing test
+		if (typedParameterNameTab.length >= 2) {//typedef is provided in the template
+			String paramType = typedParameterNameTab[1].trim().toLowerCase();
+			try {
+				//Copy the supported parameter now typed into a restricted json (contains only typed epn and opn)
+				switch (paramType) {
+					case "int":
+						supportedParams.put(paramName, Integer.parseInt(incomingParams.get(paramName)));
+						break;
+
+					case "long":
+						supportedParams.put(paramName, Long.parseLong(incomingParams.get(paramName)));
+						break;
+
+					case "float":
+						supportedParams.put(paramName, Float.parseFloat(incomingParams.get(paramName)));
+						break;
+
+					case "double":
+						supportedParams.put(paramName, Double.parseDouble(incomingParams.get(paramName)));
+						break;
+
+					case "boolean":
+						supportedParams.put(paramName, Boolean.parseBoolean(incomingParams.get(paramName)));
+						break;
+
+					default:
+						supportedParams.put(paramName, incomingParams.get(paramName));
+						break;
+				}
+			} catch (IllegalArgumentException iae) {
+				return notValid;
+			}
+		}else //Copy the supported parameter as string into a restricted json (contains only tped epn and opn)
+			supportedParams.put(paramName, incomingParams.get(paramName));
+
+		return new JSONObject()
+				.put("valid", true)
+				.put("supportedParams", supportedParams); //updated with the valid parameter added
 	}
 
 
-
-
-	//TODO passer a une map pour typer les key du result et anisi verifier le typage static
-	//TODO verifier le typage des key du resultat 
 	private boolean resultWellFormed(
 			JSONObject result
 	){
@@ -140,6 +203,7 @@ public abstract class JEEZServlet
 				resultWellFormed=false;
 				break;
 			}
+
 		return resultWellFormed;
 	}
 
