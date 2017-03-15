@@ -31,9 +31,9 @@ public class Posts {
 	 * @param desc
 	 * @return
 	 * @throws JSONException
-	 * @throws DbException */
+	 * @throws DBException */
 	public static JSONObject addPost(String skey,String desc,double lon,double lat) 
-			throws JSONException, DbException{		
+			throws JSONException, DBException{		
 		PostsDB.addPost(SessionManager.sessionOwner(skey),desc,lon,lat);	
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI 
 				,null,null,ServiceCaller.whichServletIsAsking().hashCode()); }
@@ -43,9 +43,9 @@ public class Posts {
 	 * Return a light version of all posts location informations
 	 * @param skey
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject postsLocation(String skey) throws DbException, JSONException{  
+	public static JSONObject postsLocation(String skey) throws DBException, JSONException{  
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = PostsDB.posts();
 		cursor.sort( new BasicDBObject("date",-1));//TODO REVERSE ORDER MORE RECENT LAST
@@ -69,8 +69,8 @@ public class Posts {
 	 * @param skey
 	 * @return
 	 * @throws JSONException
-	 * @throws DbException */
-	public static JSONObject userPostsLocation(String skey) throws JSONException, DbException{
+	 * @throws DBException */
+	public static JSONObject userPostsLocation(String skey) throws JSONException, DBException{
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = PostsDB.userPosts(SessionManager.sessionOwner(skey));
 		cursor.sort( new BasicDBObject("date",-1)); 
@@ -94,9 +94,9 @@ public class Posts {
 	 * Return the list of user's friends posts location informations  
 	 * @param skey
 	 * @return
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException */
-	public static JSONObject friendsPostsLocation(String skey) throws DbException, JSONException{ 
+	public static JSONObject friendsPostsLocation(String skey) throws DBException, JSONException{ 
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = PostsDB.friendsPosts(
 				FriendDB.friendsSet(SessionManager.sessionOwner(skey)));
@@ -120,9 +120,9 @@ public class Posts {
 	 * Return the list of public posts according to the user's friends and identity
 	 * @param skey
 	 * @return
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException */
-	public static JSONObject publicPostsLocation(String skey) throws DbException, JSONException{ 
+	public static JSONObject publicPostsLocation(String skey) throws DBException, JSONException{ 
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = PostsDB.publicPosts(SessionManager.sessionOwner(skey));
 		cursor.sort( new BasicDBObject("date",-1)); 
@@ -147,9 +147,9 @@ public class Posts {
 	 * @param id
 	 * @param skey
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject getPost(String skey,String id) throws DbException, JSONException{ 
+	public static JSONObject getPost(String skey,String id) throws DBException, JSONException{ 
 		JSONArray jar=new JSONArray();
 		DBObject dbo = PostsDB.getPost(id); 
 		String auth=(String) dbo.get("authid");
@@ -173,9 +173,9 @@ public class Posts {
 	 * @param skey
 	 * @param postID
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject deletePost(String skey,String postID) throws DbException, JSONException{
+	public static JSONObject deletePost(String skey,String postID) throws DBException, JSONException{
 		String uid = SessionManager.sessionOwner(skey);
 		String owner = PostsDB.postAuthor(postID);
 		if(!uid.equals(owner))
@@ -195,8 +195,8 @@ public class Posts {
 	 * @return
 	 * @throws JSONException
 	 * @throws MongoException
-	 * @throws DbException */
-	public static JSONObject modifyPost(String skey,String postID,String update) throws JSONException, MongoException, DbException{
+	 * @throws DBException */
+	public static JSONObject modifyPost(String skey,String postID,String update) throws JSONException, MongoException, DBException{
 		String uid = SessionManager.sessionOwner(skey);
 		String owner = PostsDB.postAuthor(postID);
 		if(!uid.equals(owner))
@@ -213,9 +213,9 @@ public class Posts {
 	 * ADMINISTRATOR FUNCTIONALITY : 
 	 * Return all the posts in database
 	 * @return
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException */
-	public static JSONObject getAllPostsLocation() throws DbException, JSONException{  
+	public static JSONObject getAllPostsLocation() throws DBException, JSONException{  
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = PostsDB.allPosts();
 		cursor.sort( new BasicDBObject("date",-1));
@@ -241,8 +241,8 @@ public class Posts {
 	 * @param uid
 	 * @param authid
 	 * @return 
-	 * @throws DbException */
-	public static String color(String uid, String authid) throws DbException{
+	 * @throws DBException */
+	public static String color(String uid, String authid) throws DBException{
 		return uid.equals(authid)
 				?
 						"author": FriendDB.status(uid,authid).equals("friend")
@@ -275,8 +275,8 @@ public class Posts {
 	 * @param postID
 	 * @return
 	 * @throws JSONException
-	 * @throws DbException */@Deprecated
-	 public static JSONObject likePost(String skey,String postID,int nbStars) throws JSONException, DbException{
+	 * @throws DBException */@Deprecated
+	 public static JSONObject likePost(String skey,String postID,int nbStars) throws JSONException, DBException{
 		 //TODO verif no multi likes	
 		 PostsDB.like(postID,SessionManager.sessionOwner(skey),nbStars);
 		 return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI 
@@ -288,8 +288,8 @@ public class Posts {
 	  * @param skey
 	  * @return
 	  * @throws JSONException
-	  * @throws DbException */@Deprecated
-	  public static JSONObject userPosts(String skey) throws JSONException, DbException{
+	  * @throws DBException */@Deprecated
+	  public static JSONObject userPosts(String skey) throws JSONException, DBException{
 		  JSONArray jar=new JSONArray();
 		  DBCursor cursor = PostsDB.userPosts(SessionManager.sessionOwner(skey));
 		  cursor.sort( new BasicDBObject("date",-1)); 
@@ -314,9 +314,9 @@ public class Posts {
 	   * Return the list of user's friends posts  
 	   * @param skey
 	   * @return
-	   * @throws DbException 
+	   * @throws DBException 
 	   * @throws JSONException */@Deprecated
-	   public static JSONObject friendsPosts(String skey) throws DbException, JSONException{ 
+	   public static JSONObject friendsPosts(String skey) throws DBException, JSONException{ 
 		   JSONArray jar=new JSONArray();
 		   DBCursor cursor = PostsDB.friendsPosts(
 				   FriendDB.friendsSet(SessionManager.sessionOwner(skey)));
@@ -342,9 +342,9 @@ public class Posts {
 	    * ADMINISTRATOR FUNCTIONALITY
 	    * Return all the posts in database
 	    * @return
-	    * @throws DbException 
+	    * @throws DBException 
 	    * @throws JSONException */@Deprecated
-	    public static JSONObject getAllPosts() throws DbException, JSONException{  
+	    public static JSONObject getAllPosts() throws DBException, JSONException{  
 	    	JSONArray jar=new JSONArray();
 	    	DBCursor cursor = PostsDB.allPosts();
 	    	cursor.sort( new BasicDBObject("date",-1));
@@ -364,7 +364,7 @@ public class Posts {
 	    			,new JSONObject().put("posts",jar), null,
 	    			ServiceCaller.whichServletIsAsking().hashCode()); }
 
-	    public static void main(String[] args) throws DbException {
+	    public static void main(String[] args) throws DBException {
 	    	//	addPost("jojo45", "h� h� oppa�");
 	    	//String id="580ba04774a4ae857d2ec810";
 	    	//like(id);like(id);

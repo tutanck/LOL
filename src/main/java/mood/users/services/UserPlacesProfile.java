@@ -3,7 +3,7 @@ package mood.users.services;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tools.db.DbException;
+import tools.db.DBException;
 
 
 /**
@@ -18,10 +18,10 @@ public class UserPlacesProfile {
 	 * @param skey
 	 * @param places
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject updatePp(JSONObject params) 
-			throws DbException, JSONException{		
+			throws DBException, JSONException{		
 		UserPlacesProfileDB.updatePp(SessionManager.sessionOwner(skey),places);
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI
 				,null,null,ServiceCaller.whichServletIsAsking().hashCode());} 
@@ -31,10 +31,10 @@ public class UserPlacesProfile {
 	 * @param params
 	 * @param remoteuser
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject getPp(JSONObject params) 
-			throws DbException, JSONException{			
+			throws DBException, JSONException{			
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
 				new JSONObject()
 				.put("places",UserPlacesProfileDB.getPp(
@@ -43,7 +43,7 @@ public class UserPlacesProfile {
 
 	
 	
-	public static void main(String[] args) throws  DbException, JSONException {
+	public static void main(String[] args) throws  DBException, JSONException {
 		updatePp("nico", "paris mexico japan");
 		updatePp("jo92", "paris");
 		updatePp("jo92", "ctn haie vive");

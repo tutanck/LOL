@@ -21,8 +21,7 @@ public class GetProfileServlet extends GetServlet {
 			HttpServletRequest request,
 			HttpServletResponse response,
 			JSONObject params
-					)throws Exception {
+			)throws Exception {
 		return User.getProfile(params);
-
 	}
-		}
+}

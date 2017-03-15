@@ -35,10 +35,10 @@ public class Groups {
 	 * @param name
 	 * @param members
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject createGroup(String skey,String name,String members) 
-			throws DbException,JSONException{		
+			throws DBException,JSONException{		
 		GroupsDB.openGroup(name,SessionManager.sessionOwner(skey),QueryString.wordSet(members,",")); 
 		return  ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI
 				, null, null, ServiceCodes.NOERROR);}
@@ -48,9 +48,9 @@ public class Groups {
 	 * Return user's owned groups list
 	 * @param skey
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject userGroups(String skey) throws DbException, JSONException{
+	public static JSONObject userGroups(String skey) throws DBException, JSONException{
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = GroupsDB.userGroups(SessionManager.sessionOwner(skey));
 		cursor.sort(new BasicDBObject("date",-1)); 
@@ -74,8 +74,8 @@ public class Groups {
 	 * @param groupID
 	 * @return
 	 * @throws JSONException
-	 * @throws DbException */
-	public static JSONObject deleteGroup(String groupID) throws JSONException, DbException{
+	 * @throws DBException */
+	public static JSONObject deleteGroup(String groupID) throws JSONException, DBException{
 		GroupsDB.closeGroup(groupID); 
 		return  ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,null,null,
 				ServiceCaller.whichServletIsAsking().hashCode());}
@@ -86,8 +86,8 @@ public class Groups {
 	 * @param groupID
 	 * @return
 	 * @throws JSONException
-	 * @throws DbException */
-	public static JSONObject groupMembers(String groupID) throws JSONException, DbException{
+	 * @throws DBException */
+	public static JSONObject groupMembers(String groupID) throws JSONException, DBException{
 		BasicDBList members= GroupsDB.groupMembers(groupID);
 		JSONArray jar = new JSONArray();
 		for(Object member : members){
@@ -106,8 +106,8 @@ public class Groups {
 	 * @param member
 	 * @return
 	 * @throws JSONException
-	 * @throws DbException */
-	public static JSONObject addMember(String groupID,String member) throws JSONException, DbException {
+	 * @throws DBException */
+	public static JSONObject addMember(String groupID,String member) throws JSONException, DBException {
 		GroupsDB.addMember(groupID, member);
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,null,null,
 				ServiceCaller.whichServletIsAsking().hashCode());}
@@ -132,9 +132,9 @@ public class Groups {
 	 * Note : the user will never know groups he belongs
 	 * @param uid
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject userMembership(String uid) throws DbException, JSONException{
+	public static JSONObject userMembership(String uid) throws DBException, JSONException{
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = GroupsDB.userMembership(uid);
 		cursor.sort( new BasicDBObject("date",-1));
@@ -156,9 +156,9 @@ public class Groups {
 	 * ADMINISTRATOR FUNCTIONALITY
 	 * Return Head informations about all existing groups in database
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	private static JSONObject groupsHeadInfos() throws DbException, JSONException {
+	private static JSONObject groupsHeadInfos() throws DBException, JSONException {
 		DBCursor cursor =GroupsDB.groupsHeadInfos();
 		cursor.sort(new BasicDBObject("date",-1)); 
 		cursor.limit(maxInOne);
@@ -176,7 +176,7 @@ public class Groups {
 	
 
 
-	public static void main(String[] args) throws DbException, JSONException{
+	public static void main(String[] args) throws DBException, JSONException{
 		//collection.drop();//reset : determinism required for the tests
 		//openGroup("amis", "Acl64",Arrays.asList(new String[]{"jhk84","dfldm8648"}));
 		//openGroup("amis", "Aop64",Arrays.asList(new String[]{"joan527","jojo877587"}));

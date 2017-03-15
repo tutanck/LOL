@@ -26,23 +26,23 @@ public class FriendDB {
 	 * @param map
 	 * @return
 	 * @throws JSONException 
-	 * @throws DbException */
-	public static Set<String> friendsSet(String uid) throws JSONException, DbException {
+	 * @throws DBException */
+	public static Set<String> friendsSet(String uid) throws JSONException, DBException {
 		Map<String,String> bigMap=new HashMap<>();
 		bigMap.put("uid", uid);
 
 		Set<String>friendsSet = new HashSet<>();
-		CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
+		CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(JSONRefiner.subMap(
 				bigMap,new String[]{"uid"}),table));
 		ResultSet rs=dataSet.getResultSet();
 		try {while(rs.next())
 			friendsSet.add(rs.getString("fid"));}
-		catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+		catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 		dataSet.close();
 		return friendsSet;}
 
 
-	public static String status(String uid, String fid) throws DbException {
+	public static String status(String uid, String fid) throws DBException {
 		String status="user";
 		if(!CRUD.CRUDCheck( //any relationship ? which_status : user
 				"SELECT * FROM "+table+" WHERE "
@@ -63,7 +63,7 @@ public class FriendDB {
 						,FriendDB.class.getName())?"pending" : "waiting"; }
 
 	
-	public static void main(String[] args) throws DbException {
+	public static void main(String[] args) throws DBException {
 		System.out.println(status("F","T"));}
 
 }

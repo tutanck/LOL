@@ -19,7 +19,7 @@ import org.json.JSONObject;
 @WebServlet(name = "ConfirmAccountServlet" ,urlPatterns={"/account/confirm"})
 public class ConfirmAccountServlet extends PostServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -31,7 +31,7 @@ public class ConfirmAccountServlet extends PostServlet {
 			HttpServletResponse response,
 			JSONObject params
 			)throws Exception {
-		return User.confirmUser(request.getParameter("ckey"));
+		return User.confirmUser(params);
 		//response.sendRedirect("signin.jsp");
-		}
+	}
 }

@@ -1,4 +1,4 @@
-package tools.api;
+package mood.api.services;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import db.sqldb.creator.tabledefs.UsersDef;
 import db.sqldb.regina.THINGS;
 import services.tools.MapRefiner;
-import tools.db.DbException;
+import tools.db.DBException;
 
 /**
  * @author AJoan */
@@ -38,9 +38,9 @@ public class ApiRegister {
 			airbus.put("status", "confirmed");
 
 			//add user in database
-			THINGS.addTHINGS(MapRefiner.subMap(airbus,new String[]{
+			THINGS.addTHINGS(JSONRefiner.subMap(airbus,new String[]{
 					"uid","username","status"}),table,caller);
-		} catch (DbException e) {e.printStackTrace(); return false;}
+		} catch (DBException e) {e.printStackTrace(); return false;}
 
 		return true;}
 

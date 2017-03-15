@@ -1,5 +1,5 @@
 package mood.users.servlets.welcome;
- 
+
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -20,7 +20,7 @@ import org.json.JSONObject;
 public class AccessRecoveryServlet extends GetServlet {
 	private static final long serialVersionUID = 1L;
 	public AccessRecoveryServlet() {super();}
-	
+
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -32,6 +32,6 @@ public class AccessRecoveryServlet extends GetServlet {
 			HttpServletResponse response,
 			JSONObject params
 			)throws Exception{
-		return  User.accessRecover(request.getParameter("email"));
+		return  User.accessRecover(params);
 	}
 }

@@ -9,7 +9,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import mood.comments.db.CommentsDB;
-import tools.db.DbException;
+import tools.db.DBException;
 
 
 /**
@@ -25,10 +25,10 @@ public class Comments {
 	 * @param comment
 	 * @param postID
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject commentPost(String skey,String comment,String postID)
-			throws DbException, JSONException{
+			throws DBException, JSONException{
 		CommentsDB.newComment(SessionManager.sessionOwner(skey),comment,postID);
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI 
 				,null,null,ServiceCaller.whichServletIsAsking().hashCode()); }
@@ -38,10 +38,10 @@ public class Comments {
 	 * Return the comments on a post
 	 * @param postID
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject postComments(String postID) 
-			throws DbException, JSONException{
+			throws DBException, JSONException{
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = CommentsDB.postComments(postID);
 		cursor.sort( new BasicDBObject("date",-1));
@@ -68,8 +68,8 @@ public class Comments {
 	 * @param commentID
 	 * @return
 	 * @throws JSONException
-	 * @throws DbException */
-	public static JSONObject deleteComment(String skey, String commentID) throws JSONException, DbException{
+	 * @throws DBException */
+	public static JSONObject deleteComment(String skey, String commentID) throws JSONException, DBException{
 		String uid = SessionManager.sessionOwner(skey);
 		String owner = CommentsDB.commentAuthor(commentID);
 		if(!uid.equals(owner))
@@ -87,9 +87,9 @@ public class Comments {
 	 * @param commentID
 	 * @param update
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject modifyComment(String skey,String commentID,String update) throws  DbException, JSONException{
+	public static JSONObject modifyComment(String skey,String commentID,String update) throws  DBException, JSONException{
 		String uid = SessionManager.sessionOwner(skey);
 		String owner = CommentsDB.commentAuthor(commentID);
 		if(!uid.equals(owner))
@@ -105,9 +105,9 @@ public class Comments {
 	 * ADMINISTRATOR FUNCTIONALITY
 	 * Return all comments in database
 	 * @return
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException */
-	public static JSONObject comnentsHeadInfos() throws DbException, JSONException{ 
+	public static JSONObject comnentsHeadInfos() throws DBException, JSONException{ 
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = CommentsDB.comnentsHeadInfos();
 		cursor.sort( new BasicDBObject("date",-1)); // newer comments first
@@ -128,7 +128,7 @@ public class Comments {
 
 
 
-	public static void main(String[] args) throws DbException, JSONException {
+	public static void main(String[] args) throws DBException, JSONException {
 		//newComment("jo47", "trop cool", "77jtyf8");
 		//newComment("lola75", "trop naze", "77jtyf8");
 		//String cid="580b12e074a4d6f534d1e11b";

@@ -15,10 +15,10 @@ import org.json.JSONObject;
 import mood.users.db.UserPlacesProfileDB;
 import mood.friends.db.FriendDB;
 import mood.users.db.UserDB;
-
+import regina.JSONRefiner;
 import regina.THINGS;
 import tools.db.DBToolBox;
-import tools.db.DbException;
+import tools.db.DBException;
 import tools.services.ServiceCodes;
 import tools.mailing.SendEmail;
 import tools.services.ServiceCaller;
@@ -41,33 +41,46 @@ public class User{
 	 * @description Users registration service : register a new user
 	 * @param map
 	 * @return
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException */
 	public static JSONObject registration(
 			JSONObject params
-	) throws DbException, JSONException {
+			) throws DBException, JSONException {
 
 		String nexturl="/Momento/signin.jsp";
+
 		//check if username exists
-		if(THINGS.exists(MapRefiner.subJSON(params,new String[]{"username"}),collection,caller))
+		if(THINGS.exists(JSONRefiner.slice(
+				params,
+				new String[]{"username"}),
+				collection,caller))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
 					"Username already used!",ServiceCodes.USERNAME_IS_TAKEN);
 
 		//check if email is used
-		if(THINGS.exists(MapRefiner.subJSON(params,new String[]{"email"}),collection,caller))
+		if(THINGS.exists(JSONRefiner.slice(
+				params,
+				new String[]{"email"}),
+				collection,caller))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
 					"Email already used!",ServiceCodes.EMAIL_IS_TAKEN);
 
 		//add user in database
-		THINGS.add(MapRefiner.subJSON(params,new String[]{"username","pass","email"}),collection,caller);
+		THINGS.add(JSONRefiner.slice(
+				params,
+				new String[]{"username","pass","email"}),
+				collection,caller);
 
-		try {SendEmail.sendMail(params.get("email"),
-				Lingua.get("welcomeMailSubject","fr-FR"),
-				Lingua.get("welcomeMailMessage","fr-FR")
-				+basedir+"accountconfirmation?ckey="+params.get("uid"));}
-		catch (StringNotFoundException e) { 
+		/*try {
+			SendEmail.sendMail(
+					params.get("email"),
+					Lingua.get("welcomeMailSubject","fr-FR"),
+					Lingua.get("welcomeMailMessage","fr-FR")
+					+basedir+"accountconfirmation?ckey="+params.get("uid"));
+		}catch (StringNotFoundException e) { 
 			System.out.println("Dictionary Error : Mail not send");
-			e.printStackTrace();} 
+			e.printStackTrace();
+		} */
 
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
 				new JSONObject()
@@ -79,11 +92,11 @@ public class User{
 	 * @description  Users login service : Connects user into online mode
 	 * @param params
 	 * @return
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException  */
 	public static JSONObject login(
 			JSONObject params
-			) throws DbException, JSONException {
+			) throws DBException, JSONException {
 		String nexturl="/Momento/momento.jsp";
 
 		Map<String,String> usernameToEmail=new HashMap<>();
@@ -103,7 +116,7 @@ public class User{
 			try {
 				if(rs.next())
 					uid=rs.getString("uid");
-			} catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+			} catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 			dataSet.close();
 		}
 		//otherwise check email & password existence and compatibility
@@ -119,7 +132,7 @@ public class User{
 			try {
 				if(rs.next())
 					uid=rs.getString("uid");
-			} catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+			} catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 			dataSet.close();
 		}
 		//otherwise check phone & password existence and compatibility
@@ -135,7 +148,7 @@ public class User{
 			try {
 				if(rs.next())
 					uid=rs.getString("uid");
-			} catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+			} catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 			dataSet.close();
 		}
 		else return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
@@ -161,9 +174,9 @@ public class User{
 	 * @description update user's profile
 	 * @param map
 	 * @return
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException */
-	public static JSONObject updateProfile(JSONObject params) throws DbException, JSONException {
+	public static JSONObject updateProfile(JSONObject params) throws DBException, JSONException {
 		String nexturl="/Momento/showprofile";
 
 		//check if new email is used
@@ -188,7 +201,7 @@ public class User{
 		String uid = SessionManager.sessionOwner(skey);
 		if(uid==null)
 			throw new 
-			DbException("@User/updateProfile : Database is inconsistant :"
+			DBException("@User/updateProfile : Database is inconsistant :"
 					+ " uid must exit for given skey!");
 
 		//speedy bus for dataset map transportation  
@@ -211,9 +224,9 @@ public class User{
 	 * @description return user's complete profile information 
 	 * @param map
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject getProfile(JSONObject params) throws DbException, JSONException {	
+	public static JSONObject getProfile(JSONObject params) throws DBException, JSONException {	
 		//Here branch is used to slurp url_parameters (to evict skey)
 		List<Map<String,String>> node = MapRefiner.branch(params, new String[]{"skey"});
 
@@ -241,9 +254,9 @@ public class User{
 								node.get(0).get("uid")))
 						,null,ServiceCaller.whichServletIsAsking().hashCode());
 			else throw new 
-			DbException("@User/getProfile : Database is inconsistent :"
+			DBException("@User/getProfile : Database is inconsistent :"
 					+ " user infos must exit for given skey!");}
-		catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+		catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 		finally {dataSet.close();}}
 
 
@@ -251,9 +264,9 @@ public class User{
 	 * @description return username , firstname and lastname, etc 
 	 * @param uid
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject getShortInfos(JSONObject params) throws DbException, JSONException {
+	public static JSONObject getShortInfos(JSONObject params) throws DBException, JSONException {
 		//Here branch is used to slurp url_parameters (to evict skey)
 		List<Map<String,String>> node = MapRefiner.branch(params, new String[]{"skey"});
 		//uther as a contraction of user-other (other user)
@@ -269,14 +282,14 @@ public class User{
 						.put("firstname",rs.getString("firstname"))
 						.put("lastname",rs.getString("lastname"))
 						,null,ServiceCaller.whichServletIsAsking().hashCode());
-			else throw new DbException("@User/getUsername :"
+			else throw new DBException("@User/getUsername :"
 					+ " Database is inconsistant : user infos must exit for given skey!");
-		} catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+		} catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 		finally {dataSet.close();}}
 
 
 	public static JSONObject searchUser(JSONObject params) 
-			throws DbException, JSONException {
+			throws DBException, JSONException {
 		CSRShuttleBus dataSet=UserDB.searchUser(SessionManager.sessionOwner(skey),query);
 		JSONArray jar=new JSONArray();
 		ResultSet rs=dataSet.getResultSet();
@@ -290,25 +303,25 @@ public class User{
 						.put("username",rs.getString("username"))
 						.put("firstname",rs.getString("firstname"))
 						.put("lastname",rs.getString("lastname")));}
-			
+
 			return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
 					new JSONObject().put("users",jar), 
 					null, ServiceCaller.whichServletIsAsking().hashCode());
-		}catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+		}catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 		finally {dataSet.close();}}
 
 
 	/**
 	 * @description send an email with MD5 generated temporary access key for access recover to the user
-	 * @param email
+	 * @param params
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject accessRecover(String email) throws DbException, JSONException {
+	public static JSONObject accessRecover(JSONObject params) throws DBException, JSONException {
 		String nexturl="/Momento/signin.jsp";
 		//speedy bus for data set map transportation  (email)
 		Map<String,String>swiftBus2 = new HashMap<>();
-		swiftBus2.put("email", email);
+		swiftBus2.put("email", params);
 		System.out.println("swiftBus2 : "+swiftBus2);
 
 		//Verify if user email exists
@@ -325,13 +338,13 @@ public class User{
 
 		//TODO verif pk swiftbus2 s'efface
 		System.out.println("swiftBus2 : "+swiftBus2);
-		swiftBus2.put("email", email);
+		swiftBus2.put("email", params);
 		System.out.println("swiftBus2 : "+swiftBus2);
 		//Update of user profile in database (reset password : strong security policy)
 		THINGS.updateTHINGS(swiftBus,swiftBus2,table,caller);
 
 		//Send an email to the applicant
-		try {SendEmail.sendMail(email,Lingua.get("NewAccessKeySentSubject","fr-FR"),
+		try {SendEmail.sendMail(params,Lingua.get("NewAccessKeySentSubject","fr-FR"),
 				Lingua.get("NewAccessKeySentMessage","fr-FR")+ secret);}
 		catch (StringNotFoundException e) { 
 			System.out.println("Dictionary Error : Mail not send");
@@ -347,9 +360,9 @@ public class User{
 	 * @description  Users logout service : Disconnects user from online mode
 	 * @param params
 	 * @return
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException */
-	public static JSONObject logout(JSONObject params) throws DbException, JSONException {
+	public static JSONObject logout(JSONObject params) throws DBException, JSONException {
 		String nexturl="/Momento/signin.jsp";
 		SessionManager.closeSession(params.get("skey"));
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
@@ -362,13 +375,13 @@ public class User{
 	 * @param uid
 	 * @return 
 	 * @throws ShouldNeverOccurException
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException */
-	public static JSONObject confirmUser(String ckey) throws ShouldNeverOccurException, DbException, JSONException{ 
+	public static JSONObject confirmUser(JSONObject params) throws ShouldNeverOccurException, DBException, JSONException{ 
 		String nexturl="/Momento/signin";
-		if(!UserDB.uidExists(ckey))
+		if(!UserDB.uidExists(params))
 			throw new ShouldNeverOccurException("SNO Error : User ID is unknown!");
-		UserDB.confirmUser(ckey);
+		UserDB.confirmUser(params);
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
 				new JSONObject()
 				.put("nexturl",nexturl)				
@@ -376,7 +389,7 @@ public class User{
 
 
 
-	public static void main(String[] args) throws DbException, JSONException {
+	public static void main(String[] args) throws DBException, JSONException {
 		/*Map<String, String[]> test=new HashMap<>();
 		test.put("username", new String[]{"louis","hd"});
 		test.put("pass", new String[]{"fearness12","tove"});

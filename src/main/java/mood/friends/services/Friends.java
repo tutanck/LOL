@@ -33,19 +33,19 @@ public class Friends {
 	 * @description add friendship between 2 users
 	 * @param url_parameters
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject addFriend(Map<String,String> url_parameters) 
-			throws DbException, JSONException {
+			throws DBException, JSONException {
 		//Branch the map (dissociate) like separating the yolk from the egg white
-		List<Map<String,String>> node = MapRefiner.branch(url_parameters, new String[]{"skey"});	
+		List<Map<String,String>> node = JSONRefiner.branch(url_parameters, new String[]{"skey"});	
 
 		//get uid from skey
 		String uid = SessionManager.sessionOwner(node.get(1).get("skey"));
 
 		//create useful map containing only useful parameters (uid ,fid & status)
 		node.get(0).put("uid",uid);
-		Map<String,String> usefulMap = MapRefiner.subMap(
+		Map<String,String> usefulMap = JSONRefiner.subMap(
 				node.get(0),new String[]{"fid","uid"});
 
 		if(!THINGS.matchTHINGS(usefulMap, table, caller))//if no relation exists 
@@ -64,39 +64,39 @@ public class Friends {
 	 * @param map
 	 * @return
 	 * @throws JSONException 
-	 * @throws DbException */
+	 * @throws DBException */
 	public static JSONObject friendList(Map<String,String> url_parameters) 
-			throws JSONException, DbException {
+			throws JSONException, DBException {
 		ArrayList<String>fidList= new ArrayList<>();
 		
 		String uid =SessionManager.sessionOwner(url_parameters.get("skey"));
 		url_parameters.put("uid", uid);
 		url_parameters.put("status", "friend");
-		CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
+		CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(JSONRefiner.subMap(
 				url_parameters,new String[]{"uid","status"}),table));
 		ResultSet rs=dataSet.getResultSet();
 		try {while(rs.next())
 			fidList.add(rs.getString("fid"));}
-		catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+		catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 		dataSet.close();
 		
 		url_parameters.put("fid", uid);
-		dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
+		dataSet = CRUD.CRUDPull(THINGS.getTHINGS(JSONRefiner.subMap(
 				url_parameters,new String[]{"fid","status"}),table));
 		rs=dataSet.getResultSet();
 		try {while(rs.next())
 			fidList.add(rs.getString("uid"));}
-		catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+		catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 		dataSet.close();
 		
 		url_parameters.put("fid", uid);
 		url_parameters.put("status", "waiting");
-		dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
+		dataSet = CRUD.CRUDPull(THINGS.getTHINGS(JSONRefiner.subMap(
 				url_parameters,new String[]{"fid","status"}),table));
 		rs=dataSet.getResultSet();
 		try {while(rs.next())
 			fidList.add(rs.getString("uid"));}
-		catch (SQLException e) {throw new DbException(DBToolBox.getStackTrace(e));}
+		catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 		dataSet.close();
 
 		JSONArray FriendsArray=new JSONArray();
@@ -116,17 +116,17 @@ public class Friends {
 	 * @description reply to an user invitation to become friend
 	 * @param map
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject acceptFriend(Map<String,String> url_parameters) 
-			throws DbException, JSONException {
+			throws DBException, JSONException {
 		url_parameters.put("fid", 
 				SessionManager.sessionOwner(url_parameters.get("skey")));
 
 		Map<String,String> wrap=new HashMap<>();
 		wrap.put("status","friend");
 
-		THINGS.updateTHINGS(wrap, MapRefiner.subMap(url_parameters, 
+		THINGS.updateTHINGS(wrap, JSONRefiner.subMap(url_parameters, 
 				new String[]{"uid","fid"}),table,caller);
 
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
@@ -141,10 +141,10 @@ public class Friends {
 	 * @description destroy a friendShip by setting the field status to "angry"
 	 * @param map
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject deleteFriend(Map<String,String> url_parameters) 
-			throws DbException, JSONException {
+			throws DBException, JSONException {
 		//parameters unpacking
 		String uid =SessionManager.sessionOwner(url_parameters.get("skey"));
 		String fid =url_parameters.get("fid");
@@ -165,7 +165,7 @@ public class Friends {
 			shuttle.put("status", "friend");
 			if(THINGS.matchTHINGS(shuttle, table, caller))
 				THINGS.removeTHINGS(shuttle, table,caller);
-			else throw new DbException("FriendShip not found!");}
+			else throw new DBException("FriendShip not found!");}
 
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
 				new JSONObject()

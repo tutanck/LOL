@@ -19,21 +19,18 @@ import org.json.JSONObject;
 @WebServlet(name = "GetShortInfosServlet" ,urlPatterns={"/user/infos"})
 public class GetShortInfosServlet extends GetServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	public void init() throws ServletException {
 		super.init();
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"uther"}));}
-		
+
 	@Override
 	public JSONObject doBusiness(
 			HttpServletRequest request,
 			HttpServletResponse response,
 			JSONObject params
 			)throws Exception {
-	return User.getShortInfos(params);
+		return User.getShortInfos(params);
 	}
-
-	
-
 }

@@ -11,9 +11,9 @@ public class ApiDB {
 	 * @param lon
 	 * @param radius
 	 * @param rows
-	 * @throws DbException */
+	 * @throws DBException */
 	public static void updateApisData(double lat,double lon,int radius,int rows)
-			throws DbException{	
+			throws DBException{	
 		DataIledefranceFr.storeApiAsPosts(lat,lon,radius,rows);}
 
 }

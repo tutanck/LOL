@@ -7,7 +7,7 @@ import java.util.Map;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import tools.db.DBConnectionManager;
-import tools.db.DbException;
+import tools.db.DBException;
 
 
 /**
@@ -23,12 +23,12 @@ public class UserDB {
 	 * @param username
 	 * @param pass
 	 * @param email
-	 * @throws DbException */
+	 * @throws DBException */
 	public static void addUser(
 			String username,
 			String pass,
 			String email
-	) throws DbException{
+	) throws DBException{
 		collection.insert(
 				new BasicDBObject()
 						.append("username",username)
@@ -48,10 +48,10 @@ public class UserDB {
 	 * @param firstname
 	 * @param birthdate
 	 * @param phone
-	 * @throws DbException
+	 * @throws DBException
 	 */
 	public static void updateUserInfo(String uid, String username,String pass,String email,
-									  String lastname,String firstname,String birthdate,String phone) throws DbException{
+									  String lastname,String firstname,String birthdate,String phone) throws DBException{
 		CRUD.CRUDPush(
 				"UPDATE "+businessTable+" SET username='"+username+"' ,"
 						+ " pass='"+pass+"' , email='"+email+"' , lastname='"+lastname+"' , firstname='"+firstname+"' , "
@@ -65,9 +65,9 @@ public class UserDB {
 	 * @DESCRIPTION 	check if username is already used by someone else 	 
 	 * @param username
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static boolean usernameIsTaken(String username) throws DbException {
+	public static boolean usernameIsTaken(String username) throws DBException {
 		return CRUD.CRUDCheck(
 				"SELECT * FROM "+businessTable+" WHERE USERNAME= '"+username+"' ;"
 				,"usernameIsTaken");
@@ -80,9 +80,9 @@ public class UserDB {
 	 * @param username
 	 * @param pass
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static boolean passMatchUsername(String username,String pass) throws DbException {
+	public static boolean passMatchUsername(String username,String pass) throws DBException {
 		return CRUD.CRUDCheck(
 				"SELECT * FROM "+businessTable+" WHERE USERNAME= '"+username+"' AND PASS= '"+pass+"';"
 				,"passMatchUsername");
@@ -94,9 +94,9 @@ public class UserDB {
 	 * @DESCRIPTION 	check the presence of an uid (user ID) in users database
 	 * @param uid
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static boolean uidExists(String uid) throws DbException {
+	public static boolean uidExists(String uid) throws DBException {
 		return CRUD.CRUDCheck(
 				"SELECT * FROM "+businessTable+" WHERE uid='"+uid+"' ;"
 				,"uidExists");
@@ -114,14 +114,14 @@ public class UserDB {
 	 * @DESCRIPTION 		return user ID from his username
 	 * @param username
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static String getUidByUsername(String username) throws DbException {
+	public static String getUidByUsername(String username) throws DBException {
 		CSRShuttleBus csr = CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE username= '"+ username+ "' ;");
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getString("uid");}
-		catch (SQLException e) {throw new DbException(
+		catch (SQLException e) {throw new DBException(
 				"@?getUidByUsername SQLError : " + e.getMessage());}
 		return "";//Not a result
 	}
@@ -132,13 +132,13 @@ public class UserDB {
 	 * @param where
 	 * @param table
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static String getUidByUsername(Map<String,String> where,String table) throws DbException {
+	public static String getUidByUsername(Map<String,String> where,String table) throws DBException {
 		CSRShuttleBus csr = CRUD.CRUDPull(THINGS.getTHINGS(where,table));
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getString("uid");}
-		catch (SQLException e) {throw new DbException(
+		catch (SQLException e) {throw new DBException(
 				"@?getUidByUsername SQLError : " + e.getMessage());}
 		return "";//Not a result
 	}
@@ -150,15 +150,15 @@ public class UserDB {
 	 * @DESCRIPTION 		return username from his user ID address
 	 * @param uid
 	 * @return String
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static String getUsernameById(String uid) throws DbException {
+	public static String getUsernameById(String uid) throws DBException {
 		CSRShuttleBus csr = CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE uid='"+uid+"';");
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getString("username");}
 		catch (SQLException e) {
-			throw new DbException(
+			throw new DBException(
 					"@?getUsernameById SQLError : " + e.getMessage());}
 		return "";//return null; vrmt pas fan
 	}
@@ -169,14 +169,14 @@ public class UserDB {
 	 * @param where
 	 * @param table
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static String getUsernameById(Map<String,String> where,String table) throws DbException {
+	public static String getUsernameById(Map<String,String> where,String table) throws DBException {
 		CSRShuttleBus csr = CRUD.CRUDPull(THINGS.getTHINGS(where,table));
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getString("username");}
 		catch (SQLException e) {
-			throw new DbException(
+			throw new DBException(
 					"@?getUsernameById SQLError : " + e.getMessage());}
 		return "";
 	}
@@ -187,15 +187,15 @@ public class UserDB {
 	 * DESCRIPTION 			: return user's firstname from user id
 	 * @param uid
 	 * @return String
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static String getFirstnameById(String uid) throws DbException {
+	public static String getFirstnameById(String uid) throws DBException {
 		CSRShuttleBus csr = CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE uid='"+uid+"';");
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getString("firstname");
 			csr.close();}
-		catch (SQLException e) {throw new DbException(
+		catch (SQLException e) {throw new DBException(
 				"getIdentitybyId SQL Error: " + e.getMessage());}
 		return "";
 	}
@@ -205,15 +205,15 @@ public class UserDB {
 	 * DESCRIPTION 			: return user's firstname from user id
 	 * @param uid
 	 * @return String
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static String getLastnameById(String uid) throws DbException {
+	public static String getLastnameById(String uid) throws DBException {
 		CSRShuttleBus csr = CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE uid='"+uid+"' ;");
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getString("lastname");
 			csr.close();}
-		catch (SQLException e) {throw new DbException(
+		catch (SQLException e) {throw new DBException(
 				"getIdentitybyId SQL Error: " + e.getMessage());}
 		return "";
 	}
@@ -223,9 +223,9 @@ public class UserDB {
 	 * METHODE NAME 		: confirmUser
 	 * DESCRIPTION 			: confirm an user account (email is checked)
 	 * @param id
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws SQLException	 */
-	public static void confirmUser(String uid) throws DbException {
+	public static void confirmUser(String uid) throws DBException {
 		CRUD.CRUDPush( "UPDATE USERS SET " +
 				"status='confirmed' WHERE uid = '" + uid+ "' ;","confirmUser");	}
 
@@ -235,13 +235,13 @@ public class UserDB {
 	 * DESCRIPTION 			: check if user account is confirmed (email is checked)
 	 * @param id
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws SQLException	 */
-	public static Boolean isConfirmed(String uid) throws DbException {
+	public static Boolean isConfirmed(String uid) throws DBException {
 		return CRUD.CRUDCheck("SELECT * FROM USERS WHERE status='confirmed'"
 				+ " AND uid = '" + uid+ "' ;","isUserConfirmed");}
 
-	public static CSRShuttleBus searchUser(String uid,String query) throws DbException{
+	public static CSRShuttleBus searchUser(String uid,String query) throws DBException{
 		return CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE username LIKE '"+query+"%' "
 						+ "AND uid <> '"+uid+"' ;");}

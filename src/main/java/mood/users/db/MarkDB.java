@@ -24,9 +24,9 @@ public class MarkDB {
 	 * @param username
 	 * @param skey
 	 * @param mark
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static void addMark(String username,String skey,double mark) throws DbException{ 
+	public static void addMark(String username,String skey,double mark) throws DBException{ 
 		String mid = SessionManager.sessionOwner(skey);
 		String uid=UserDB.getUidByUsername(username);
 		CRUD.CRUDPush(
@@ -40,9 +40,9 @@ public class MarkDB {
 	 * @param username
 	 * @param skey
 	 * @param mark
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static void updateMark(String username,String skey,double mark) throws DbException{ 
+	public static void updateMark(String username,String skey,double mark) throws DBException{ 
 		String uid = UserDB.getUidByUsername(username);
 		CRUD.CRUDPush(
 				"UPDATE "+businessTable+" SET mark='"+mark+"'  WHERE uid='"+uid+"' ;"
@@ -56,9 +56,9 @@ public class MarkDB {
 	 * @param username
 	 * @param criterion
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static boolean userMarkIsGreaterThan(String username,double criterion) throws DbException {
+	public static boolean userMarkIsGreaterThan(String username,double criterion) throws DBException {
 		String uid = UserDB.getUidByUsername(username);
 		return CRUD.CRUDCheck(
 				"SELECT * FROM "+businessTable+" WHERE uid= '"+uid+"' AND SUM(mark) >='"+criterion+"';"
@@ -72,9 +72,9 @@ public class MarkDB {
 	 * @param username
 	 * @param criterion
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static boolean userMarkIsLowerThan(String username,double criterion) throws DbException {
+	public static boolean userMarkIsLowerThan(String username,double criterion) throws DBException {
 		String uid = UserDB.getUidByUsername(username);
 		return CRUD.CRUDCheck(
 				"SELECT * FROM "+businessTable+" WHERE uid= '"+uid+"' AND SUM(mark) <='"+criterion+"';"
@@ -87,15 +87,15 @@ public class MarkDB {
 	 * @DESCRIPTION 		return user mark from his username
 	 * @param username
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static Double getMarkByUsername(String username) throws DbException {
+	public static Double getMarkByUsername(String username) throws DBException {
 		String uid = UserDB.getUidByUsername(username);
 		CSRShuttleBus csr = CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE uid= '"+ uid+ "' ;");
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getDouble("mark");}
-		catch (SQLException e) {throw new DbException(
+		catch (SQLException e) {throw new DBException(
 				"@?getMarkByUsername SQLError : " + e.getMessage());}
 		return 0.0;//Not a result
 	} 
@@ -106,15 +106,15 @@ public class MarkDB {
 	 * @DESCRIPTION 		return user's mark from his user ID address
 	 * @param uid
 	 * @return Double
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static Double getMarkByUID(String uid) throws DbException {
+	public static Double getMarkByUID(String uid) throws DBException {
 		CSRShuttleBus csr = CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE uid="+uid+";");
 		try { if (csr.getResultSet().next())
 			return csr.getResultSet().getDouble("mark");}
 		catch (SQLException e) {
-			throw new DbException(
+			throw new DBException(
 					"@?getMarkByUID SQLError : " + e.getMessage());}
 		return 0.0;//Not a result
 	}
@@ -125,16 +125,16 @@ public class MarkDB {
 	 * @DESCRIPTION 		return a list of users uid if their mark is greater than criterion
 	 * @param criterion
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static List<String> getUIDListWhereMarkGreaterThan(double criterion) throws DbException {
+	public static List<String> getUIDListWhereMarkGreaterThan(double criterion) throws DBException {
 		List<String> list=new ArrayList<>();
 		CSRShuttleBus csr = CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE mark >="+criterion+";"); //group by uid TODO
 		try { while (csr.getResultSet().next())
 			list.add(csr.getResultSet().getString("uid"));
 		csr.close();}
-		catch (SQLException e) {throw new DbException(
+		catch (SQLException e) {throw new DBException(
 				"getUIDListWhereMarkGreaterThan SQL Error: " + e.getMessage());}
 		return list;
 	}
@@ -144,16 +144,16 @@ public class MarkDB {
 	 * @DESCRIPTION 		return a list of users uid if their mark is lower than criterion
 	 * @param criterion
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 */
-	public static List<String> getUIDListWhereMarkLowerThan(double criterion) throws DbException {
+	public static List<String> getUIDListWhereMarkLowerThan(double criterion) throws DBException {
 		List<String> list=new ArrayList<>();
 		CSRShuttleBus csr = CRUD.CRUDPull(
 				"SELECT * FROM "+businessTable+" WHERE mark <="+criterion+";"); //group by uid TODO
 		try { while (csr.getResultSet().next())
 			list.add(csr.getResultSet().getString("uid"));
 		csr.close();}
-		catch (SQLException e) {throw new DbException(
+		catch (SQLException e) {throw new DBException(
 				"getUIDListWhereMarkGreaterThan SQL Error: " + e.getMessage());}
 		return list;
 	}

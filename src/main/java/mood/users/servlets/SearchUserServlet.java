@@ -34,5 +34,4 @@ public class SearchUserServlet extends GetServlet {
 			)throws Exception {
 		return User.searchUser(params);
 	}
-
 }

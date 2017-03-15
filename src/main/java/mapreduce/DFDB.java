@@ -129,8 +129,8 @@ public class DFDB{
 	/**
 	 * Filling of the SQL DF table 
 	 * @throws JSONException
-	 * @throws DbException */
-	public static void updateDF() throws JSONException, DbException {
+	 * @throws DBException */
+	public static void updateDF() throws JSONException, DBException {
 		List<JSONObject> l = DFList(); //Get Document Frequency list
 		try {
 			Connection c = DBConnectionManager.getMySQLDBConnection();
@@ -148,11 +148,11 @@ public class DFDB{
 				is.close();	
 			}c.close();}
 		catch (SQLException e){
-			throw new DbException("Error while filling Document Frequency table ("+bd+") : " 
+			throw new DBException("Error while filling Document Frequency table ("+bd+") : " 
 					+ DBToolBox.getStackTrace(e));}}	
 	
 	
-  	public static void main(String[] args) throws JSONException, DbException {		 
+  	public static void main(String[] args) throws JSONException, DBException {		 
 			System.out.println("** "+DFList()+" **");
 			updateDF();}
 }

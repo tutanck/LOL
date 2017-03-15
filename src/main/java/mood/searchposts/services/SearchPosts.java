@@ -26,9 +26,9 @@ public class SearchPosts {
 	 * The results are ordered by relevance score provided by map reduce sorting
 	 * @param query
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject QMatchingAllPostsLocation(String query,String skey)throws DbException, JSONException{
+	public static JSONObject QMatchingAllPostsLocation(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingAllPosts(query))
 			jar.put(new JSONObject()
@@ -52,9 +52,9 @@ public class SearchPosts {
 	 * @param query
 	 * @param skey
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject QMatchingMyPostsLocation(String query,String skey)throws DbException, JSONException{
+	public static JSONObject QMatchingMyPostsLocation(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingMyPosts(query,
 				SessionManager.sessionOwner(skey)))
@@ -79,9 +79,9 @@ public class SearchPosts {
 	 * @param query
 	 * @param skey
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject QMatchingFriendsPostsLocation(String query,String skey)throws DbException, JSONException{
+	public static JSONObject QMatchingFriendsPostsLocation(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingFriendsPosts(query,
 				SessionManager.sessionOwner(skey)))	
@@ -105,9 +105,9 @@ public class SearchPosts {
 	 * @param query
 	 * @param skey
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
-	public static JSONObject QMatchingPublicPostsLocation(String query,String skey)throws DbException, JSONException{
+	public static JSONObject QMatchingPublicPostsLocation(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingPublicPosts(query,
 				SessionManager.sessionOwner(skey)))	
@@ -147,9 +147,9 @@ public class SearchPosts {
 	 * The results are ordered by relevance score provided by map reduce sorting
 	 * @param query
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */@Deprecated
-	public static JSONObject QMatchingAllPosts(String query)throws DbException, JSONException{
+	public static JSONObject QMatchingAllPosts(String query)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingAllPosts(query))
  			jar.put(new JSONObject()
@@ -174,9 +174,9 @@ public class SearchPosts {
 	 * @param query
 	 * @param skey
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */@Deprecated
-	public static JSONObject QMatchingMyPosts(String query,String skey)throws DbException, JSONException{
+	public static JSONObject QMatchingMyPosts(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingMyPosts(query,
 				SessionManager.sessionOwner(skey)))
@@ -201,9 +201,9 @@ public class SearchPosts {
 	 * @param query
 	 * @param skey
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */@Deprecated
-	public static JSONObject QMatchingFriendsPosts(String query,String skey)throws DbException, JSONException{
+	public static JSONObject QMatchingFriendsPosts(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingFriendsPosts(query,
 				SessionManager.sessionOwner(skey)))
@@ -223,7 +223,7 @@ public class SearchPosts {
 				,jar,null,ServiceCaller.whichServletIsAsking().hashCode());}
 
 
-	public static void main(String[] args) throws JSONException, DbException {
+	public static void main(String[] args) throws JSONException, DBException {
 		PostsDB.collection.drop();//reset : determinism required for the tests
 		PostsDB.addPost("jojo41", "he he oppai",2.3,4.5);
 		PostsDB.addPost("jojo42", "he he oppai to shiggi",2.3,4.5);

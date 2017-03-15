@@ -24,7 +24,7 @@ http://stackoverflow.com/questions/421280/how-do-i-find-the-caller-of-a-method-u
 	 *   POUR RETROUVER LA SERVLET APPELANTE ET SE PASSER DU PASSAGE DE SKEY EN PARAM ET RETROUVER DIRECTEMENT LA CLE DE SESSION OU L UID
 	 *   DEPUIS HTTP SESSION DEPUIS TOUS LES SERVICES DE HAUT NIVEAU (LEVEL1 SERVICE INTERFACE )
 	 *  */
-	public static JSONObject search(/*String key,*/String query) throws JSONException, DbException{	return null;}
+	public static JSONObject search(/*String key,*/String query) throws JSONException, DBException{	return null;}
 
 	public static void main(String[] args) {}
 

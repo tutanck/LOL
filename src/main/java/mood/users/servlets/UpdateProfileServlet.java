@@ -23,7 +23,6 @@ public class UpdateProfileServlet extends PostServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		//All but username (can't be changed)
 		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"username"}));}
 
 	@Override

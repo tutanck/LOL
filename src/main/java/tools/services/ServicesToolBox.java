@@ -23,37 +23,107 @@ import org.json.JSONObject;
 public class ServicesToolBox {
 
 	/**
-	 * @description return a predefined JSONObject containing
-	 * bad news or good news or both about the conduct of a service's operation
+	 * @description 
+	 * Return a predefined JSONObject containing
+	 * the service's {result}, 
+	 * the servlet's {rpcode},
+	 * and the {status} code [_WARNING],
+	 * a warning {message}
 	 * @param status
 	 * @param result
 	 * @param message
 	 * @param replycode
-	 * @return */
-	public static JSONObject reply(int status,Object result,String message,int replycode) 
-			throws JSONException{
-		JSONObject reply=new JSONObject()
-				.put("status",status)//good or bad or both
-				.put("rpcode",replycode);
-		if(result!=null)
-			reply.put("result",result);
-		if(message!=null)
-			reply.put("message",message);
-		return reply;}
-	
-	
+	 * @return 
+	 * @throws ShouldNeverOccurException */
+	public static JSONObject warn(
+			Object result,
+			String message,
+			int replycode
+			)throws JSONException, ShouldNeverOccurException{
+
+		 if(message==null) 
+			throw new 
+			ShouldNeverOccurException("In Warning responses, message part should never be null");
+
+		return new JSONObject()
+				.put("status",ServiceCodes._WARNING)
+				.put("rpcode",replycode)
+				.put("message",message)
+				.put("result",result); //if result is null is should disappear from the org.json's response
+	}
+
+
 	/**
-	 * @description return a predefined JSONObject containing
+	 * @description 
+	 * Return a predefined JSONObject containing
+	 * the service's {result}, 
+	 * the servlet {rpcode},
+	 * and the status code [_KANPEKI] 
+	 * @param status
+	 * @param result
+	 * @param message
+	 * @param replycode
+	 * @return 
+	 * @throws ShouldNeverOccurException */
+	public static JSONObject answer(
+			Object result,
+			int replycode
+			)throws JSONException, ShouldNeverOccurException{
+
+		return new JSONObject()
+				.put("status",ServiceCodes._KANPEKI)
+				.put("rpcode",replycode)
+				.put("result",result);
+	}
+
+
+
+	/**
+	 * @description 
+	 * Return a predefined JSONObject containing 
+	 * the servlet's {rpcode},
+	 * and the {status} code [_ISSUE],
+	 * an issue {message}
+	 * @param status
+	 * @param result
+	 * @param message
+	 * @param replycode
+	 * @return 
+	 * @throws ShouldNeverOccurException */
+	public static JSONObject alert(
+			Object result,
+			String message,
+			int replycode
+			)throws JSONException, ShouldNeverOccurException{
+
+		if(message==null) 
+			throw new 
+			ShouldNeverOccurException("In Issue responses, message part should never be null");
+
+		return new JSONObject()
+				.put("status",ServiceCodes._ISSUE)
+				.put("rpcode",replycode)
+				.put("message",message);
+	}
+
+
+
+	/**
+	 * @description 
+	 * Return a predefined JSONObject containing
 	 * information about the internal error that occurred.
+	 * Only useful on admin mode
 	 * iserror = (internal server error)'s acronym   
 	 * @param thr
 	 * @return */
 	public static JSONObject iserror(Throwable thr) throws JSONException{
 		return new JSONObject().
 				put("iserror",getStackTrace(thr))
-				.put("errorpage","/Momento/err.jsp");}
-	
+				.put("errorpage","/Momento/err.jsp");
+	}
 
+
+	
 	/**
 	 * TODO work while is run as java application but not on server
 	 * no error , silent execution with no visible effects 
@@ -71,11 +141,16 @@ public class ServicesToolBox {
 		finally {try {fw.close();} catch (IOException e1) {e1.printStackTrace();}}
 	}*/
 
+	
+	
 	/**
 	 * @description  Generate an integer ID using Random.nextInt() Method   
 	 * @return */
 	public static int generateSimpleIntId() {return new Random().nextInt(Integer.MAX_VALUE);}
 
+
+	
+	
 	/**
 	 * Return the complete StackTrace of the throwable as String
 	 * @param thr
@@ -87,6 +162,9 @@ public class ServicesToolBox {
 		return sw.toString(); // stack trace as a string
 	}
 
+	
+	
+	
 	/**
 	 * @description return the current time in format day/month/year/ hour:minutes:seconds
 	 * @return */
@@ -96,6 +174,8 @@ public class ServicesToolBox {
 		return dateFormat.format(date); //21/02/2015/ 13:52:11
 	}
 
+	
+	
 
 	/**
 	 * @description return the current timestamp
@@ -105,6 +185,7 @@ public class ServicesToolBox {
 	}
 
 
+	
 	/**
 	 * @description Generate key(sequence of 32 hexadecimal digits)
 	 *  with The 128-bit MD5 hash algorithm
@@ -124,6 +205,8 @@ public class ServicesToolBox {
 		return  hashtext;
 	}
 
+	
+	
 	/**
 	 * @description  Home made 32 characters ID generated
 	 * @return
@@ -139,9 +222,11 @@ public class ServicesToolBox {
 	}
 
 
+	
+	
 	public static void main(String[] args) {
 		System.out.println(getCurrentTime());
 		System.out.println(generateMD5ID());
-  		System.out.println(generateSimpleIntId());
+		System.out.println(generateSimpleIntId());
 	}
 }

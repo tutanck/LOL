@@ -14,7 +14,10 @@ public abstract class OnlinePostServlet extends PostServlet{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(
+			HttpServletRequest request,
+			HttpServletResponse response
+			) throws ServletException, IOException {
 		try{
 			if(requireToBeConnected(request, response, true))
 				super.doPost(request, response);
@@ -25,8 +28,4 @@ public abstract class OnlinePostServlet extends PostServlet{
 		}
 	}
 	
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);}
-
 }

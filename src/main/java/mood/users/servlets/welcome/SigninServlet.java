@@ -22,16 +22,16 @@ public class SigninServlet extends PostServlet{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-    public void init() throws ServletException {
-        super.init();
-        super.epnIn=new HashSet<>(Arrays.asList(new String[]{"username","pass"}));}
+	public void init() throws ServletException {
+		super.init();
+		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"username","pass"}));}
 
-    @Override
-    public JSONObject doBusiness(
-    		HttpServletRequest request,
-    		HttpServletResponse response,
-    		JSONObject params
-    		)throws Exception {
-        return  User.login(params);
-    }
+	@Override
+	public JSONObject doBusiness(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			JSONObject params
+			)throws Exception {
+		return  User.login(params);
+	}
 }

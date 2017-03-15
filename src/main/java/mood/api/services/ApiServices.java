@@ -26,11 +26,11 @@ public class ApiServices {
 	 * @param radius
 	 * @param rows
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject updateApisData(String key,//not used for now but maybe later
 			double lat,double lon,int radius,int rows)
-			throws DbException, JSONException{
+			throws DBException, JSONException{
 		ApiDB.updateApisData(lat, lon, radius, rows);
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI 
 				,null,null,ServiceCaller.whichServletIsAsking().hashCode()); }

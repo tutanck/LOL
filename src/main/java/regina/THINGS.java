@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.mongodb.*;
 import org.json.JSONObject;
-import tools.db.DbException;
+import tools.db.DBException;
 
 /**
  * @author AJoan
@@ -21,12 +21,12 @@ public class THINGS{
 	 * @param things
 	 * @param collection
 	 * @param caller
-	 * @throws DbException */
+	 * @throws DBException */
 	public static WriteResult add(
 			JSONObject things,
 			DBCollection collection,
 			String caller
-	) throws DbException{
+	) throws DBException{
 		WriteResult wr = collection.insert(
 				dressJSON(things).append("_date",new Date())
 		);
@@ -42,13 +42,13 @@ public class THINGS{
 	 * @param where
 	 * @param collection
 	 * @param caller
-	 * @throws DbException */
+	 * @throws DBException */
 	public static WriteResult updateOne(
 			JSONObject where,
 			JSONObject things,
 			DBCollection collection,
 			String caller
-	) throws DbException{
+	) throws DBException{
 		WriteResult wr = collection.update(
 				dressJSON(where),
 				dressJSON(things),
@@ -60,19 +60,19 @@ public class THINGS{
 
 
 
-	/**todo : update _date
+	/**TODO : update _date
 	 * @DESCRIPTION update {things} everywhere in the {collection} where {where} condition match
 	 * @param things
 	 * @param where
 	 * @param collection
 	 * @param caller
-	 * @throws DbException */
+	 * @throws DBException */
 	public static WriteResult updateAll(
 			JSONObject where,
 			JSONObject things,
 			DBCollection collection,
 			String caller
-	) throws DbException{
+	) throws DBException{
 		WriteResult wr = collection.update(
 				dressJSON(where),
 				dressJSON(things),
@@ -84,25 +84,25 @@ public class THINGS{
 
 
 
-	/**todo : update _date
+	/**TODO : update _date
 	 * @DESCRIPTION upsert {things} somewhere in the {collection} where {where} condition match
 	 * @param things
 	 * @param where
 	 * @param collection
 	 * @param caller
-	 * @throws DbException */
-	public static WriteResult upsertOne(
+	 * @throws DBException */
+	public static WriteResult putOne(
 			JSONObject where,
 			JSONObject things,
 			DBCollection collection,
 			String caller
-	) throws DbException{
+	) throws DBException{
 		WriteResult wr = collection.update(
 				dressJSON(where),
 				dressJSON(things).append("_date",new Date()),
 				true,false
 		);
-		logDBAction(things,collection,caller,DBAction.UPSERTONE);
+		logDBAction(things,collection,caller,DBAction.PUTONE);
 		return wr;
 	}
 
@@ -114,19 +114,19 @@ public class THINGS{
 	 * @param where
 	 * @param collection
 	 * @param caller
-	 * @throws DbException */
-	public static WriteResult upsertAll(
+	 * @throws DBException */
+	public static WriteResult putAll(
 			JSONObject where,
 			JSONObject things,
 			DBCollection collection,
 			String caller
-	) throws DbException{
+	) throws DBException{
 		WriteResult wr = collection.update(
 				dressJSON(where),
 				dressJSON(things).append("_date",new Date()),
 				true,true
 		);
-		logDBAction(things,collection,caller,DBAction.UPSERTALL);
+		logDBAction(things,collection,caller,DBAction.PUTALL);
 		return wr;
 	}
 
@@ -138,12 +138,12 @@ public class THINGS{
 	 * @param things
 	 * @param collection
 	 * @param caller
-	 * @throws DbException */
+	 * @throws DBException */
 	public static boolean exists(
 			JSONObject things,
 			DBCollection collection,
 			String caller
-	) throws DbException{
+	) throws DBException{
 		boolean response = collection.find(
 				dressJSON(things)
 		).limit(1).hasNext(); //limit 1 is for optimisation : https://blog.serverdensity.com/checking-if-a-document-exists-mongodb-slow-findone-vs-find/
@@ -198,30 +198,42 @@ public class THINGS{
 	 * @param collection
 	 * @param caller
 	 * @return
-	 * @throws DbException */
+	 * @throws DBException */
 	public static WriteResult remove(
 			JSONObject things,
 			DBCollection collection,
 			String caller
-	) throws DbException{
+	) throws DBException{
 		WriteResult wr = collection.remove(dressJSON(things));
 		logDBAction(things,collection,caller,DBAction.REMOVE);
 		return wr;
 	}
 
 
+	/**
+	 * @description 
+	 * Reformat a JSONObject into a BasicDBObject
+	 * @param json
+	 * @return */
 	private static BasicDBObject dressJSON(JSONObject json){
 		return new BasicDBObject(
 				json.toMap()
 		);
 	}
 
+	
+	/**
+	 * @description 
+	 * Print a database related action that happened 
+	 * @param things
+	 * @param collection
+	 * @param caller
+	 * @param action */
 	private static void logDBAction(
 			JSONObject things,
 			DBCollection collection,
 			String caller,
 			DBAction action
-
 	) {
 		switch (action) {
 			case ADD:
@@ -236,11 +248,11 @@ public class THINGS{
 				System.out.println("This Things : '"+things+"' have been updated everywhere in coll '"+collection.getFullName()+"' at the request of '"+caller+"'");
 				break;
 
-			case UPSERTONE:
+			case PUTONE:
 				System.out.println("This Things : '"+things+"' have been upserted once in coll '"+collection.getFullName()+"' at the request of '"+caller+"'");
 				break;
 
-			case UPSERTALL:
+			case PUTALL:
 				System.out.println("This Things : '"+things+"' have been upserted everywhere in coll'"+collection.getFullName()+"' at the request of '"+caller+"'");
 				break;
 
@@ -264,8 +276,8 @@ public class THINGS{
 		ADD,
 		UPDATEONE,
 		UPDATEALL,
-		UPSERTONE,
-		UPSERTALL,
+		PUTONE,
+		PUTALL,
 		REMOVE,
 		EXISTS,
 		GETONE,

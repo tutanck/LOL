@@ -28,8 +28,8 @@ public class PostsDB {
 	 * Add a new post in database 
 	 * @param uid
 	 * @param desc
-	 * @throws DbException */
-	public static void addPost(String uid,String desc,double lon,double lat) throws DbException {
+	 * @throws DBException */
+	public static void addPost(String uid,String desc,double lon,double lat) throws DBException {
 		collection.insert(new BasicDBObject()
 				.append("authid",uid)
 				.append("desc",desc)
@@ -50,8 +50,8 @@ public class PostsDB {
 	/**
 	 * Return the list of reachable posts by user  
 	 * @return
-	 * @throws DbException */
-	public static DBCursor posts() throws DbException {  
+	 * @throws DBException */
+	public static DBCursor posts() throws DBException {  
 		return collection.find(
 				new BasicDBObject()
 				.append("status",
@@ -65,8 +65,8 @@ public class PostsDB {
 	/**
 	 * Return the list of reachable posts by user  
 	 * @return
-	 * @throws DbException */
-	public static DBCursor postsSQLMODO(String query) throws DbException {  
+	 * @throws DBException */
+	public static DBCursor postsSQLMODO(String query) throws DBException {  
 		return collection.find(
 				new BasicDBObject()
 				.append("desc",
@@ -86,16 +86,16 @@ public class PostsDB {
 	 * Get Full entries of the posts identified by id 
 	 * @param id
 	 * @return
-	 * @throws DbException */
-	public static DBObject getPost(String id) throws DbException {
+	 * @throws DBException */
+	public static DBObject getPost(String id) throws DBException {
 		return collection.findOne(new BasicDBObject()
 				.append("_id",new ObjectId(id)));}
 
 	/**
 	 * Add status deleted to the post (to hidden it from the search)
 	 * @param id
-	 * @throws DbException */
-	public static void deletePost(String id) throws DbException{
+	 * @throws DBException */
+	public static void deletePost(String id) throws DBException{
 		collection.update(new BasicDBObject().append("_id",new ObjectId(id))
 				,new BasicDBObject()
 				.append("$set",
@@ -111,9 +111,9 @@ public class PostsDB {
 	 * Modify the post description (text content) 
 	 * @param id
 	 * @param desc
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws MongoException */
-	public static void ModifyPost(String id,String desc) throws DbException,MongoException{
+	public static void ModifyPost(String id,String desc) throws DBException,MongoException{
 		collection.update(new BasicDBObject().append("_id",new ObjectId(id)),
 				new BasicDBObject().append("$set",new BasicDBObject().append("desc",desc)));
 
@@ -129,8 +129,8 @@ public class PostsDB {
 	 * Return the list of user's  posts  
 	 * @param uid
 	 * @return
-	 * @throws DbException */
-	public static DBCursor userPosts(String uid) throws DbException {  
+	 * @throws DBException */
+	public static DBCursor userPosts(String uid) throws DBException {  
 		return collection.find(
 				new BasicDBObject()
 				.append("authid",uid)
@@ -146,8 +146,8 @@ public class PostsDB {
 	 * Return the list of user's  posts  
 	 * @param uid
 	 * @return
-	 * @throws DbException */
-	public static DBCursor userPostsSQLMODO(String query,String uid) throws DbException {  
+	 * @throws DBException */
+	public static DBCursor userPostsSQLMODO(String query,String uid) throws DBException {  
 		return collection.find(
 				new BasicDBObject()
 				.append("desc",
@@ -169,8 +169,8 @@ public class PostsDB {
 	 * Return the list of user's friends posts  
 	 * @param friendSet
 	 * @return
-	 * @throws DbException */
-	public static DBCursor friendsPosts(Set<String>friendSet) throws DbException{ 
+	 * @throws DBException */
+	public static DBCursor friendsPosts(Set<String>friendSet) throws DBException{ 
 		return collection.find(
 				new BasicDBObject()
 				.append("authid",
@@ -186,10 +186,10 @@ public class PostsDB {
 	 * Return the list of user's friends posts  
 	 * @param friendSet
 	 * @return
-	 * @throws DbException */
-	public static DBCursor friendsPosts(String uid) throws DbException{ 
+	 * @throws DBException */
+	public static DBCursor friendsPosts(String uid) throws DBException{ 
 		try {return friendsPosts(FriendDB.friendsSet(uid));}
-		catch (JSONException e) {throw new DbException(DBToolBox.getStackTrace(e));}}
+		catch (JSONException e) {throw new DBException(DBToolBox.getStackTrace(e));}}
 	
 	
 	
@@ -197,8 +197,8 @@ public class PostsDB {
 	 * Return the list of user's friends posts  
 	 * @param friendSet
 	 * @return
-	 * @throws DbException */
-	public static DBCursor friendsPostsSQLMODO(String query,Set<String>friendSet) throws DbException{ 
+	 * @throws DBException */
+	public static DBCursor friendsPostsSQLMODO(String query,Set<String>friendSet) throws DBException{ 
 		return collection.find(
 				new BasicDBObject()
 				.append("desc",
@@ -220,10 +220,10 @@ public class PostsDB {
 	 * Return the list of user's friends posts  
 	 * @param friendSet
 	 * @return
-	 * @throws DbException */
-	public static DBCursor friendsPostsSQLMODO(String query,String uid) throws DbException{ 
+	 * @throws DBException */
+	public static DBCursor friendsPostsSQLMODO(String query,String uid) throws DBException{ 
 		try {return friendsPostsSQLMODO(query,FriendDB.friendsSet(uid));}
-		catch (JSONException e) {throw new DbException(DBToolBox.getStackTrace(e));}}
+		catch (JSONException e) {throw new DBException(DBToolBox.getStackTrace(e));}}
 
 
 
@@ -231,8 +231,8 @@ public class PostsDB {
 	 * Return the list of public posts according to the user's friends and identity  
 	 * @param friendSet
 	 * @return
-	 * @throws DbException */
-	public static DBCursor publicPosts(String uid) throws DbException{ 
+	 * @throws DBException */
+	public static DBCursor publicPosts(String uid) throws DBException{ 
 		try {Set<String>friendSet=FriendDB.friendsSet(uid);
 		friendSet.add(uid);
 		return collection.find(
@@ -247,14 +247,14 @@ public class PostsDB {
 								new BasicDBObject()
 								.append("$in",
 										BasicDBListFI.add("deleted")))));}
-		catch (JSONException e) {throw new DbException(DBToolBox.getStackTrace(e));}}
+		catch (JSONException e) {throw new DBException(DBToolBox.getStackTrace(e));}}
 	
 	/**
 	 * Return the list of public posts according to the user's friends and identity  
 	 * @param friendSet
 	 * @return
-	 * @throws DbException */
-	public static DBCursor publicPostsSQLMODO(String query,String uid) throws DbException{ 
+	 * @throws DBException */
+	public static DBCursor publicPostsSQLMODO(String query,String uid) throws DBException{ 
 		try {Set<String>friendSet=FriendDB.friendsSet(uid);
 		friendSet.add(uid);
 		return collection.find(
@@ -274,7 +274,7 @@ public class PostsDB {
 								new BasicDBObject()
 								.append("$in",
 										BasicDBListFI.add("deleted")))));}
-		catch (JSONException e) {throw new DbException(DBToolBox.getStackTrace(e));}}
+		catch (JSONException e) {throw new DBException(DBToolBox.getStackTrace(e));}}
 
 
 
@@ -285,8 +285,8 @@ public class PostsDB {
 	 * Return the post's author 
 	 * @param id
 	 * @return
-	 * @throws DbException */
-	public static String postAuthor(String id) throws DbException{ 
+	 * @throws DBException */
+	public static String postAuthor(String id) throws DBException{ 
 		DBObject post=collection.findOne(
 				new BasicDBObject().append("_id", new ObjectId(id)));
 		if(post!=null)
@@ -324,8 +324,8 @@ public class PostsDB {
 	 * SearchPostsDB in particular
 	 * Return all the posts in database
 	 * @return
-	 * @throws DbException */
-	public static DBCursor allPosts() throws DbException{  
+	 * @throws DBException */
+	public static DBCursor allPosts() throws DBException{  
 		return collection.find();}
 
 
@@ -335,8 +335,8 @@ public class PostsDB {
 	 * SearchPostsDB in particular
 	 * Return all the posts in database
 	 * @return
-	 * @throws DbException */
-	public static DBCursor featuredPosts(BasicDBObject feature) throws DbException{  
+	 * @throws DBException */
+	public static DBCursor featuredPosts(BasicDBObject feature) throws DBException{  
 		return collection.find(feature);}
 
 
@@ -355,9 +355,9 @@ public class PostsDB {
 	/**
 	 * Add a like to a post 
 	 * @param id
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws MongoException */@Deprecated
-	 public static void like(String id,String uid, int nbStars) throws DbException,MongoException{
+	 public static void like(String id,String uid, int nbStars) throws DBException,MongoException{
 		 collection.update(
 				 new BasicDBObject()
 				 .append("_id",new ObjectId(id)),
@@ -369,7 +369,7 @@ public class PostsDB {
 								 .append("authid", uid)
 								 .append("nbstars", nbStars))));}
 
-	 public static void main(String[] args) throws DbException {
+	 public static void main(String[] args) throws DBException {
 		 addPost("d910952c404b4b6cca5d6f61a5ab9df0","lol desc",48.799, 2.322);
 	 }
 }

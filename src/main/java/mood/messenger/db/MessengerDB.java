@@ -23,7 +23,7 @@ public class MessengerDB {
 	 * @param sender
 	 * @param recipient
 	 * @param message
-	 * @throws DbException*/
+	 * @throws DBException*/
 	public static void newMessage(String sender,String recipient,String message) {
 		collection.insert(
 				new BasicDBObject()
@@ -37,7 +37,7 @@ public class MessengerDB {
 	 * @param talkerA
 	 * @param talkerB
 	 * @return
-	 * @throws DbException */
+	 * @throws DBException */
 	public static DBCursor messages(String talkerA, String talkerB){  
 		return collection.find(
 				new BasicDBObject()
@@ -53,7 +53,7 @@ public class MessengerDB {
 	 * Chronological shuffled List of message involving user
 	 * @param userID
 	 * @return
-	 * @throws DbException */
+	 * @throws DBException */
 	public static DBCursor messages(String userID){  
 		return collection.find(
 				new BasicDBObject()
@@ -63,7 +63,7 @@ public class MessengerDB {
 						,new BasicDBObject()
 						.append("recipient",userID)}))));}
 	
-	public static void main(String[] args) throws MongoException, DbException, JSONException {
+	public static void main(String[] args) throws MongoException, DBException, JSONException {
 //		MessengerDB.collection.drop();//reset : determinism required for tests
 //		newMessage("lola58", "jo42", "ohayo jo");
 //		newMessage("jo42", "lola58", "kombawa lola");

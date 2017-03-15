@@ -34,10 +34,10 @@ public class Messenger {
 	 * @param remoteuser
 	 * @param message
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject newPrivateMessage(String skey,String remoteuser,String message) 
-			throws DbException, JSONException{		
+			throws DBException, JSONException{		
 		MessengerDB.newMessage(SessionManager.sessionOwner(skey)
 				,remoteuser,message);
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI
@@ -49,10 +49,10 @@ public class Messenger {
 	 * @param skey
 	 * @param remoteuser
 	 * @return
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject conversation(String skey,String remoteuser) 
-			throws DbException, JSONException{
+			throws DBException, JSONException{
 		JSONArray jar=new JSONArray();
 		DBCursor cursor =MessengerDB.messages(
 				SessionManager.sessionOwner(skey),remoteuser);
@@ -78,7 +78,7 @@ public class Messenger {
 
 
 	public static JSONObject interlocutors(String skey) 
-			throws DbException, JSONException{
+			throws DBException, JSONException{
 		JSONArray jar=new JSONArray();
 		Set<String>unicqids=new HashSet<>();
 		String uid=SessionManager.sessionOwner(skey);
@@ -102,7 +102,7 @@ public class Messenger {
 				ServiceCaller.whichServletIsAsking().hashCode());}
 
 
-	public static void main(String[] args) throws MongoException, DbException, JSONException {
+	public static void main(String[] args) throws MongoException, DBException, JSONException {
 		System.out.println(interlocutors("a981a551a770b86e02f3a5a0f49ee2bd"));}
 
 }

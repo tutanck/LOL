@@ -44,6 +44,17 @@ implements IJEEZServlet{
 	protected Set<String> opnOut=new HashSet<String>(); //Outgoing optional parameters names
 
 
+	/**
+	 * @description
+	 * -Set the response's content type to 'text/plain'
+	 * -Performs some inspection on incoming parameters 
+	 * and make sure they fit with the related service requirements/preconditions.
+	 * -Send an HTTP error in case of some service's constraint violation.
+	 *  
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException */
 	protected JSONObject beforeBusiness(
 			HttpServletRequest request,
 			HttpServletResponse response
@@ -79,6 +90,14 @@ implements IJEEZServlet{
 	}
 
 
+	/**
+	 * @description
+	 * TODO
+	 * @param request
+	 * @param response
+	 * @param require
+	 * @return
+	 * @throws IOException */
 	protected boolean requireToBeConnected(
 			HttpServletRequest request,
 			HttpServletResponse response,
@@ -109,6 +128,17 @@ implements IJEEZServlet{
 	}
 
 
+	/**
+	 * @description
+	 * Check if the result in the server response is sufficient and well formed (
+	 * 	contains all needed keys each of the right type (in the json result) 
+	 *  to considerate that the result match the service's postconditions.
+	 *  )  
+	 * @param request
+	 * @param response
+	 * @param result
+	 * @param debug
+	 * @throws IOException */
 	protected void afterBusiness(
 			HttpServletRequest request, //just a precaution (useless for now)
 			HttpServletResponse response,
@@ -125,6 +155,15 @@ implements IJEEZServlet{
 	}
 
 
+	/**
+	 * @description
+	 * Check if an incoming parameter is filled (exists and is not empty in the request)
+	 * and properly typed according to epnIn and opnIn definitions
+	 * @param incomingParams
+	 * @param typedParameterNameString
+	 * @param supportedParams
+	 * @param strict
+	 * @return */
 	//TODO check if it is necessary to check for null or undefined or other
 	private JSONObject paramIsValid(
 			Map<String,String>incomingParams,
@@ -194,6 +233,14 @@ implements IJEEZServlet{
 	}
 
 
+	
+	/**
+	 * @description
+	 * Check if the result contains all epnOut's key 
+	 * and the corresponding values are properly typed
+	 *  
+	 * @param result
+	 * @return */
 	private boolean resultWellFormed(
 			JSONObject result
 			){

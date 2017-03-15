@@ -26,7 +26,7 @@ public class MapReduce {
 	private static String dfdb=DFDB.bd;
 	private static String tfdb=TFDB.bd;	
 
-	public static List<ObjetRSV> pertinence(String query,DBCursor cursor) throws DbException {
+	public static List<ObjetRSV> pertinence(String query,DBCursor cursor) throws DBException {
 		Set<String> querywords =QueryString.wordSet(query,QueryString.mrpattern);	
  		List<ObjetRSV> results = new ArrayList<ObjetRSV>();
 		try{
@@ -63,7 +63,7 @@ public class MapReduce {
 					 * Limit will be in the display function (client side) */
 				}
 				results.add(new ObjetRSV(doc,score));}			
-		}catch(SQLException e){throw new DbException(DBToolBox.getStackTrace(e));}
+		}catch(SQLException e){throw new DBException(DBToolBox.getStackTrace(e));}
 
 		//results reverse sort
 		Collections.sort(results,Collections.reverseOrder());

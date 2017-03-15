@@ -39,9 +39,9 @@ public class CommentsDB {
 	 * Modify the comment content identified by cid
 	 * @param cid
 	 * @param com
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws MongoException */
-	public static void modify(String cid,String com) throws DbException,MongoException{	
+	public static void modify(String cid,String com) throws DBException,MongoException{	
 		collection.update(
 				new BasicDBObject()
 				.append("_id",new ObjectId(cid))
@@ -96,8 +96,8 @@ public class CommentsDB {
 	 * Return all comments associated to the post identified by pid
 	 * @param pid
 	 * @return
-	 * @throws DbException */
-	public static DBCursor postComments(String pid) throws DbException{		
+	 * @throws DBException */
+	public static DBCursor postComments(String pid) throws DBException{		
 		 return collection.find(
 				new BasicDBObject()
 				.append("pid",pid)
@@ -126,7 +126,7 @@ public class CommentsDB {
 	 * ADMINISTRATOR FUNCTIONALITY
 	 * Return all comments in database
 	 * @return
-	 * @throws DbException */
-	public static DBCursor comnentsHeadInfos() throws DbException{ 
+	 * @throws DBException */
+	public static DBCursor comnentsHeadInfos() throws DBException{ 
 		return collection.find();}	
 }

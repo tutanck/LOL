@@ -108,8 +108,8 @@ public class TFDB{
 	/**
 	 * Filling of the SQL TF table 
 	 * @throws JSONException
-	 * @throws DbException */
-	public static void updateTF() throws  JSONException, DbException {
+	 * @throws DBException */
+	public static void updateTF() throws  JSONException, DBException {
 		try {
 			Connection c = DBConnectionManager.getMySQLDBConnection();
 			//Emptying the table
@@ -128,11 +128,11 @@ public class TFDB{
 				is.close();	
 			}c.close();}
 		catch (SQLException e){
-			throw new DbException("Error while filling Term Frequency table ("+bd+") :" 
+			throw new DBException("Error while filling Term Frequency table ("+bd+") :" 
 					+ DBToolBox.getStackTrace(e));}}	
 
 
-	public static void main(String[] args) throws JSONException, DbException {
+	public static void main(String[] args) throws JSONException, DBException {
 		System.out.println("** "+TFList()+" **");
 		updateTF();}
 

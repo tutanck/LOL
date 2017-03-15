@@ -24,6 +24,6 @@ public class SignoutServlet extends PostServlet {
 			JSONObject params
 			)throws Exception {
 		return User.logout(params);
-//		response.sendRedirect("signin.jsp");
+		//		response.sendRedirect("signin.jsp");
 	}
 }

@@ -34,10 +34,10 @@ public class DataIledefranceFr {
 	/**
 	 * Add a new post recovered from an external API in database 
 	 * @param jsonObj
-	 * @throws DbException 
+	 * @throws DBException 
 	 * @throws JSONException */
 	public static void storeApiAsPosts(double lat,double lon,int radius,int rows)
-			throws DbException {
+			throws DBException {
 		if(!registred)
 			registred=ApiRegister.registr(name);
 		if(!registred) return; //try next time you will be called 
@@ -163,10 +163,10 @@ public class DataIledefranceFr {
 				System.out.println("\n rom data.iledefrance.fr --: "+bdbo+"\n");
 			}
 		} catch (JSONException e) 
-		{throw new DbException(DBToolBox.getStackTrace(e));}
+		{throw new DBException(DBToolBox.getStackTrace(e));}
 	}
 
-	public static void main(String[] args) throws DbException, JSONException {
+	public static void main(String[] args) throws DBException, JSONException {
 		//storeApiAsPosts(48.8471036, 2.3574989999999616, 1000000, 500);}
 		collection.remove(new BasicDBObject().append("authid", "data.iledefrance.fr"));}
 

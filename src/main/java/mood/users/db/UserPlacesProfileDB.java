@@ -19,7 +19,7 @@ public class UserPlacesProfileDB {
 	 * Update user profile places and add current profile place to the historic 
 	 * @param uid
 	 * @param places
-	 * @throws DbException*/
+	 * @throws DBException*/
 	public static void updatePp(String uid,String places) {
 		collection.update(new BasicDBObject().append("uid",uid),
 				new BasicDBObject()

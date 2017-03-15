@@ -21,6 +21,12 @@ public class MapRefiner {
 		return simpleKeyValMap;
 	}
 
+	
+	
+	/**
+	 * Return an JSONObject equivalent of the {map}
+	 * @param map
+	 * @return */
 	public static JSONObject jsonify(
 			Map<?,?> map
 	){

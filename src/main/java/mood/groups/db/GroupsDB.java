@@ -28,7 +28,7 @@ public class GroupsDB{
 	 * @param gname
 	 * @param ownerID
 	 * @param membersID
-	 * @throws DbException */
+	 * @throws DBException */
 	public static void openGroup(String gname,String ownerID, Set<String>membersID){
 		collection.insert(
 				new BasicDBObject()
@@ -42,7 +42,7 @@ public class GroupsDB{
 	/**
 	 * Close a group identified by gid
 	 * @param gid
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws MongoException */
 	public static void closeGroup(String gid) {
 		collection.update(
@@ -57,9 +57,9 @@ public class GroupsDB{
 	 * Add members to the group identified by gid 	
 	 * @param idGroup
 	 * @param membersIdList
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws MongoException */
-	public static void addMember(String gid, String memberID) throws DbException{
+	public static void addMember(String gid, String memberID) throws DBException{
 		//$addToSet do not add the item to the given field if it already contains it
 		collection.update(
 				new BasicDBObject()
@@ -74,7 +74,7 @@ public class GroupsDB{
 	 * DelMembers (from the selected group)
 	 * @param idGroup
 	 * @param membersIdList
-	 * @throws DbException
+	 * @throws DBException
 	 * @throws MongoException */
 	public static void deleteMember(String gid,String memberID){
 		collection.update(
@@ -89,8 +89,8 @@ public class GroupsDB{
 	 * Returns open(active) groups owned by the user identified by uid
 	 * @param uid
 	 * @return
-	 * @throws DbException */
-	public static DBCursor userGroups(String uid) throws DbException {  
+	 * @throws DBException */
+	public static DBCursor userGroups(String uid) throws DBException {  
 		return collection.find(
 				new BasicDBObject()
 				.append("owner", uid)
@@ -114,7 +114,7 @@ public class GroupsDB{
 	 * Return Group's owner uid
 	 * @param gid
 	 * @return
-	 * @throws DbException	*/
+	 * @throws DBException	*/
 	public static String groupOwner(String gid) {  
 		DBObject dbo = collection.findOne(
 				new BasicDBObject().append("_id",new ObjectId(gid)));
@@ -155,8 +155,8 @@ public class GroupsDB{
 	 * Note : the user will never know groups he belongs  
 	 * @param uid
 	 * @return
-	 * @throws DbException */
-	public static DBCursor userMembership(String uid) throws DbException{  
+	 * @throws DBException */
+	public static DBCursor userMembership(String uid) throws DBException{  
 		return collection.find(
 				new BasicDBObject().append(
 						"members"
@@ -169,7 +169,7 @@ public class GroupsDB{
 	 * ADMINISTRATOR FUNCTIONALITY
 	 * Return Head informations about all existing groups in database
 	 * @return
-	 * @throws DbException */
-	public static DBCursor groupsHeadInfos() throws DbException{  
+	 * @throws DBException */
+	public static DBCursor groupsHeadInfos() throws DBException{  
  		return collection.find();}
 }
