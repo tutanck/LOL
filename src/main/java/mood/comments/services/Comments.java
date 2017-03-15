@@ -8,13 +8,9 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-import db.mongo.CommentsDB;
-import db.sqldb.business.UserDB;
-import db.tools.DbException;
-import services.tools.ServiceCaller;
-import services.tools.ServiceCodes;
-import services.tools.ServicesToolBox;
-import services.tools.SessionManager;
+import mood.comments.db.CommentsDB;
+import tools.db.DbException;
+
 
 /**
  * @author Anagbla Jean 

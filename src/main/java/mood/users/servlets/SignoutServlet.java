@@ -1,28 +1,29 @@
 package mood.users.servlets;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import mood.users.services.User;
+
 import org.json.JSONObject;
 
 
 /**
- * * @author Anagbla Jean */
+ * * @author Anagbla Joan */
+
+@WebServlet(name = "SignoutServlet" ,urlPatterns={"/signout"})
 public class SignoutServlet extends PostServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
-			throws Exception {
-		//JSONObject res=User.logout(params);
-
+	public JSONObject doBusiness(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			JSONObject params
+			)throws Exception {
+		return User.logout(params);
 //		response.sendRedirect("signin.jsp");
-		return new JSONObject();
 	}
 }

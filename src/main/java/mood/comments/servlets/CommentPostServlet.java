@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.aj.jeez.servlet.basic.PostServlet;
+import mood.comments.services.Comments;
+
 import org.json.JSONObject;
 
 
@@ -24,12 +26,16 @@ public class CommentPostServlet extends PostServlet {
 
 
 	@Override
-	public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
-			throws Exception {
-//		response.getWriter().print(Comments.commentPost(
-//				params.get("skey"),
-//				request.getParameter("com"),
-//				request.getParameter("pid")));
+	public JSONObject doBusiness(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			JSONObject params
+			)throws Exception {
+		response.getWriter().print(
+				Comments.commentPost(
+				params.get("skey"),
+				request.getParameter("com"),
+				request.getParameter("pid")));
 		return new JSONObject();
 }
 }

@@ -1,15 +1,10 @@
 package mood.users.services;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import db.mongo.UserPlacesProfileDB;
-import db.tools.DbException;
-import services.tools.ServiceCaller;
-import services.tools.ServiceCodes;
-import services.tools.ServicesToolBox;
-import services.tools.SessionManager;
+import tools.db.DbException;
+
 
 /**
  * @author AJoan
@@ -25,7 +20,7 @@ public class UserPlacesProfile {
 	 * @return
 	 * @throws DbException
 	 * @throws JSONException */
-	public static JSONObject updatePp(String skey,String places) 
+	public static JSONObject updatePp(JSONObject params) 
 			throws DbException, JSONException{		
 		UserPlacesProfileDB.updatePp(SessionManager.sessionOwner(skey),places);
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI
@@ -33,12 +28,12 @@ public class UserPlacesProfile {
 	
 
 	/**
-	 * @param skey
+	 * @param params
 	 * @param remoteuser
 	 * @return
 	 * @throws DbException
 	 * @throws JSONException */
-	public static JSONObject getPp(String skey) 
+	public static JSONObject getPp(JSONObject params) 
 			throws DbException, JSONException{			
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
 				new JSONObject()

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
+
 
 /**
  * Created by Joan on 12/03/2017.
@@ -19,14 +19,19 @@ import java.util.Map;
 @WebServlet(name = "SigninServlet" ,urlPatterns={"/signin"})
 public class SigninServlet extends PostServlet{
 
-    @Override
+	private static final long serialVersionUID = 1L;
+
+	@Override
     public void init() throws ServletException {
         super.init();
         super.epnIn=new HashSet<>(Arrays.asList(new String[]{"username","pass"}));}
 
     @Override
-    public JSONObject doBusiness(HttpServletRequest request, HttpServletResponse response, Map<String, String> params)
-            throws Exception {
+    public JSONObject doBusiness(
+    		HttpServletRequest request,
+    		HttpServletResponse response,
+    		JSONObject params
+    		)throws Exception {
         return  User.login(params);
     }
 }

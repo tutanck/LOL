@@ -18,8 +18,8 @@ import fr.aj.jeez.tools.MapRefiner;
 /**
  * * @author Anagbla Joan */
 public abstract class JEEZServlet
-		extends HttpServlet
-		implements IJEEZServlet{
+extends HttpServlet
+implements IJEEZServlet{
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -47,7 +47,7 @@ public abstract class JEEZServlet
 	protected JSONObject beforeBusiness(
 			HttpServletRequest request,
 			HttpServletResponse response
-	)throws IOException {
+			)throws IOException {
 
 		response.setContentType("text/plain");
 
@@ -83,7 +83,7 @@ public abstract class JEEZServlet
 			HttpServletRequest request,
 			HttpServletResponse response,
 			boolean require
-	)throws IOException {
+			)throws IOException {
 
 		boolean succeeded = true;
 
@@ -102,8 +102,8 @@ public abstract class JEEZServlet
 				##trouver un moyen pour les pb cause par le send de l'http error si cette methode est redefinie
 				par l'user idem pour beforeBusiness  : au pire les passer en final */
 		}else
-		if(session!=null)
-			succeeded=false; //Should not have been connected once
+			if(session!=null)
+				succeeded=false; //Should not have been connected once
 
 		return succeeded;
 	}
@@ -114,7 +114,7 @@ public abstract class JEEZServlet
 			HttpServletResponse response,
 			JSONObject result,
 			boolean debug
-	)throws IOException {
+			)throws IOException {
 
 		if(!resultWellFormed(result)) {
 			response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "SERVICE CURRENTLY UNAVAILABLE");
@@ -131,7 +131,7 @@ public abstract class JEEZServlet
 			String typedParameterNameString,
 			JSONObject supportedParams,
 			boolean strict
-	) {
+			) {
 		JSONObject notValid = new JSONObject()
 				.put("valid", false)
 				.put("supportedParams", supportedParams); //no parameter added
@@ -158,29 +158,29 @@ public abstract class JEEZServlet
 			try {
 				//Copy the supported parameter now typed into a restricted json (contains only typed epn and opn)
 				switch (paramType) {
-					case "int":
-						supportedParams.put(paramName, Integer.parseInt(incomingParams.get(paramName)));
-						break;
+				case "int":
+					supportedParams.put(paramName, Integer.parseInt(incomingParams.get(paramName)));
+					break;
 
-					case "long":
-						supportedParams.put(paramName, Long.parseLong(incomingParams.get(paramName)));
-						break;
+				case "long":
+					supportedParams.put(paramName, Long.parseLong(incomingParams.get(paramName)));
+					break;
 
-					case "float":
-						supportedParams.put(paramName, Float.parseFloat(incomingParams.get(paramName)));
-						break;
+				case "float":
+					supportedParams.put(paramName, Float.parseFloat(incomingParams.get(paramName)));
+					break;
 
-					case "double":
-						supportedParams.put(paramName, Double.parseDouble(incomingParams.get(paramName)));
-						break;
+				case "double":
+					supportedParams.put(paramName, Double.parseDouble(incomingParams.get(paramName)));
+					break;
 
-					case "boolean":
-						supportedParams.put(paramName, Boolean.parseBoolean(incomingParams.get(paramName)));
-						break;
+				case "boolean":
+					supportedParams.put(paramName, Boolean.parseBoolean(incomingParams.get(paramName)));
+					break;
 
-					default:
-						supportedParams.put(paramName, incomingParams.get(paramName));
-						break;
+				default:
+					supportedParams.put(paramName, incomingParams.get(paramName));
+					break;
 				}
 			} catch (IllegalArgumentException iae) {
 				return notValid;
@@ -196,7 +196,7 @@ public abstract class JEEZServlet
 
 	private boolean resultWellFormed(
 			JSONObject result
-	){
+			){
 		boolean resultWellFormed=true;
 		for(String expected : epnOut)
 			if(!result.has(expected)){

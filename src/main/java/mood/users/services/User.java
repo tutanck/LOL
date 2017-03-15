@@ -44,27 +44,27 @@ public class User{
 	 * @throws DbException 
 	 * @throws JSONException */
 	public static JSONObject registration(
-			Map<String,String> url_parameters
+			JSONObject params
 	) throws DbException, JSONException {
 
 		String nexturl="/Momento/signin.jsp";
 		//check if username exists
-		if(THINGS.exists(MapRefiner.subJSON(url_parameters,new String[]{"username"}),collection,caller))
+		if(THINGS.exists(MapRefiner.subJSON(params,new String[]{"username"}),collection,caller))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
 					"Username already used!",ServiceCodes.USERNAME_IS_TAKEN);
 
 		//check if email is used
-		if(THINGS.exists(MapRefiner.subJSON(url_parameters,new String[]{"email"}),collection,caller))
+		if(THINGS.exists(MapRefiner.subJSON(params,new String[]{"email"}),collection,caller))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
 					"Email already used!",ServiceCodes.EMAIL_IS_TAKEN);
 
 		//add user in database
-		THINGS.add(MapRefiner.subJSON(url_parameters,new String[]{"username","pass","email"}),collection,caller);
+		THINGS.add(MapRefiner.subJSON(params,new String[]{"username","pass","email"}),collection,caller);
 
-		try {SendEmail.sendMail(url_parameters.get("email"),
+		try {SendEmail.sendMail(params.get("email"),
 				Lingua.get("welcomeMailSubject","fr-FR"),
 				Lingua.get("welcomeMailMessage","fr-FR")
-				+basedir+"accountconfirmation?ckey="+url_parameters.get("uid"));}
+				+basedir+"accountconfirmation?ckey="+params.get("uid"));}
 		catch (StringNotFoundException e) { 
 			System.out.println("Dictionary Error : Mail not send");
 			e.printStackTrace();} 
@@ -77,11 +77,13 @@ public class User{
 
 	/**
 	 * @description  Users login service : Connects user into online mode
-	 * @param url_parameters
+	 * @param params
 	 * @return
 	 * @throws DbException 
 	 * @throws JSONException  */
-	public static JSONObject login(Map<String, String> url_parameters) throws DbException, JSONException {
+	public static JSONObject login(
+			JSONObject params
+			) throws DbException, JSONException {
 		String nexturl="/Momento/momento.jsp";
 
 		Map<String,String> usernameToEmail=new HashMap<>();
@@ -91,12 +93,12 @@ public class User{
 		String uid = null;
 
 		//check username & password existence and compatibility
-		if(THINGS.exists(MapRefiner.subMap(url_parameters, new String[]{"username"
+		if(THINGS.exists(MapRefiner.subMap(params, new String[]{"username"
 				, "pass"}), table, caller)){
 			System.out.println(1);//Debug
 			//Get uid (user ID) from associated username
 			CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
-					url_parameters,new String[]{"username"}),table));
+					params,new String[]{"username"}),table));
 			ResultSet rs=dataSet.getResultSet();
 			try {
 				if(rs.next())
@@ -106,12 +108,12 @@ public class User{
 		}
 		//otherwise check email & password existence and compatibility
 		else if (THINGS.matchTHINGS(MapRefiner.subMap(
-				MapRefiner.renameMapKeys(url_parameters,usernameToEmail),
+				MapRefiner.renameMapKeys(params,usernameToEmail),
 				new String[]{"email","pass"}),table,caller)){
 			System.out.println(2);//Debug
 			//Get uid (user ID) from associated email
 			CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
-					MapRefiner.renameMapKeys(url_parameters,usernameToEmail)
+					MapRefiner.renameMapKeys(params,usernameToEmail)
 					,new String[]{"email"}),table));
 			ResultSet rs=dataSet.getResultSet();
 			try {
@@ -122,12 +124,12 @@ public class User{
 		}
 		//otherwise check phone & password existence and compatibility
 		else if(THINGS.matchTHINGS(MapRefiner.subMap(
-				MapRefiner.renameMapKeys(url_parameters,usernameToPhone),
+				MapRefiner.renameMapKeys(params,usernameToPhone),
 				new String[]{"phone","pass"}),table,caller)){
 			System.out.println(3);//Debug
 			//Get uid (user ID) from associated phone number
 			CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
-					MapRefiner.renameMapKeys(url_parameters,usernameToPhone)
+					MapRefiner.renameMapKeys(params,usernameToPhone)
 					,new String[]{"phone"}),table));
 			ResultSet rs=dataSet.getResultSet();
 			try {
@@ -161,25 +163,25 @@ public class User{
 	 * @return
 	 * @throws DbException 
 	 * @throws JSONException */
-	public static JSONObject updateProfile(Map<String, String> url_parameters) throws DbException, JSONException {
+	public static JSONObject updateProfile(JSONObject params) throws DbException, JSONException {
 		String nexturl="/Momento/showprofile";
 
 		//check if new email is used
-		String emailIsTaken="Select * from "+table+" where email='"+url_parameters.get("email")+"' "
-				+ "AND username <> '"+url_parameters.get("username")+"' ;";
+		String emailIsTaken="Select * from "+table+" where email='"+params.get("email")+"' "
+				+ "AND username <> '"+params.get("username")+"' ;";
 		if(CRUD.CRUDCheck(emailIsTaken, caller))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
 					"Email already used!",ServiceCodes.EMAIL_IS_TAKEN);
 
 		//check if new email is used
-		String phoneIsTaken="Select * from "+table+" where phone='"+url_parameters.get("phone")+"' "
-				+ "AND username <> '"+url_parameters.get("username")+"' ;";
+		String phoneIsTaken="Select * from "+table+" where phone='"+params.get("phone")+"' "
+				+ "AND username <> '"+params.get("username")+"' ;";
 		if( CRUD.CRUDCheck(phoneIsTaken, caller))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
 					"Phone Number already used!",ServiceCodes.EMAIL_IS_TAKEN);
 
 		//Branch the map (dissociate) like separating the yolk from the egg white
-		List<Map<String,String>> node = MapRefiner.branch(url_parameters, new String[]{"skey","places"});	
+		List<Map<String,String>> node = MapRefiner.branch(params, new String[]{"skey","places"});	
 
 		//get user ID corresponding to current session 
 		String skey=node.get(1).get("skey");
@@ -211,14 +213,14 @@ public class User{
 	 * @return
 	 * @throws DbException
 	 * @throws JSONException */
-	public static JSONObject getProfile(Map<String,String> url_parameters) throws DbException, JSONException {	
+	public static JSONObject getProfile(JSONObject params) throws DbException, JSONException {	
 		//Here branch is used to slurp url_parameters (to evict skey)
-		List<Map<String,String>> node = MapRefiner.branch(url_parameters, new String[]{"skey"});
+		List<Map<String,String>> node = MapRefiner.branch(params, new String[]{"skey"});
 
 		//Trick : like fb, an user can see his profile as someone else
 		//uther as a contraction of user-other (other user)
-		if(url_parameters.containsKey("uther")) 
-			node.get(0).put("uid", url_parameters.get("uther"));
+		if(params.containsKey("uther")) 
+			node.get(0).put("uid", params.get("uther"));
 		else
 			node.get(0).put("uid", SessionManager.sessionOwner(node.get(1).get("skey")));
 
@@ -251,11 +253,11 @@ public class User{
 	 * @return
 	 * @throws DbException
 	 * @throws JSONException */
-	public static JSONObject getShortInfos(Map<String,String> url_parameters) throws DbException, JSONException {
+	public static JSONObject getShortInfos(JSONObject params) throws DbException, JSONException {
 		//Here branch is used to slurp url_parameters (to evict skey)
-		List<Map<String,String>> node = MapRefiner.branch(url_parameters, new String[]{"skey"});
+		List<Map<String,String>> node = MapRefiner.branch(params, new String[]{"skey"});
 		//uther as a contraction of user-other (other user)
-		node.get(0).put("uid", url_parameters.get("uther"));
+		node.get(0).put("uid", params.get("uther"));
 		CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(
 				MapRefiner.subMap(node.get(0),new String[]{"uid"}),table));
 		ResultSet rs=dataSet.getResultSet();
@@ -273,7 +275,7 @@ public class User{
 		finally {dataSet.close();}}
 
 
-	public static JSONObject searchUser(String skey,String query) 
+	public static JSONObject searchUser(JSONObject params) 
 			throws DbException, JSONException {
 		CSRShuttleBus dataSet=UserDB.searchUser(SessionManager.sessionOwner(skey),query);
 		JSONArray jar=new JSONArray();
@@ -343,13 +345,13 @@ public class User{
 
 	/**
 	 * @description  Users logout service : Disconnects user from online mode
-	 * @param url_parameters
+	 * @param params
 	 * @return
 	 * @throws DbException 
 	 * @throws JSONException */
-	public static JSONObject logout(Map<String, String> url_parameters) throws DbException, JSONException {
+	public static JSONObject logout(JSONObject params) throws DbException, JSONException {
 		String nexturl="/Momento/signin.jsp";
-		SessionManager.closeSession(url_parameters.get("skey"));
+		SessionManager.closeSession(params.get("skey"));
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
 				new JSONObject()
 				.put("nexturl",nexturl)				
