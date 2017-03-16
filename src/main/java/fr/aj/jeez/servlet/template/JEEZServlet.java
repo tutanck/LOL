@@ -8,12 +8,15 @@ import java.util.Set;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import fr.aj.jeez.servlet.interfaces.IJEEZServlet;
 import fr.aj.jeez.tools.MapRefiner;
+
+/*			TODO	##trouver un moyen pour les pb cause par le send de l'http error si cette methode est redefinie
+par l'user idem pour beforeBusiness  : au pire les passer en final */
+
 
 /**
  * * @author Anagbla Joan */
@@ -43,6 +46,8 @@ implements IJEEZServlet{
 	 *  taken into account by the underlying service*/
 	protected Set<String> opnOut=new HashSet<String>(); //Outgoing optional parameters names
 
+	
+	
 
 	/**
 	 * @description
@@ -90,43 +95,6 @@ implements IJEEZServlet{
 	}
 
 
-	/**
-	 * @description
-	 * TODO
-	 * @param request
-	 * @param response
-	 * @param require
-	 * @return
-	 * @throws IOException */
-	protected boolean requireToBeConnected(
-			HttpServletRequest request,
-			HttpServletResponse response,
-			boolean require
-			)throws IOException {
-
-		boolean succeeded = true;
-
-		HttpSession session = request.getSession(false);
-
-		if(require){
-			if(session==null){
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "USER UNAUTHENTICATED");
-				succeeded=false;
-			}
-			/*TODO remove this comment : possible to be overwrited by the user 
-			 * super.requireToBeConnected()
-			 * if (session.getAttribute("ssid_token")==null){
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "USER UNAUTHENTICATED");
-				return false;}
-				##trouver un moyen pour les pb cause par le send de l'http error si cette methode est redefinie
-				par l'user idem pour beforeBusiness  : au pire les passer en final */
-		}else
-			if(session!=null)
-				succeeded=false; //Should not have been connected once
-
-		return succeeded;
-	}
-
 
 	/**
 	 * @description
@@ -153,6 +121,47 @@ implements IJEEZServlet{
 		}
 		response.getWriter().print(result);
 	}
+
+
+
+
+	/**
+	 * @description
+	 * TODO
+	 * @param request
+	 * @param response
+	 * @param requireToBeConnected
+	 * @return
+	 * @throws IOException */
+	protected final boolean requireToBeConnected(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			boolean requireToBeConnected
+			)throws IOException {
+
+		if(requireToBeConnected)
+			if(!isConnected(request)){
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "USER UNAUTHENTICATED");
+				return false;
+			}	 
+
+		if(!isDisconnected(request)){
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, "USER ALREADY AUTHENTICATED");
+			return false; 
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isConnected(HttpServletRequest request){
+		return request.getSession(false)==null;
+	}
+
+
+	@Override
+	public boolean isDisconnected(HttpServletRequest request){
+		return request.getSession(false)!=null; //Should not have been connected once
+	}	
 
 
 	/**
@@ -233,7 +242,7 @@ implements IJEEZServlet{
 	}
 
 
-	
+
 	/**
 	 * @description
 	 * Check if the result contains all epnOut's key 

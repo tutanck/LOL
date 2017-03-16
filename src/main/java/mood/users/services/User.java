@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -18,9 +20,12 @@ import org.json.JSONObject;
 import mood.users.db.UserPlacesProfileDB;
 import mood.friends.db.FriendDB;
 import mood.users.db.UserDB;
+import mood.users.utils.InputType;
+import regina.AbsentKeyException;
 import regina.JSONRefiner;
 import regina.THINGS;
 import tools.db.DBToolBox;
+import tools.general.PatternsHolder;
 import tools.db.DBException;
 import tools.services.ServiceCodes;
 import tools.mailing.SendEmail;
@@ -47,34 +52,29 @@ public class User{
 	 * @return
 	 * @throws DBException 
 	 * @throws JSONException 
-	 * @throws ShouldNeverOccurException */
+	 * @throws ShouldNeverOccurException 
+	 * @throws AbsentKeyException */
 	public static JSONObject registration(
 			JSONObject params
-			) throws DBException, JSONException, ShouldNeverOccurException {
+			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {
 
 		String nexturl="/Momento/signin.jsp";
 
-		//check if username exists
-		if(THINGS.exists(JSONRefiner.slice(
-				params,
-				new String[]{"username"}),
-				collection,caller))
-			return ServicesToolBox.alert(
-					"This username is taken!",
-					ServiceCodes.USERNAME_IS_TAKEN);
+		if(!PatternsHolder.isValidWord(params.getString("username")))
+			return ServicesToolBox.alert(ServiceCodes.INVALID_USERNAME_FORMAT);
 
-		//check if email is used
-		if(THINGS.exists(JSONRefiner.slice(
-				params,
-				new String[]{"email"}),
-				collection,caller))
-			return ServicesToolBox.alert(
-					"This email address is used!",
-					ServiceCodes.EMAIL_IS_TAKEN);
+		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"username"}),collection,caller))
+			return ServicesToolBox.alert(ServiceCodes.USERNAME_IS_TAKEN);
 
-		//add user in database
-		THINGS.add(JSONRefiner.slice(
-				params,
+		if(!PatternsHolder.isValidEmail(params.getString("email")))
+			return ServicesToolBox.alert(ServiceCodes.INVALID_EMAIL_FORMAT);
+
+		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"email"}),collection,caller))
+			return ServicesToolBox.alert(ServiceCodes.EMAIL_IS_TAKEN);
+
+		//TODO check pass format
+
+		THINGS.add(JSONRefiner.slice(params,
 				new String[]{"username","pass","email"})
 				.put("confirmed", false)
 				.put("regdate", new Date()),
@@ -103,98 +103,77 @@ public class User{
 	 * @param params
 	 * @return
 	 * @throws DBException 
-	 * @throws JSONException  */
+	 * @throws JSONException  
+	 * @throws ShouldNeverOccurException 
+	 * @throws AbsentKeyException */
 	public static JSONObject login(
 			JSONObject params
-			) throws DBException, JSONException {
+			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {
 
 		String nexturl="/Momento/momento.jsp";
 
-		DBObject user =null;
+		DBObject user;
 
-		//check username & password existence and compatibility
-		if(THINGS.exists(JSONRefiner.slice(
-				params,
-				new String[]{"username", "pass"}), 
-				collection, caller)){
+		switch (PatternsHolder.determineFormat(params.getString("username"))) {
 
-			System.out.println(1);//Debug
+		case EMAIL:
+			System.out.println("input format : "+InputType.EMAIL);//Debug
 
-			//Get uid (user ID) from associated username
-			user = THINGS.getOne(JSONRefiner.slice(
-					params,new String[]{"username"}),
-					collection,caller);
-		}
-		//otherwise check email & password existence and compatibility
-		else{
 			Map<String,String> usernameToEmail=new HashMap<>();
 			usernameToEmail.put("username","email");
-
-			JSONObject byEmail =  
-					JSONRefiner.renameJSONKeys(
-							params,
-							usernameToEmail);
+			JSONObject byEmail= JSONRefiner.renameJSONKeys(params,usernameToEmail);
 
 			if (THINGS.exists(JSONRefiner.slice(
-					byEmail,
-					new String[]{"email","pass"}),
-					collection,caller)){
-				System.out.println(2);//Debug
+					byEmail,new String[]{"email","pass"}),collection,caller))
+				user = THINGS.getOne(JSONRefiner.slice(	
+						byEmail,new String[]{"email"}),collection,caller);
+			else return ServicesToolBox.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
+			break;
 
-				//Get uid (user ID) from associated email
+		case NUMS:
+			System.out.println("input format : "+InputType.NUMS);//Debug
+
+			Map<String,String> usernameToPhone=new HashMap<>();
+			usernameToPhone.put("username","phone");
+			JSONObject byPhone= JSONRefiner.renameJSONKeys(params,usernameToPhone);
+
+			if (THINGS.exists(JSONRefiner.slice(
+					byPhone,new String[]{"phone","pass"}),collection,caller))
+				user= THINGS.getOne(JSONRefiner.slice(
+						byPhone,new String[]{"phone"}),collection,caller);
+			else return ServicesToolBox.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
+			break;	 
+
+		case AWORD:
+			if(THINGS.exists(JSONRefiner.slice(
+					params,new String[]{"username", "pass"}),collection, caller))
 				user = THINGS.getOne(JSONRefiner.slice(
-						byEmail,
-						new String[]{"email"}),
-						collection,caller);
+						params,new String[]{"username"}),collection,caller);
+			else return ServicesToolBox.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
+			break;
 
-			}
-			//otherwise check phone & password existence and compatibility
-			else{
-				Map<String,String> usernameToPhone=new HashMap<>();
-				usernameToPhone.put("username","phone");
-
-				JSONObject byPhone=  
-						JSONRefiner.renameJSONKeys(
-								params,
-								usernameToPhone);
-
-				if (THINGS.exists(JSONRefiner.slice(
-						byPhone,
-						new String[]{"phone","pass"}),
-						collection,caller)){
-
-					System.out.println(3);//Debug
-					//Get uid (user ID) from associated phone number
-					user= THINGS.getOne(JSONRefiner.slice(
-							byPhone,
-							new String[]{"phone"}),
-							collection,caller);
-
-				}
-				else return ServicesToolBox.alert(
-						"Wrong login or password !",
-						ServiceCodes.WRONG_LOGIN_PASSWORD);
-			}
-			String uid=(String) user.get("_id");
-
-			if(!UserDB.isConfirmed(uid))
-				return ServicesToolBox.alert(
-						"You have not confirmed your account!",
-						ServiceCodes.USER_NOT_CONFIRMED);
-
-			System.out.println("UID="+uid);//Debug
-
-			//create or recover session and get current (new or old)sessionKey
-			String sessionKey =SessionManager.session(uid);
-
-			return ServicesToolBox.answer(
-					new JSONObject()
-					.put("nexturl",nexturl)
-					.put("skey",sessionKey)
-					.put("username",UserDB.getUsernameById(uid)),
-					ServiceCaller.whichServletIsAsking().hashCode());
+		default:
+			System.out.println("input format : "+InputType.UNKNOWN);//Debug
+			return ServicesToolBox.alert(ServiceCodes.INVALID_USERNAME_FORMAT);
 		}
+
+		if(!THINGS.exists(new JSONObject()
+				.put("_id", (String) user.get("_id"))
+				.put("confirmed", true)
+				,collection, caller))
+			return ServicesToolBox.alert(ServiceCodes.USER_NOT_CONFIRMED);
+
+		//create or recover session and get current (new or old)sessionKey
+		//String sessionKey =SessionManager.session(uid); TODO 
+
+		return ServicesToolBox.answer(
+				new JSONObject()
+				.put("nexturl",nexturl)
+				//.put("skey",sessionKey)TODO
+				.put("username",user.get("username")),
+				ServiceCaller.whichServletIsAsking().hashCode());
 	}
+
 
 
 
@@ -207,45 +186,38 @@ public class User{
 	public static JSONObject updateProfile(JSONObject params) throws DBException, JSONException {
 		String nexturl="/Momento/showprofile";
 
-		//check if new email is used
-		String emailIsTaken="Select * from "+table+" where email='"+params.get("email")+"' "
-				+ "AND username <> '"+params.get("username")+"' ;";
-		if(CRUD.CRUDCheck(emailIsTaken, caller))
-			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
-					"Email already used!",ServiceCodes.EMAIL_IS_TAKEN);
+		String _id= SessionManager.sessionOwner(params.get("skey"));
 
-		//check if new email is used
-		String phoneIsTaken="Select * from "+table+" where phone='"+params.get("phone")+"' "
-				+ "AND username <> '"+params.get("username")+"' ;";
-		if( CRUD.CRUDCheck(phoneIsTaken, caller))
-			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
-					"Phone Number already used!",ServiceCodes.EMAIL_IS_TAKEN);
+		if(params.has("email") && THINGS.exists(JSONRefiner.slice(params,
+				new String[]{"email"})
+				.put("_id",
+						new JSONObject()
+						.put("$ne",_id) )
+				,collection,caller))
+			return ServicesToolBox.alert(ServiceCodes.EMAIL_IS_TAKEN);
 
-		//Branch the map (dissociate) like separating the yolk from the egg white
-		List<Map<String,String>> node = MapRefiner.branch(params, new String[]{"skey","places"});	
+		if(params.has("phone") && THINGS.exists(JSONRefiner.slice(params,
+				new String[]{"phone"})
+				.put("_id",
+						new JSONObject()
+						.put("$ne",_id) )
+				,collection,caller))
+			return ServicesToolBox.alert(ServiceCodes.PHONE_IS_TAKEN);
 
-		//get user ID corresponding to current session 
-		String skey=node.get(1).get("skey");
-		String uid = SessionManager.sessionOwner(skey);
-		if(uid==null)
-			throw new 
-			DBException("@User/updateProfile : Database is inconsistant :"
-					+ " uid must exit for given skey!");
+		//Branch the json (dissociate) like separating the yolk from the egg white
+		List<JSONObject> node = JSONRefiner.branch(params, new String[]{"skey","places"});	
 
-		//speedy bus for dataset map transportation  
-		Map<String,String>swiftBus = new HashMap<>();
-		swiftBus.put("uid", uid);
-
-		//Update of user profile in SQL database
-		THINGS.updateTHINGS(node.get(0),swiftBus,table,caller);
+		//Update of user profile in users collection
+		THINGS.putOne(new JSONObject().put("_id", _id),node.get(1),collection,caller);
 		//Update of user profile in Mongo database
 		//service return is ignored(internal call)
-		UserPlacesProfile.updatePp(skey, node.get(1).get("places")); 
+		UserPlacesProfile.updatePp(_id, node.get(0).get("places")); 
 
-		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
+		return ServicesToolBox.answer(
 				new JSONObject()
-				.put("nexturl",nexturl)
-				,null,ServiceCaller.whichServletIsAsking().hashCode());}
+				.put("nexturl",nexturl),
+				ServiceCaller.whichServletIsAsking().hashCode());
+	}
 
 
 
@@ -257,37 +229,29 @@ public class User{
 	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject getProfile(JSONObject params) throws DBException, JSONException {	
-		//Here branch is used to slurp url_parameters (to evict skey)
-		List<JSONObject> node = JSONRefiner.branch(params, new String[]{"skey"});
+		String _id = SessionManager.sessionOwner(params.get("skey"));
 
+		JSONObject clean = JSONRefiner.clean(params, new String[]{"skey"});
 		//Trick : like fb, an user can see his profile as someone else
 		//uther as a contraction of user-other (other user)
-		if(params.containsKey("uther")) 
-			node.get(0).put("uid", params.get("uther"));
+		if(params.has("uther")) 
+			clean.put("_id", params.get("uther"));
 		else
-			node.get(0).put("uid", SessionManager.sessionOwner(node.get(1).get("skey")));
+			clean.put("_id",_id);
 
-		CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(
-				MapRefiner.subMap(node.get(0),new String[]{"uid"}),table));
-		ResultSet rs=dataSet.getResultSet();
-		try {
-			if(rs.next())
-				return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
-						new JSONObject()
-						.put("username",rs.getString("username"))
-						.put("email",rs.getString("email"))
-						.put("firstname",rs.getString("firstname"))
-						.put("lastname",rs.getString("lastname"))
-						.put("birthdate",rs.getString("birthdate"))
-						.put("phone",rs.getString("phone"))
-						.put("places",UserPlacesProfileDB.getPp(
-								node.get(0).get("uid")))
-						,null,ServiceCaller.whichServletIsAsking().hashCode());
-			else throw new 
-			DBException("@User/getProfile : Database is inconsistent :"
-					+ " user infos must exit for given skey!");}
-		catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
-		finally {dataSet.close();}}
+		DBObject user=  THINGS.getOne(clean, collection, caller);
+		return ServicesToolBox.answer(
+				new JSONObject()
+				.put("username",user.get("username"))
+				.put("email",user.get("email"))
+				.put("firstname",user.get("firstname"))
+				.put("lastname",user.get("lastname"))
+				.put("birthdate",user.get("birthdate"))
+				.put("phone",user.get("phone"))
+				.put("places",UserPlacesProfileDB.getPp(_id)),
+				ServiceCaller.whichServletIsAsking().hashCode());
+	}
+
 
 
 

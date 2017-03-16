@@ -29,6 +29,7 @@ public class ServicesToolBox {
 	 * the servlet's {rpcode},
 	 * and the {status} code [_WARNING],
 	 * a warning {message}
+	 * 
 	 * @param status
 	 * @param result
 	 * @param message
@@ -59,6 +60,7 @@ public class ServicesToolBox {
 	 * the service's {result}, 
 	 * the servlet {rpcode},
 	 * and the status code [_KANPEKI] 
+	 * 
 	 * @param status
 	 * @param result
 	 * @param message
@@ -82,8 +84,8 @@ public class ServicesToolBox {
 	 * @description 
 	 * Return a predefined JSONObject containing 
 	 * the servlet's {rpcode},
-	 * and the {status} code [_ISSUE],
-	 * an issue {message}
+	 * and the {status} code [_ISSUE]
+	 * 
 	 * @param status
 	 * @param result
 	 * @param message
@@ -91,18 +93,12 @@ public class ServicesToolBox {
 	 * @return 
 	 * @throws ShouldNeverOccurException */
 	public static JSONObject alert(
-			String message,
 			int replycode
 			)throws JSONException, ShouldNeverOccurException{
 
-		if(message==null) 
-			throw new 
-			ShouldNeverOccurException("In Issue responses, message part should never be null");
-
 		return new JSONObject()
 				.put("status",ServiceCodes._ISSUE)
-				.put("rpcode",replycode)
-				.put("message",message);
+				.put("rpcode",replycode);
 	}
 
 

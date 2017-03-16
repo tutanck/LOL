@@ -10,7 +10,7 @@ public interface ServiceCodes {
 	/**
 	 * BUSINESS ERRORS CODES */
 	
-	/* Taken resources -1*/
+	/* taken resources -1*/
 	int USERNAME_IS_TAKEN=-11;
 	int EMAIL_IS_TAKEN = -12;
 	int PHONE_IS_TAKEN = -13;
@@ -21,9 +21,11 @@ public interface ServiceCodes {
 	int UNKNOWN_USERID = -23;
 	
 	/*bad context*/
-	int USER_CONNECTED = -31;  
-	int USER_DISCONNECTED=-32; //attention http TODO a voir
 	int USER_NOT_CONFIRMED = -33;
+	
+	/* invalid formats*/
+	int INVALID_USERNAME_FORMAT = -41;
+	int INVALID_EMAIL_FORMAT = -42;
 	
 	/*admin error*/
 	int MRP_DOUBLING=-111;

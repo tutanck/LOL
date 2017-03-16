@@ -86,8 +86,8 @@ public class THINGS{
 
 	/**TODO : update _date
 	 * @DESCRIPTION upsert {things} somewhere in the {collection} where {where} condition match
-	 * @param things
 	 * @param where
+	 * @param things
 	 * @param collection
 	 * @param caller
 	 * @throws DBException */
@@ -270,17 +270,5 @@ public class THINGS{
 
 			default: System.out.println("I'v no idea wtf you're searching to log for!");
 		}
-	}
-
-	private enum DBAction {
-		ADD,
-		UPDATEONE,
-		UPDATEALL,
-		PUTONE,
-		PUTALL,
-		REMOVE,
-		EXISTS,
-		GETONE,
-		GET
 	}
 }
