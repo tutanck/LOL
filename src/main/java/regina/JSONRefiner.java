@@ -82,7 +82,7 @@ public class JSONRefiner {
 	 * @param json
 	 * @param keyMap
 	 * @return  */
-	public static JSONObject renameMapKeys(
+	public static JSONObject renameJSONKeys(
 			JSONObject json,
 			Map<String,String> keyMap
 			){
@@ -115,7 +115,7 @@ public class JSONRefiner {
 		kmap.put("lol1", "newlol1");
 		kmap.put("lol3", "newlol3");
 
-		System.out.println("aliasMap : "+renameMapKeys(jo,kmap));
+		System.out.println("aliasMap : "+renameJSONKeys(jo,kmap));
 		System.out.println("jo : "+jo+"\n");
 	}
 

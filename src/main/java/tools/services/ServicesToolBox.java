@@ -91,7 +91,6 @@ public class ServicesToolBox {
 	 * @return 
 	 * @throws ShouldNeverOccurException */
 	public static JSONObject alert(
-			Object result,
 			String message,
 			int replycode
 			)throws JSONException, ShouldNeverOccurException{

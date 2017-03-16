@@ -2,11 +2,14 @@ package mood.users.services;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+
 import fr.aj.jeez.tools.MapRefiner;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,14 +41,16 @@ public class User{
 	private static DBCollection collection = UserDB.collection;
 
 	/**
-	 * @description Users registration service : register a new user
+	 * @description 
+	 * Users registration service : register a new user
 	 * @param map
 	 * @return
 	 * @throws DBException 
-	 * @throws JSONException */
+	 * @throws JSONException 
+	 * @throws ShouldNeverOccurException */
 	public static JSONObject registration(
 			JSONObject params
-			) throws DBException, JSONException {
+			) throws DBException, JSONException, ShouldNeverOccurException {
 
 		String nexturl="/Momento/signin.jsp";
 
@@ -54,24 +59,28 @@ public class User{
 				params,
 				new String[]{"username"}),
 				collection,caller))
-			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
-					"Username already used!",ServiceCodes.USERNAME_IS_TAKEN);
+			return ServicesToolBox.alert(
+					"This username is taken!",
+					ServiceCodes.USERNAME_IS_TAKEN);
 
 		//check if email is used
 		if(THINGS.exists(JSONRefiner.slice(
 				params,
 				new String[]{"email"}),
 				collection,caller))
-			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
-					"Email already used!",ServiceCodes.EMAIL_IS_TAKEN);
+			return ServicesToolBox.alert(
+					"This email address is used!",
+					ServiceCodes.EMAIL_IS_TAKEN);
 
 		//add user in database
 		THINGS.add(JSONRefiner.slice(
 				params,
-				new String[]{"username","pass","email"}),
+				new String[]{"username","pass","email"})
+				.put("confirmed", false)
+				.put("regdate", new Date()),
 				collection,caller);
 
-		/*try {
+		/*try { TODO uncomment
 			SendEmail.sendMail(
 					params.get("email"),
 					Lingua.get("welcomeMailSubject","fr-FR"),
@@ -82,10 +91,11 @@ public class User{
 			e.printStackTrace();
 		} */
 
-		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
+		return ServicesToolBox.answer(
 				new JSONObject()
-				.put("nexturl",nexturl)				
-				,null,ServiceCaller.whichServletIsAsking().hashCode());}
+				.put("nexturl",nexturl),				
+				ServiceCaller.whichServletIsAsking().hashCode());
+	}
 
 
 	/**
@@ -97,77 +107,95 @@ public class User{
 	public static JSONObject login(
 			JSONObject params
 			) throws DBException, JSONException {
+
 		String nexturl="/Momento/momento.jsp";
 
-		Map<String,String> usernameToEmail=new HashMap<>();
-		usernameToEmail.put("username","email");
-		Map<String,String> usernameToPhone=new HashMap<>();
-		usernameToPhone.put("username","phone");
-		String uid = null;
+		DBObject user =null;
 
 		//check username & password existence and compatibility
-		if(THINGS.exists(MapRefiner.subMap(params, new String[]{"username"
-				, "pass"}), table, caller)){
+		if(THINGS.exists(JSONRefiner.slice(
+				params,
+				new String[]{"username", "pass"}), 
+				collection, caller)){
+
 			System.out.println(1);//Debug
+
 			//Get uid (user ID) from associated username
-			CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
-					params,new String[]{"username"}),table));
-			ResultSet rs=dataSet.getResultSet();
-			try {
-				if(rs.next())
-					uid=rs.getString("uid");
-			} catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
-			dataSet.close();
+			user = THINGS.getOne(JSONRefiner.slice(
+					params,new String[]{"username"}),
+					collection,caller);
 		}
 		//otherwise check email & password existence and compatibility
-		else if (THINGS.matchTHINGS(MapRefiner.subMap(
-				MapRefiner.renameMapKeys(params,usernameToEmail),
-				new String[]{"email","pass"}),table,caller)){
-			System.out.println(2);//Debug
-			//Get uid (user ID) from associated email
-			CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
-					MapRefiner.renameMapKeys(params,usernameToEmail)
-					,new String[]{"email"}),table));
-			ResultSet rs=dataSet.getResultSet();
-			try {
-				if(rs.next())
-					uid=rs.getString("uid");
-			} catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
-			dataSet.close();
+		else{
+			Map<String,String> usernameToEmail=new HashMap<>();
+			usernameToEmail.put("username","email");
+
+			JSONObject byEmail =  
+					JSONRefiner.renameJSONKeys(
+							params,
+							usernameToEmail);
+
+			if (THINGS.exists(JSONRefiner.slice(
+					byEmail,
+					new String[]{"email","pass"}),
+					collection,caller)){
+				System.out.println(2);//Debug
+
+				//Get uid (user ID) from associated email
+				user = THINGS.getOne(JSONRefiner.slice(
+						byEmail,
+						new String[]{"email"}),
+						collection,caller);
+
+			}
+			//otherwise check phone & password existence and compatibility
+			else{
+				Map<String,String> usernameToPhone=new HashMap<>();
+				usernameToPhone.put("username","phone");
+
+				JSONObject byPhone=  
+						JSONRefiner.renameJSONKeys(
+								params,
+								usernameToPhone);
+
+				if (THINGS.exists(JSONRefiner.slice(
+						byPhone,
+						new String[]{"phone","pass"}),
+						collection,caller)){
+
+					System.out.println(3);//Debug
+					//Get uid (user ID) from associated phone number
+					user= THINGS.getOne(JSONRefiner.slice(
+							byPhone,
+							new String[]{"phone"}),
+							collection,caller);
+
+				}
+				else return ServicesToolBox.alert(
+						"Wrong login or password !",
+						ServiceCodes.WRONG_LOGIN_PASSWORD);
+			}
+			String uid=(String) user.get("_id");
+
+			if(!UserDB.isConfirmed(uid))
+				return ServicesToolBox.alert(
+						"You have not confirmed your account!",
+						ServiceCodes.USER_NOT_CONFIRMED);
+
+			System.out.println("UID="+uid);//Debug
+
+			//create or recover session and get current (new or old)sessionKey
+			String sessionKey =SessionManager.session(uid);
+
+			return ServicesToolBox.answer(
+					new JSONObject()
+					.put("nexturl",nexturl)
+					.put("skey",sessionKey)
+					.put("username",UserDB.getUsernameById(uid)),
+					ServiceCaller.whichServletIsAsking().hashCode());
 		}
-		//otherwise check phone & password existence and compatibility
-		else if(THINGS.matchTHINGS(MapRefiner.subMap(
-				MapRefiner.renameMapKeys(params,usernameToPhone),
-				new String[]{"phone","pass"}),table,caller)){
-			System.out.println(3);//Debug
-			//Get uid (user ID) from associated phone number
-			CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(MapRefiner.subMap(
-					MapRefiner.renameMapKeys(params,usernameToPhone)
-					,new String[]{"phone"}),table));
-			ResultSet rs=dataSet.getResultSet();
-			try {
-				if(rs.next())
-					uid=rs.getString("uid");
-			} catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
-			dataSet.close();
-		}
-		else return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
-				"Wrong login or password !",ServiceCodes.WRONG_LOGIN_PASSWORD);
+	}
 
-		if(!UserDB.isConfirmed(uid))
-			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD,null,
-					"You have not confirmed your account!",ServiceCodes.USER_NOT_CONFIRMED);
-
-		//System.out.println("UID="+uid);//Debug
-
-		//create or recover session and get current (new or old)sessionKey
-		String sessionKey =SessionManager.session(uid);
-
-		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
-				new JSONObject()
-				.put("nexturl",nexturl)
-				.put("skey",sessionKey)
-				.put("username",UserDB.getUsernameById(uid)),null,	ServiceCaller.whichServletIsAsking().hashCode());}
 
 
 	/**
@@ -220,6 +248,8 @@ public class User{
 				,null,ServiceCaller.whichServletIsAsking().hashCode());}
 
 
+
+
 	/**
 	 * @description return user's complete profile information 
 	 * @param map
@@ -228,7 +258,7 @@ public class User{
 	 * @throws JSONException */
 	public static JSONObject getProfile(JSONObject params) throws DBException, JSONException {	
 		//Here branch is used to slurp url_parameters (to evict skey)
-		List<Map<String,String>> node = MapRefiner.branch(params, new String[]{"skey"});
+		List<JSONObject> node = JSONRefiner.branch(params, new String[]{"skey"});
 
 		//Trick : like fb, an user can see his profile as someone else
 		//uther as a contraction of user-other (other user)
@@ -258,6 +288,8 @@ public class User{
 					+ " user infos must exit for given skey!");}
 		catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 		finally {dataSet.close();}}
+
+
 
 
 	/**
@@ -365,10 +397,11 @@ public class User{
 	public static JSONObject logout(JSONObject params) throws DBException, JSONException {
 		String nexturl="/Momento/signin.jsp";
 		SessionManager.closeSession(params.get("skey"));
-		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
+		return ServicesToolBox.answer(
 				new JSONObject()
-				.put("nexturl",nexturl)				
-				,null,ServiceCaller.whichServletIsAsking().hashCode());}
+				.put("nexturl",nexturl),
+				ServiceCaller.whichServletIsAsking().hashCode());
+	}
 
 	/**
 	 * @description confirm a user account (email is verified)
