@@ -121,6 +121,41 @@ public class JSONRefiner {
 			AbsentKeyException("The key '"+key+"' does not exist in '"+json+"'");
 		return aliasJSON;
 	}
+	
+	
+	/**
+	 * @Description
+	 * Rename {json}'s keys by replacing them 
+	 * by the associated value in the {keyMapString} without
+	 * changing the associated values in the {json}.
+	 * No change is performed on the keys that are not in {keyMapString}.
+	 * 
+	 * @param json
+	 * @param keyMapString
+	 * @return
+	 * @throws AbsentKeyException
+	 * @throws InvalidKeyException */
+	public static JSONObject renameJSONKeys(
+			JSONObject json,
+			String[] keyMapString
+			) throws AbsentKeyException, InvalidKeyException{
+		JSONObject aliasJSON = new JSONObject(json.toMap());
+		for(String keyEntry : keyMapString){
+			if(!keyEntry.contains("->")) 
+				throw new 
+				InvalidKeyException("The key entry '"+keyEntry+"' does not contains the universal seprator '->'");
+			String [] entry= keyEntry.split("->");
+			String oldKey = entry[0].trim();
+			String newKey = entry[1].trim();
+			if(json.has(oldKey)){
+				aliasJSON.remove(oldKey);
+				aliasJSON.put(newKey, json.get(oldKey));
+			}
+			else throw new
+			AbsentKeyException("The key '"+keyEntry+"' does not exist in '"+json+"'");
+		}
+		return aliasJSON;
+	}
 
 
 
@@ -148,5 +183,4 @@ public class JSONRefiner {
 		System.out.println("clean : "+clean(jo,new String[]{"lola"}));
 		System.out.println("jo : "+jo+"\n");
 	}
-
 }

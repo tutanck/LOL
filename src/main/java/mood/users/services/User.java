@@ -22,6 +22,7 @@ import mood.friends.db.FriendDB;
 import mood.users.db.UserDB;
 import mood.users.utils.InputType;
 import regina.AbsentKeyException;
+import regina.InvalidKeyException;
 import regina.JSONRefiner;
 import regina.THINGS;
 import tools.db.DBToolBox;
@@ -105,10 +106,11 @@ public class User{
 	 * @throws DBException 
 	 * @throws JSONException  
 	 * @throws ShouldNeverOccurException 
-	 * @throws AbsentKeyException */
+	 * @throws AbsentKeyException 
+	 * @throws InvalidKeyException */
 	public static JSONObject login(
 			JSONObject params
-			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {
+			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException, InvalidKeyException {
 
 		String nexturl="/Momento/momento.jsp";
 
@@ -119,9 +121,7 @@ public class User{
 		case EMAIL:
 			System.out.println("input format : "+InputType.EMAIL);//Debug
 
-			Map<String,String> usernameToEmail=new HashMap<>();
-			usernameToEmail.put("username","email");
-			JSONObject byEmail= JSONRefiner.renameJSONKeys(params,usernameToEmail);
+			JSONObject byEmail= JSONRefiner.renameJSONKeys(params,new String[]{"username->email"});
 
 			if (THINGS.exists(JSONRefiner.slice(
 					byEmail,new String[]{"email","pass"}),collection,caller))
@@ -133,9 +133,7 @@ public class User{
 		case NUMS:
 			System.out.println("input format : "+InputType.NUMS);//Debug
 
-			Map<String,String> usernameToPhone=new HashMap<>();
-			usernameToPhone.put("username","phone");
-			JSONObject byPhone= JSONRefiner.renameJSONKeys(params,usernameToPhone);
+			JSONObject byPhone= JSONRefiner.renameJSONKeys(params,new String[]{"username->phone"});
 
 			if (THINGS.exists(JSONRefiner.slice(
 					byPhone,new String[]{"phone","pass"}),collection,caller))
@@ -183,12 +181,15 @@ public class User{
 	 * @return
 	 * @throws DBException 
 	 * @throws JSONException */
-	public static JSONObject updateProfile(JSONObject params) throws DBException, JSONException {
+	public static JSONObject updateProfile(
+			JSONObject params
+			) throws DBException, JSONException {
 		String nexturl="/Momento/showprofile";
-
 		String _id= SessionManager.sessionOwner(params.get("skey"));
 
-		if(params.has("email") && THINGS.exists(JSONRefiner.slice(params,
+		JSONObject clean = JSONRefiner.clean(params, new String[]{"skey"});
+
+		if(clean.has("email") && THINGS.exists(JSONRefiner.slice(clean,
 				new String[]{"email"})
 				.put("_id",
 						new JSONObject()
@@ -196,7 +197,7 @@ public class User{
 				,collection,caller))
 			return ServicesToolBox.alert(ServiceCodes.EMAIL_IS_TAKEN);
 
-		if(params.has("phone") && THINGS.exists(JSONRefiner.slice(params,
+		if(clean.has("phone") && THINGS.exists(JSONRefiner.slice(clean,
 				new String[]{"phone"})
 				.put("_id",
 						new JSONObject()
@@ -205,13 +206,13 @@ public class User{
 			return ServicesToolBox.alert(ServiceCodes.PHONE_IS_TAKEN);
 
 		//Branch the json (dissociate) like separating the yolk from the egg white
-		List<JSONObject> node = JSONRefiner.branch(params, new String[]{"skey","places"});	
+		List<JSONObject> node = JSONRefiner.branch(clean, new String[]{"places"});	
 
 		//Update of user profile in users collection
 		THINGS.putOne(new JSONObject().put("_id", _id),node.get(1),collection,caller);
 		//Update of user profile in Mongo database
 		//service return is ignored(internal call)
-		UserPlacesProfile.updatePp(_id, node.get(0).get("places")); 
+		UserPlacesProfile.updatePp(_id, node.get(0)); 
 
 		return ServicesToolBox.answer(
 				new JSONObject()
@@ -234,7 +235,7 @@ public class User{
 		JSONObject clean = JSONRefiner.clean(params, new String[]{"skey"});
 		//Trick : like fb, an user can see his profile as someone else
 		//uther as a contraction of user-other (other user)
-		if(params.has("uther")) 
+		if(clean.has("uther")) 
 			clean.put("_id", params.get("uther"));
 		else
 			clean.put("_id",_id);
@@ -254,34 +255,33 @@ public class User{
 
 
 
-
-
 	/**
-	 * @description return username , firstname and lastname, etc 
+	 * @description 
+	 * return username , firstname and lastname, etc 
 	 * @param uid
 	 * @return
 	 * @throws DBException
-	 * @throws JSONException */
-	public static JSONObject getShortInfos(JSONObject params) throws DBException, JSONException {
-		//Here branch is used to slurp url_parameters (to evict skey)
-		List<Map<String,String>> node = MapRefiner.branch(params, new String[]{"skey"});
-		//uther as a contraction of user-other (other user)
-		node.get(0).put("uid", params.get("uther"));
-		CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(
-				MapRefiner.subMap(node.get(0),new String[]{"uid"}),table));
-		ResultSet rs=dataSet.getResultSet();
-		try {
-			if(rs.next())
-				return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI
-						,new JSONObject()
-						.put("username",rs.getString("username"))
-						.put("firstname",rs.getString("firstname"))
-						.put("lastname",rs.getString("lastname"))
-						,null,ServiceCaller.whichServletIsAsking().hashCode());
-			else throw new DBException("@User/getUsername :"
-					+ " Database is inconsistant : user infos must exit for given skey!");
-		} catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
-		finally {dataSet.close();}}
+	 * @throws JSONException 
+	 * @throws ShouldNeverOccurException 
+	 * @throws InvalidKeyException 
+	 * @throws AbsentKeyException */
+	public static JSONObject getShortInfos(
+			JSONObject params
+			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException, InvalidKeyException {		 
+
+		DBObject user=  THINGS.getOne(
+				JSONRefiner.renameJSONKeys(
+						JSONRefiner.slice(params, new String[]{"uther"}),
+						new String[]{"uther->_id"}), 
+				collection, caller);
+
+		return ServicesToolBox.answer(
+				new JSONObject()
+				.put("username",user.get("username"))
+				.put("firstname",user.get("firstname"))
+				.put("lastname",user.get("lastname")),
+				ServiceCaller.whichServletIsAsking().hashCode());
+	}
 
 
 	public static JSONObject searchUser(JSONObject params) 
@@ -300,9 +300,9 @@ public class User{
 						.put("firstname",rs.getString("firstname"))
 						.put("lastname",rs.getString("lastname")));}
 
-			return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
+			return ServicesToolBox.answer(
 					new JSONObject().put("users",jar), 
-					null, ServiceCaller.whichServletIsAsking().hashCode());
+					ServiceCaller.whichServletIsAsking().hashCode());
 		}catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
 		finally {dataSet.close();}}
 
