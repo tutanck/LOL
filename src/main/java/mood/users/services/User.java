@@ -1,13 +1,8 @@
 package mood.users.services;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import com.aj.regina.THINGS;
 import com.aj.utils.AbsentKeyException;
@@ -17,18 +12,16 @@ import com.aj.utils.ServiceCaller;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
-import org.json.JSONArray;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import mood.users.db.UserPlacesProfileDB;
 import mood.users.db.UserSessionDB;
-import mood.friends.db.FriendDB;
+
 import mood.users.db.UserDB;
 import mood.users.utils.InputType;
-import tools.db.DBToolBox;
 import tools.general.PatternsHolder;
-import tools.db.DBConnectionManager;
 import tools.db.DBException;
 import tools.services.ServiceCodes;
 import tools.mailing.SendEmail;
@@ -47,12 +40,10 @@ public class User{
 	private static DBCollection collection = UserDB.collection;
 	private static DBCollection session = UserSessionDB.collection;
 
-
-
 	/**
 	 * @description 
 	 * Users registration service : register a new user
-	 * @param map
+	 * @param params
 	 * @return
 	 * @throws DBException 
 	 * @throws JSONException 
@@ -106,7 +97,7 @@ public class User{
 	/**
 	 * @description 
 	 * confirm a user account (email is verified)
-	 * @param uid
+	 * @param params
 	 * @return 
 	 * @throws ShouldNeverOccurException
 	 * @throws DBException 
@@ -192,11 +183,11 @@ public class User{
 
 		String himitsu = ServicesToolBox.generateToken();
 
-		String kage = DigestUtils.sha1Hex(himitsu+params.getString("did"));
+		String kage = DigestUtils.shaHex(himitsu+params.getString("did"));
 
 		THINGS.add(new JSONObject()
-				.put("skey",kage)
-				.put("uid", user.get("_id"))
+						.put("skey",kage)
+						.put("uid", user.get("_id"))
 				,session);
 
 		return ServicesToolBox.answer(
@@ -212,7 +203,7 @@ public class User{
 
 	/**
 	 * @description update user's profile
-	 * @param map
+	 * @param params
 	 * @return
 	 * @throws DBException 
 	 * @throws JSONException 
@@ -260,7 +251,7 @@ public class User{
 	/**
 	 * @description 
 	 * return user's complete profile information 
-	 * @param map
+	 * @param params
 	 * @return
 	 * @throws DBException
 	 * @throws JSONException 
@@ -295,7 +286,7 @@ public class User{
 	/**
 	 * @description 
 	 * return username , firstname and lastname, etc 
-	 * @param uid
+	 * @param params
 	 * @return
 	 * @throws DBException
 	 * @throws JSONException 
