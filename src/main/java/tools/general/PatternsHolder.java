@@ -62,8 +62,6 @@ public class PatternsHolder {
 				(Pattern.compile(
 						PatternsHolder.aword
 						).matcher(input).matches());
-
-
 	}
 
 	

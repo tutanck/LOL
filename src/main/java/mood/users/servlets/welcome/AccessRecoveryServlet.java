@@ -17,7 +17,7 @@ import org.json.JSONObject;
 /**
  * * @author Anagbla Joan */
 
-@WebServlet(name = "AccessRecoveryServlet" ,urlPatterns={"/account/recover"})
+@WebServlet(urlPatterns={"/account/recover"})
 public class AccessRecoveryServlet extends OfflineGetServlet {
 	private static final long serialVersionUID = 1L;
 	public AccessRecoveryServlet() {super();}

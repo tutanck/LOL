@@ -13,7 +13,7 @@ import org.json.JSONObject;
 /**
  * * @author Anagbla Joan */
 
-@WebServlet(name = "GetProfileServlet" ,urlPatterns={"/user/profile"})
+@WebServlet(urlPatterns={"/user/profile"})
 public class GetProfileServlet extends OnlineGetServlet {
 	private static final long serialVersionUID = 1L;
 

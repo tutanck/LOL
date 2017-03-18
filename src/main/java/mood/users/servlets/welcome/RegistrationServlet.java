@@ -16,7 +16,7 @@ import org.json.JSONObject;
 /**
  * * @author Anagbla Joan */
 
-@WebServlet(name = "RegistrationServlet" ,urlPatterns={"/signup"})
+@WebServlet(urlPatterns={"/signup"})
 public class RegistrationServlet extends OfflinePostServlet {
 	private static final long serialVersionUID = 1L;
 	public RegistrationServlet() {super();}

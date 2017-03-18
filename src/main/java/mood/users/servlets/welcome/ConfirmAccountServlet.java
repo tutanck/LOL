@@ -16,7 +16,7 @@ import org.json.JSONObject;
 /**
  * * @author Anagbla Joan */
 
-@WebServlet(name = "ConfirmAccountServlet" ,urlPatterns={"/account/confirm"})
+@WebServlet(urlPatterns={"/account/confirm"})
 public class ConfirmAccountServlet extends OfflinePostServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -32,6 +32,5 @@ public class ConfirmAccountServlet extends OfflinePostServlet {
 			JSONObject params
 			)throws Exception {
 		return User.confirmUser(params);
-		//response.sendRedirect("signin.jsp");
 	}
 }

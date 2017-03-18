@@ -53,23 +53,24 @@ public class User{
 			JSONObject params
 			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {
 
-		String nexturl="/Momento/signin.jsp";
-
+		//--FORMAT VALIDATION (do all format validations bf remote calls like a db access) 
 		if(!PatternsHolder.isValidWord(params.getString("username")))
 			return JSONResponse.alert(ServiceCodes.INVALID_USERNAME_FORMAT);
-
-		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"username"}),collection))
-			return JSONResponse.alert(ServiceCodes.USERNAME_IS_TAKEN);
 
 		if(!PatternsHolder.isValidEmail(params.getString("email")))
 			return JSONResponse.alert(ServiceCodes.INVALID_EMAIL_FORMAT);
 
-		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"email"}),collection))
-			return JSONResponse.alert(ServiceCodes.EMAIL_IS_TAKEN);
-
 		if(!PatternsHolder.isValidPass(params.getString("pass")))
 			return JSONResponse.alert(ServiceCodes.INVALID_PASS_FORMAT);
 
+		//--DB VALIDATION
+		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"username"}),collection))
+			return JSONResponse.alert(ServiceCodes.USERNAME_IS_TAKEN);		
+
+		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"email"}),collection))
+			return JSONResponse.alert(ServiceCodes.EMAIL_IS_TAKEN);
+
+		//--DB WRITEACTION
 		THINGS.add(JSONRefiner.slice(params,
 				new String[]{"username","pass","email"})
 				.put("confirmed", false)
@@ -88,9 +89,9 @@ public class User{
 		} */
 
 		return JSONResponse.answer(
-				new JSONObject()
-				.put("nexturl",nexturl),				
-				ServiceCaller.whichServletIsAsking().hashCode());
+				null,			
+				ServiceCaller.whichServletIsAsking().hashCode()
+				);
 	}
 
 
@@ -106,16 +107,16 @@ public class User{
 	public static JSONObject confirmUser(
 			JSONObject params
 			) throws ShouldNeverOccurException, DBException, JSONException{ 
-		String nexturl="/Momento/signin";
 
-		if(!(THINGS.updateOne(params, new JSONObject(), collection).getN()>0))
-			throw new ShouldNeverOccurException("SNO Error : User ID is unknown!");
+		if(!(THINGS.updateOne(params, 
+				new JSONObject().put("confirmed", true), 
+				collection).getN()>0))
+			return JSONResponse.alert(ServiceCodes.UNKNOWN_USERID);
 
 		return JSONResponse.answer(
-				new JSONObject()
-				.put("nexturl",nexturl),				
+				null,
 				ServiceCaller.whichServletIsAsking().hashCode());
-		}
+	}
 
 
 
@@ -131,8 +132,6 @@ public class User{
 	public static JSONObject login(
 			JSONObject params
 			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException, InvalidKeyException {
-
-		String nexturl="/Momento/momento.jsp";
 
 		DBObject user;
 
@@ -163,6 +162,8 @@ public class User{
 			break;	 
 
 		case AWORD:
+			System.out.println("input format : "+InputType.AWORD);//Debug
+			
 			if(THINGS.exists(JSONRefiner.slice(
 					params,new String[]{"username", "pass"}),collection))
 				user = THINGS.getOne(JSONRefiner.slice(
@@ -193,7 +194,6 @@ public class User{
 		return JSONResponse.answer(
 				new JSONObject()
 				.put("himitsu", himitsu)
-				.put("nexturl",nexturl)
 				.put("username",user.get("username")),
 				ServiceCaller.whichServletIsAsking().hashCode());
 	}
@@ -374,7 +374,6 @@ public class User{
 	public static JSONObject accessRecover(
 			JSONObject params
 			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {
-		String nexturl="/Momento/signin.jsp"; 
 
 		//Verify if user email exists
 		if(!THINGS.exists(JSONRefiner.slice(params, new String[]{"email"}),collection))
@@ -398,8 +397,7 @@ public class User{
 			e.printStackTrace();
 		}
 		return JSONResponse.answer(
-				new JSONObject()
-				.put("nexturl",nexturl),			
+				null,			
 				ServiceCaller.whichServletIsAsking().hashCode());
 	}
 

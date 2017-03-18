@@ -17,7 +17,7 @@ import org.json.JSONObject;
 /**
  * * @author Anagbla Joan */
 
-@WebServlet(name = "GetShortInfosServlet" ,urlPatterns={"/user/infos"})
+@WebServlet(urlPatterns={"/user/infos"})
 public class GetShortInfosServlet extends OnlineGetServlet {
 	private static final long serialVersionUID = 1L;
 
