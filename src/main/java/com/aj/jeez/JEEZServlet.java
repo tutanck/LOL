@@ -59,47 +59,47 @@ implements IJEEZServlet{
 	 * @param request
 	 * @param response
 	 * @return
-	 * @throws IOException */
+	 * @throws Exception */
 	protected JSONObject beforeBusiness(
 			HttpServletRequest request,
 			HttpServletResponse response
-			)throws IOException {
+			)throws Exception {
 		
 		response.setContentType("text/plain");
 
-		JSONObject supportedParams = new JSONObject();
-		
-		if(requireAuth && !isAuth(request)){
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "USER UNAUTHENTICATED");
-			return null;
-		}else if(!requireAuth && isAuth(request)){
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "USER ALREADY AUTHENTICATED");
-			return null;
-		}
+		JSONObject params = new JSONObject();
 
 		Map<String,String>incomingParams=MapRefiner.refine(request.getParameterMap());
 
 		for(String expected : epnIn) {
-			JSONObject res = paramIsValid(incomingParams,expected,supportedParams,true);
+			JSONObject res = paramIsValid(incomingParams,expected,params,true);
 			if (!res.getBoolean("valid")){
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
 				return null;
 			}
-			supportedParams = JSONRefiner.merge(
-					supportedParams,(JSONObject) res.get("supportedParams"));
+			params = JSONRefiner.merge(
+					params,(JSONObject) res.get("supportedParams"));
 		}
 
 		for(String optional : opnIn){
-			JSONObject res = paramIsValid(incomingParams,optional,supportedParams,false);
+			JSONObject res = paramIsValid(incomingParams,optional,params,false);
 			if (!res.getBoolean("valid")){
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
 				return null;
 			}
-			supportedParams = JSONRefiner.merge(
-					supportedParams,(JSONObject) res.get("supportedParams"));
+			params = JSONRefiner.merge(
+					params,(JSONObject) res.get("supportedParams"));
 		}
 		
-		return supportedParams;
+		if(requireAuth && !isAuth(request,params)){
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "USER UNAUTHENTICATED");
+			return null;
+		}else if(!requireAuth && isAuth(request,params)){
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, "USER ALREADY AUTHENTICATED");
+			return null;
+		}
+		
+		return params;
 	}
 
 
@@ -119,7 +119,7 @@ implements IJEEZServlet{
 			HttpServletRequest request, //just a precaution (useless for now)
 			HttpServletResponse response,
 			JSONObject result
-			)throws IOException {
+			)throws Exception {
 
 		if(!resultWellFormed(result)) {
 			response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "SERVICE CURRENTLY UNAVAILABLE");
@@ -133,11 +133,13 @@ implements IJEEZServlet{
 	/**
 	 * @description
 	 * Default method that check the connectivity of the related service
-	 * @param request */
+	 * @param request 
+	 * @throws Exception */
 	@Override
 	public boolean isAuth(
-			HttpServletRequest request
-			){
+			HttpServletRequest request,
+			JSONObject params
+			) throws Exception{
 		return request.getSession(false)==null;
 	}
 

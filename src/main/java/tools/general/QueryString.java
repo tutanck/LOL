@@ -1,4 +1,4 @@
-package tools.db;
+package tools.general;
 
 import java.util.Arrays;
 import java.util.HashSet;
