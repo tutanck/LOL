@@ -1,6 +1,6 @@
 package mood.users.servlets.welcome;
 
-import fr.aj.jeez.servlet.basic.PostServlet;
+import fr.aj.jeez.servlet.offline.OfflinePostServlet;
 import mood.users.services.User;
 import org.json.JSONObject;
 
@@ -17,14 +17,14 @@ import java.util.HashSet;
  */
 
 @WebServlet(name = "SigninServlet" ,urlPatterns={"/signin"})
-public class SigninServlet extends PostServlet{
+public class SigninServlet extends OfflinePostServlet{
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void init() throws ServletException {
+	public void init() throws ServletException { //did : deviceID
 		super.init();
-		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"username","pass"}));}
+		super.epnIn=new HashSet<>(Arrays.asList(new String[]{"username","pass","did"}));}
 
 	@Override
 	public JSONObject doBusiness(

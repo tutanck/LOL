@@ -34,7 +34,7 @@ public class SearchPosts {
 			jar.put(new JSONObject()
 					.put("id",orsv.getDbo().get("_id"))
 					.put("type","post")
-					.put("color",Posts.color(SessionManager.sessionOwner(skey),
+					.put("color",Posts.color(UserSession.sessionOwner(skey),
 							(String) orsv.getDbo().get("authid")))
 					.put("lat",orsv.getDbo().get("lat"))
 					.put("lon",orsv.getDbo().get("lon"))
@@ -57,11 +57,11 @@ public class SearchPosts {
 	public static JSONObject QMatchingMyPostsLocation(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingMyPosts(query,
-				SessionManager.sessionOwner(skey)))
+				UserSession.sessionOwner(skey)))
 			jar.put(new JSONObject()
 					.put("id",orsv.getDbo().get("_id"))
 					.put("type","post")
-					.put("color",Posts.color(SessionManager.sessionOwner(skey),
+					.put("color",Posts.color(UserSession.sessionOwner(skey),
 							(String) orsv.getDbo().get("authid")))
 					.put("lat",orsv.getDbo().get("lat"))
 					.put("lon",orsv.getDbo().get("lon"))
@@ -84,11 +84,11 @@ public class SearchPosts {
 	public static JSONObject QMatchingFriendsPostsLocation(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingFriendsPosts(query,
-				SessionManager.sessionOwner(skey)))	
+				UserSession.sessionOwner(skey)))	
 			jar.put(new JSONObject()
 					.put("id",orsv.getDbo().get("_id"))
 					.put("type","post")
-					.put("color",Posts.color(SessionManager.sessionOwner(skey),
+					.put("color",Posts.color(UserSession.sessionOwner(skey),
 							(String) orsv.getDbo().get("authid")))
 					.put("lat",orsv.getDbo().get("lat"))
 					.put("lon",orsv.getDbo().get("lon"))
@@ -110,11 +110,11 @@ public class SearchPosts {
 	public static JSONObject QMatchingPublicPostsLocation(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingPublicPosts(query,
-				SessionManager.sessionOwner(skey)))	
+				UserSession.sessionOwner(skey)))	
 			jar.put(new JSONObject()
 					.put("id",orsv.getDbo().get("_id"))
 					.put("type","post")
-					.put("color",Posts.color(SessionManager.sessionOwner(skey),
+					.put("color",Posts.color(UserSession.sessionOwner(skey),
 							(String) orsv.getDbo().get("authid")))
 					.put("lat",orsv.getDbo().get("lat"))
 					.put("lon",orsv.getDbo().get("lon"))
@@ -179,7 +179,7 @@ public class SearchPosts {
 	public static JSONObject QMatchingMyPosts(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingMyPosts(query,
-				SessionManager.sessionOwner(skey)))
+				UserSession.sessionOwner(skey)))
 			jar.put(new JSONObject()
 					.put("id",orsv.getDbo().get("_id"))
 					.put("type","post")
@@ -206,7 +206,7 @@ public class SearchPosts {
 	public static JSONObject QMatchingFriendsPosts(String query,String skey)throws DBException, JSONException{
 		JSONArray jar =new JSONArray();
 		for(ObjetRSV orsv:SearchPostsDB.QMatchingFriendsPosts(query,
-				SessionManager.sessionOwner(skey)))
+				UserSession.sessionOwner(skey)))
 			jar.put(new JSONObject()
 					.put("id",orsv.getDbo().get("_id"))
 					.put("type","post")

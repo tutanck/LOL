@@ -1,4 +1,4 @@
-package fr.aj.jeez.servlet.offline;
+package servlets.online;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ import fr.aj.jeez.servlet.basic.PostServlet;
 
 /**
  * * @author Anagbla Joan */
-public abstract class OfflinePostServlet extends PostServlet{
+public abstract class OnlinePostServlet extends PostServlet{
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -19,13 +19,13 @@ public abstract class OfflinePostServlet extends PostServlet{
 			HttpServletResponse response
 			) throws ServletException, IOException {
 		try{
-			if(requireToBeConnected(request, response, false))
+			if(requireToBeConnected(request, response, true))
 				super.doPost(request, response);
-
+			
 		} catch (Exception e){
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "AN INTERNAL SERVER ERROR OCCURRED");
 		}
 	}
-
+	
 }

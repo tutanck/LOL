@@ -1,4 +1,4 @@
-package fr.aj.jeez.servlet.interfaces;
+package com.aj.jeez;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,11 +15,7 @@ public interface IJEEZServlet {
 			JSONObject params
 			)throws Exception ;
 
-	public boolean isDisconnected(
-			HttpServletRequest request
-			);
-
-	public boolean isConnected(
+	public boolean isAuth(
 			HttpServletRequest request
 			);
 

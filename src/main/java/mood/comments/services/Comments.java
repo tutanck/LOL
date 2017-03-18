@@ -29,7 +29,7 @@ public class Comments {
 	 * @throws JSONException */
 	public static JSONObject commentPost(String skey,String comment,String postID)
 			throws DBException, JSONException{
-		CommentsDB.newComment(SessionManager.sessionOwner(skey),comment,postID);
+		CommentsDB.newComment(UserSession.sessionOwner(skey),comment,postID);
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI 
 				,null,null,ServiceCaller.whichServletIsAsking().hashCode()); }
 
@@ -70,7 +70,7 @@ public class Comments {
 	 * @throws JSONException
 	 * @throws DBException */
 	public static JSONObject deleteComment(String skey, String commentID) throws JSONException, DBException{
-		String uid = SessionManager.sessionOwner(skey);
+		String uid = UserSession.sessionOwner(skey);
 		String owner = CommentsDB.commentAuthor(commentID);
 		if(!uid.equals(owner))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD
@@ -90,7 +90,7 @@ public class Comments {
 	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject modifyComment(String skey,String commentID,String update) throws  DBException, JSONException{
-		String uid = SessionManager.sessionOwner(skey);
+		String uid = UserSession.sessionOwner(skey);
 		String owner = CommentsDB.commentAuthor(commentID);
 		if(!uid.equals(owner))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD

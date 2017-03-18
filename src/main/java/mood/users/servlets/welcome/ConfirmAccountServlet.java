@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.aj.jeez.servlet.basic.PostServlet;
+import fr.aj.jeez.servlet.offline.OfflinePostServlet;
 import mood.users.services.User;
 
 import org.json.JSONObject;
@@ -17,7 +17,7 @@ import org.json.JSONObject;
  * * @author Anagbla Joan */
 
 @WebServlet(name = "ConfirmAccountServlet" ,urlPatterns={"/account/confirm"})
-public class ConfirmAccountServlet extends PostServlet {
+public class ConfirmAccountServlet extends OfflinePostServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override

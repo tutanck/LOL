@@ -1,4 +1,4 @@
-package fr.aj.jeez.servlet.test;
+package com.aj.jeez.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;

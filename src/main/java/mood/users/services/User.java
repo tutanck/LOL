@@ -9,24 +9,26 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.aj.regina.THINGS;
+import com.aj.utils.AbsentKeyException;
+import com.aj.utils.JSONRefiner;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
-import fr.aj.jeez.tools.MapRefiner;
+ 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import mood.users.db.UserPlacesProfileDB;
+import mood.users.db.UserSessionDB;
 import mood.friends.db.FriendDB;
 import mood.users.db.UserDB;
 import mood.users.utils.InputType;
-import regina.AbsentKeyException;
-import regina.InvalidKeyException;
-import regina.JSONRefiner;
-import regina.THINGS;
 import tools.db.DBToolBox;
 import tools.general.PatternsHolder;
+import tools.db.DBConnectionManager;
 import tools.db.DBException;
 import tools.services.ServiceCodes;
 import tools.mailing.SendEmail;
@@ -45,6 +47,9 @@ public class User{
 
 	private static String caller=User.class.getName();
 	private static DBCollection collection = UserDB.collection;
+	private static DBCollection session = UserSessionDB.collection;
+
+
 
 	/**
 	 * @description 
@@ -97,6 +102,32 @@ public class User{
 				.put("nexturl",nexturl),				
 				ServiceCaller.whichServletIsAsking().hashCode());
 	}
+
+
+
+	/**
+	 * @description 
+	 * confirm a user account (email is verified)
+	 * @param uid
+	 * @return 
+	 * @throws ShouldNeverOccurException
+	 * @throws DBException 
+	 * @throws JSONException */
+	public static JSONObject confirmUser(
+			JSONObject params
+			) throws ShouldNeverOccurException, DBException, JSONException{ 
+		String nexturl="/Momento/signin";
+
+		if(!(THINGS.updateOne(params, new JSONObject(), collection, caller).getN()>0))
+			throw new ShouldNeverOccurException("SNO Error : User ID is unknown!");
+
+		return ServicesToolBox.answer(
+				new JSONObject()
+				.put("nexturl",nexturl),				
+				ServiceCaller.whichServletIsAsking().hashCode());}
+
+
+
 
 
 	/**
@@ -161,13 +192,19 @@ public class User{
 				,collection, caller))
 			return ServicesToolBox.alert(ServiceCodes.USER_NOT_CONFIRMED);
 
-		//create or recover session and get current (new or old)sessionKey
-		//String sessionKey =SessionManager.session(uid); TODO 
+		String himitsu = ServicesToolBox.generateToken();
+
+		String kage = DigestUtils.sha1Hex(himitsu+params.getString("did"));
+
+		THINGS.add(new JSONObject()
+				.put("skey",kage)
+				.put("uid", user.get("_id"))
+				,session, caller);
 
 		return ServicesToolBox.answer(
 				new JSONObject()
+				.put("himitsu", himitsu)
 				.put("nexturl",nexturl)
-				//.put("skey",sessionKey)TODO
 				.put("username",user.get("username")),
 				ServiceCaller.whichServletIsAsking().hashCode());
 	}
@@ -180,12 +217,13 @@ public class User{
 	 * @param map
 	 * @return
 	 * @throws DBException 
-	 * @throws JSONException */
+	 * @throws JSONException 
+	 * @throws ShouldNeverOccurException 
+	 * @throws AbsentKeyException */
 	public static JSONObject updateProfile(
 			JSONObject params
-			) throws DBException, JSONException {
+			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {
 		String nexturl="/Momento/showprofile";
-		String _id= SessionManager.sessionOwner(params.get("skey"));
 
 		JSONObject clean = JSONRefiner.clean(params, new String[]{"skey"});
 
@@ -193,7 +231,7 @@ public class User{
 				new String[]{"email"})
 				.put("_id",
 						new JSONObject()
-						.put("$ne",_id) )
+						.put("$ne",params.get("uid")) )
 				,collection,caller))
 			return ServicesToolBox.alert(ServiceCodes.EMAIL_IS_TAKEN);
 
@@ -201,7 +239,7 @@ public class User{
 				new String[]{"phone"})
 				.put("_id",
 						new JSONObject()
-						.put("$ne",_id) )
+						.put("$ne",params.get("uid")))
 				,collection,caller))
 			return ServicesToolBox.alert(ServiceCodes.PHONE_IS_TAKEN);
 
@@ -209,10 +247,9 @@ public class User{
 		List<JSONObject> node = JSONRefiner.branch(clean, new String[]{"places"});	
 
 		//Update of user profile in users collection
-		THINGS.putOne(new JSONObject().put("_id", _id),node.get(1),collection,caller);
-		//Update of user profile in Mongo database
-		//service return is ignored(internal call)
-		UserPlacesProfile.updatePp(_id, node.get(0)); 
+		THINGS.putOne(new JSONObject().put("_id",params.get("uid")),node.get(1),collection,caller);
+
+		//UserPlacesProfile.updatePp(_id, node.get(0));//TODO 
 
 		return ServicesToolBox.answer(
 				new JSONObject()
@@ -222,23 +259,25 @@ public class User{
 
 
 
-
 	/**
-	 * @description return user's complete profile information 
+	 * @description 
+	 * return user's complete profile information 
 	 * @param map
 	 * @return
 	 * @throws DBException
-	 * @throws JSONException */
-	public static JSONObject getProfile(JSONObject params) throws DBException, JSONException {	
-		String _id = SessionManager.sessionOwner(params.get("skey"));
-
+	 * @throws JSONException 
+	 * @throws ShouldNeverOccurException 
+	 * @throws AbsentKeyException */
+	public static JSONObject getProfile(
+			JSONObject params
+			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {	
 		JSONObject clean = JSONRefiner.clean(params, new String[]{"skey"});
 		//Trick : like fb, an user can see his profile as someone else
 		//uther as a contraction of user-other (other user)
 		if(clean.has("uther")) 
 			clean.put("_id", params.get("uther"));
 		else
-			clean.put("_id",_id);
+			clean.put("_id",params.get("uid"));
 
 		DBObject user=  THINGS.getOne(clean, collection, caller);
 		return ServicesToolBox.answer(
@@ -249,7 +288,7 @@ public class User{
 				.put("lastname",user.get("lastname"))
 				.put("birthdate",user.get("birthdate"))
 				.put("phone",user.get("phone"))
-				.put("places",UserPlacesProfileDB.getPp(_id)),
+				.put("places",UserPlacesProfileDB.getPp(params.getString("uid"))),
 				ServiceCaller.whichServletIsAsking().hashCode());
 	}
 
@@ -284,72 +323,30 @@ public class User{
 	}
 
 
+
+
 	public static JSONObject searchUser(JSONObject params) 
-			throws DBException, JSONException {
-		CSRShuttleBus dataSet=UserDB.searchUser(SessionManager.sessionOwner(skey),query);
-		JSONArray jar=new JSONArray();
-		ResultSet rs=dataSet.getResultSet();
-		try {
+			throws DBException, JSONException, ShouldNeverOccurException {
+
+		/*JSONArray jar=new JSONArray();
+		UserDB.searchUser("",params.getString("query"));
+
 			while(rs.next()){
 				String type=FriendDB.status(
-						SessionManager.sessionOwner(skey),rs.getString("uid"));	
+						UserSession.sessionOwner(skey),rs.getString("uid"));	
 				jar.put(new JSONObject()
 						.put("uid",rs.getString("uid"))
 						.put("type",(type==null)?"user":type)
 						.put("username",rs.getString("username"))
 						.put("firstname",rs.getString("firstname"))
-						.put("lastname",rs.getString("lastname")));}
+						.put("lastname",rs.getString("lastname")));
+						}*/
 
-			return ServicesToolBox.answer(
-					new JSONObject().put("users",jar), 
-					ServiceCaller.whichServletIsAsking().hashCode());
-		}catch (SQLException e) {throw new DBException(DBToolBox.getStackTrace(e));}
-		finally {dataSet.close();}}
+		return ServicesToolBox.answer(
+				new JSONObject().put("users",""/*jar*/), 
+				ServiceCaller.whichServletIsAsking().hashCode());
 
-
-	/**
-	 * @description send an email with MD5 generated temporary access key for access recover to the user
-	 * @param params
-	 * @return
-	 * @throws DBException
-	 * @throws JSONException */
-	public static JSONObject accessRecover(JSONObject params) throws DBException, JSONException {
-		String nexturl="/Momento/signin.jsp";
-		//speedy bus for data set map transportation  (email)
-		Map<String,String>swiftBus2 = new HashMap<>();
-		swiftBus2.put("email", params);
-		System.out.println("swiftBus2 : "+swiftBus2);
-
-		//Verify if user email exists
-		if(!THINGS.matchTHINGS(swiftBus2,table,caller))
-			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD
-					,null,"Unknown email address !",ServiceCodes.UNKNOWN_EMAIL_ADDRESS);
-
-		//Generate temporary key (sequence of 32 hexadecimal digits) using MD5 hashes algorithm 
-		String secret = DBToolBox.generateMD5ID();
-
-		//speedy bus for data set map transportation  (password)
-		Map<String,String>swiftBus = new HashMap<>();
-		swiftBus.put("pass", secret);
-
-		//TODO verif pk swiftbus2 s'efface
-		System.out.println("swiftBus2 : "+swiftBus2);
-		swiftBus2.put("email", params);
-		System.out.println("swiftBus2 : "+swiftBus2);
-		//Update of user profile in database (reset password : strong security policy)
-		THINGS.updateTHINGS(swiftBus,swiftBus2,table,caller);
-
-		//Send an email to the applicant
-		try {SendEmail.sendMail(params,Lingua.get("NewAccessKeySentSubject","fr-FR"),
-				Lingua.get("NewAccessKeySentMessage","fr-FR")+ secret);}
-		catch (StringNotFoundException e) { 
-			System.out.println("Dictionary Error : Mail not send");
-			e.printStackTrace();}
-		return ServicesToolBox.reply(ServiceCodes.STATUS_GOODnBAD,
-				new JSONObject()
-				.put("nexturl",nexturl)				
-				,"We just sent you an email with intructions to reset your password.",
-				ServiceCaller.whichServletIsAsking().hashCode());}
+	}
 
 
 	/**
@@ -357,33 +354,61 @@ public class User{
 	 * @param params
 	 * @return
 	 * @throws DBException 
-	 * @throws JSONException */
-	public static JSONObject logout(JSONObject params) throws DBException, JSONException {
+	 * @throws JSONException 
+	 * @throws ShouldNeverOccurException */
+	public static JSONObject logout(
+			JSONObject params
+			) throws DBException, JSONException, ShouldNeverOccurException {
 		String nexturl="/Momento/signin.jsp";
-		SessionManager.closeSession(params.get("skey"));
+		THINGS.remove(new JSONObject()
+				.put("skey",UserSessionDB.skey(params.getString("token"), params.getString("did")))
+				,session, caller);
 		return ServicesToolBox.answer(
 				new JSONObject()
 				.put("nexturl",nexturl),
 				ServiceCaller.whichServletIsAsking().hashCode());
 	}
 
-	/**
-	 * @description confirm a user account (email is verified)
-	 * @param uid
-	 * @return 
-	 * @throws ShouldNeverOccurException
-	 * @throws DBException 
-	 * @throws JSONException */
-	public static JSONObject confirmUser(JSONObject params) throws ShouldNeverOccurException, DBException, JSONException{ 
-		String nexturl="/Momento/signin";
-		if(!UserDB.uidExists(params))
-			throw new ShouldNeverOccurException("SNO Error : User ID is unknown!");
-		UserDB.confirmUser(params);
-		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI,
-				new JSONObject()
-				.put("nexturl",nexturl)				
-				,null,ServiceCaller.whichServletIsAsking().hashCode());}
 
+	/**
+	 * @description send an email with MD5 generated temporary access key for access recover to the user
+	 * @param params
+	 * @return
+	 * @throws DBException
+	 * @throws JSONException 
+	 * @throws ShouldNeverOccurException 
+	 * @throws AbsentKeyException */
+	public static JSONObject accessRecover(
+			JSONObject params
+			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {
+		String nexturl="/Momento/signin.jsp"; 
+
+		//Verify if user email exists
+		if(!THINGS.exists(JSONRefiner.slice(params, new String[]{"email"}),collection,caller))
+			return ServicesToolBox.alert(ServiceCodes.UNKNOWN_EMAIL_ADDRESS);
+
+		//Generate temporary key (sequence of 32 hexadecimal digits) using MD5 hashes algorithm 
+		//reset password temporarily until user redefine it! 
+		String secret = ServicesToolBox.generateMD5ID();
+		THINGS.updateOne(
+				JSONRefiner.wrap("pass", secret),
+				JSONRefiner.slice(params, new String[]{"email"}),
+				collection,caller);
+
+		//Send an email to the applicant
+		try {
+			SendEmail.sendMail(params.getString("email"),Lingua.get("NewAccessKeySentSubject","fr-FR"),
+					Lingua.get("NewAccessKeySentMessage","fr-FR")+ secret);
+		}
+		catch (StringNotFoundException e) { 
+			System.out.println("Dictionary Error : Mail not send");
+			e.printStackTrace();
+		}
+		return ServicesToolBox.answer(
+				new JSONObject()
+				.put("nexturl",nexturl),			
+				ServiceCaller.whichServletIsAsking().hashCode());
+	}
 
 
 	public static void main(String[] args) throws DBException, JSONException {
@@ -398,7 +423,7 @@ public class User{
 		//System.out.println("updateProfile : "+updateProfile(test)+"\n");
 		System.out.println("accessRecover : "+accessRecover("tutanck@gmail.com")+"\n");
 		//System.out.println("logout : "+logout(test)+"\n");*/
-		searchUser("h","j");
+		//searchUser("h","j");
 	}
 
 }

@@ -41,7 +41,7 @@ public class Friends {
 		List<Map<String,String>> node = JSONRefiner.branch(url_parameters, new String[]{"skey"});	
 
 		//get uid from skey
-		String uid = SessionManager.sessionOwner(node.get(1).get("skey"));
+		String uid = UserSession.sessionOwner(node.get(1).get("skey"));
 
 		//create useful map containing only useful parameters (uid ,fid & status)
 		node.get(0).put("uid",uid);
@@ -69,7 +69,7 @@ public class Friends {
 			throws JSONException, DBException {
 		ArrayList<String>fidList= new ArrayList<>();
 		
-		String uid =SessionManager.sessionOwner(url_parameters.get("skey"));
+		String uid =UserSession.sessionOwner(url_parameters.get("skey"));
 		url_parameters.put("uid", uid);
 		url_parameters.put("status", "friend");
 		CSRShuttleBus dataSet = CRUD.CRUDPull(THINGS.getTHINGS(JSONRefiner.subMap(
@@ -121,7 +121,7 @@ public class Friends {
 	public static JSONObject acceptFriend(Map<String,String> url_parameters) 
 			throws DBException, JSONException {
 		url_parameters.put("fid", 
-				SessionManager.sessionOwner(url_parameters.get("skey")));
+				UserSession.sessionOwner(url_parameters.get("skey")));
 
 		Map<String,String> wrap=new HashMap<>();
 		wrap.put("status","friend");
@@ -146,7 +146,7 @@ public class Friends {
 	public static JSONObject deleteFriend(Map<String,String> url_parameters) 
 			throws DBException, JSONException {
 		//parameters unpacking
-		String uid =SessionManager.sessionOwner(url_parameters.get("skey"));
+		String uid =UserSession.sessionOwner(url_parameters.get("skey"));
 		String fid =url_parameters.get("fid");
 		
 		//parameters repacking

@@ -1,4 +1,4 @@
-package fr.aj.jeez.servlet.template;
+package com.aj.jeez;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import fr.aj.jeez.servlet.interfaces.IJEEZServlet;
-import fr.aj.jeez.tools.MapRefiner;
+import com.aj.utils.JSONRefiner;
+import com.aj.utils.MapRefiner;
 
 /*			TODO	##trouver un moyen pour les pb cause par le send de l'http error si cette methode est redefinie
 par l'user idem pour beforeBusiness  : au pire les passer en final */
@@ -46,7 +46,7 @@ implements IJEEZServlet{
 	 *  taken into account by the underlying service*/
 	protected Set<String> opnOut=new HashSet<String>(); //Outgoing optional parameters names
 
-	
+	protected boolean requireAuth =false;
 	
 
 	/**
@@ -64,10 +64,18 @@ implements IJEEZServlet{
 			HttpServletRequest request,
 			HttpServletResponse response
 			)throws IOException {
-
+		
 		response.setContentType("text/plain");
 
-		JSONObject supportedParams= new JSONObject();
+		JSONObject supportedParams = new JSONObject();
+		
+		if(requireAuth && !isAuth(request)){
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "USER UNAUTHENTICATED");
+			return null;
+		}else if(!requireAuth && isAuth(request)){
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, "USER ALREADY AUTHENTICATED");
+			return null;
+		}
 
 		Map<String,String>incomingParams=MapRefiner.refine(request.getParameterMap());
 
@@ -77,8 +85,8 @@ implements IJEEZServlet{
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
 				return null;
 			}
-			//update the supported parameters
-			supportedParams = (JSONObject) res.get("supportedParams");
+			supportedParams = JSONRefiner.merge(
+					supportedParams,(JSONObject) res.get("supportedParams"));
 		}
 
 		for(String optional : opnIn){
@@ -87,10 +95,10 @@ implements IJEEZServlet{
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
 				return null;
 			}
-			//update the supported parameters
-			supportedParams = (JSONObject) res.get("supportedParams");
+			supportedParams = JSONRefiner.merge(
+					supportedParams,(JSONObject) res.get("supportedParams"));
 		}
-
+		
 		return supportedParams;
 	}
 
@@ -110,8 +118,7 @@ implements IJEEZServlet{
 	protected void afterBusiness(
 			HttpServletRequest request, //just a precaution (useless for now)
 			HttpServletResponse response,
-			JSONObject result,
-			boolean debug
+			JSONObject result
 			)throws IOException {
 
 		if(!resultWellFormed(result)) {
@@ -120,49 +127,21 @@ implements IJEEZServlet{
 			return;
 		}
 		response.getWriter().print(result);
-	}
-
-
-
+	}	
+	
 
 	/**
 	 * @description
-	 * TODO
-	 * @param request
-	 * @param response
-	 * @param requireToBeConnected
-	 * @return
-	 * @throws IOException */
-	protected final boolean requireToBeConnected(
-			HttpServletRequest request,
-			HttpServletResponse response,
-			boolean requireToBeConnected
-			)throws IOException {
-
-		if(requireToBeConnected)
-			if(!isConnected(request)){
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "USER UNAUTHENTICATED");
-				return false;
-			}	 
-
-		if(!isDisconnected(request)){
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "USER ALREADY AUTHENTICATED");
-			return false; 
-		}
-		return true;
-	}
-
+	 * Default method that check the connectivity of the related service
+	 * @param request */
 	@Override
-	public boolean isConnected(HttpServletRequest request){
+	public boolean isAuth(
+			HttpServletRequest request
+			){
 		return request.getSession(false)==null;
 	}
 
-
-	@Override
-	public boolean isDisconnected(HttpServletRequest request){
-		return request.getSession(false)!=null; //Should not have been connected once
-	}	
-
+	
 
 	/**
 	 * @description

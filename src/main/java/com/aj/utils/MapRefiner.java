@@ -1,4 +1,4 @@
-package fr.aj.jeez.tools;
+package com.aj.utils;
 
 import org.json.JSONObject;
 

@@ -1,4 +1,4 @@
-package fr.aj.jeez.servlet.basic;
+package com.aj.jeez;
 
 import java.io.IOException;
 
@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import fr.aj.jeez.servlet.template.JEEZServlet;
 
 /**
  * * @author Anagbla Joan */
@@ -25,8 +24,7 @@ public abstract class PostServlet extends JEEZServlet{
 			if(params!=null) 	
 				afterBusiness(
 						request,response,
-						doBusiness(request,response,params),
-						true
+						doBusiness(request,response,params)
 						);
 		}catch (Exception e){
 			e.printStackTrace();

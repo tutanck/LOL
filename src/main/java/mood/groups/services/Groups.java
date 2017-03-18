@@ -39,7 +39,7 @@ public class Groups {
 	 * @throws JSONException */
 	public static JSONObject createGroup(String skey,String name,String members) 
 			throws DBException,JSONException{		
-		GroupsDB.openGroup(name,SessionManager.sessionOwner(skey),QueryString.wordSet(members,",")); 
+		GroupsDB.openGroup(name,UserSession.sessionOwner(skey),QueryString.wordSet(members,",")); 
 		return  ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI
 				, null, null, ServiceCodes.NOERROR);}
 
@@ -52,7 +52,7 @@ public class Groups {
 	 * @throws JSONException */
 	public static JSONObject userGroups(String skey) throws DBException, JSONException{
 		JSONArray jar=new JSONArray();
-		DBCursor cursor = GroupsDB.userGroups(SessionManager.sessionOwner(skey));
+		DBCursor cursor = GroupsDB.userGroups(UserSession.sessionOwner(skey));
 		cursor.sort(new BasicDBObject("date",-1)); 
 		cursor.limit(maxInOne);
 		while (cursor.hasNext()){

@@ -42,7 +42,7 @@ public class ServicesToolBox {
 			int replycode
 			)throws JSONException, ShouldNeverOccurException{
 
-		 if(message==null) 
+		if(message==null) 
 			throw new 
 			ShouldNeverOccurException("In Warning responses, message part should never be null");
 
@@ -118,7 +118,7 @@ public class ServicesToolBox {
 	}
 
 
-	
+
 	/**
 	 * TODO work while is run as java application but not on server
 	 * no error , silent execution with no visible effects 
@@ -136,16 +136,16 @@ public class ServicesToolBox {
 		finally {try {fw.close();} catch (IOException e1) {e1.printStackTrace();}}
 	}*/
 
-	
-	
+
+
 	/**
 	 * @description  Generate an integer ID using Random.nextInt() Method   
 	 * @return */
 	public static int generateSimpleIntId() {return new Random().nextInt(Integer.MAX_VALUE);}
 
 
-	
-	
+
+
 	/**
 	 * Return the complete StackTrace of the throwable as String
 	 * @param thr
@@ -157,9 +157,9 @@ public class ServicesToolBox {
 		return sw.toString(); // stack trace as a string
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * @description return the current time in format day/month/year/ hour:minutes:seconds
 	 * @return */
@@ -169,8 +169,8 @@ public class ServicesToolBox {
 		return dateFormat.format(date); //21/02/2015/ 13:52:11
 	}
 
-	
-	
+
+
 
 	/**
 	 * @description return the current timestamp
@@ -180,7 +180,7 @@ public class ServicesToolBox {
 	}
 
 
-	
+
 	/**
 	 * @description Generate key(sequence of 32 hexadecimal digits)
 	 *  with The 128-bit MD5 hash algorithm
@@ -196,29 +196,31 @@ public class ServicesToolBox {
 			while(hashtext.length() < 32 )
 				hashtext = "0"+hashtext;
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();hashtext=generateHomeMadeID();}
+			e.printStackTrace();
+			hashtext=generateToken();
+		}
 		return  hashtext;
 	}
 
-	
-	
+
+
+
 	/**
-	 * @description  Home made 32 characters ID generated
-	 * @return
-	 */
-	public static String generateHomeMadeID()  {
-		char[] tab = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-				't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-		StringBuilder sb = new StringBuilder();
+	 * @description
+	 * Generate a homemade token of 32 characters 
+	 * @return */
+	public static String generateToken() {
 		Random r = new Random();
-		for (int i = 0; i < 32; i++)
-			sb.append( tab[r.nextInt( tab.length )] );
+		StringBuilder sb = new StringBuilder();
+		String alphanum = "azertyuiopqsdfghjklmwxcvbn1234567890AZERTYUIOPQSDFGHJKLMWXCVBN";
+		for(int i = 0; i < 32; i++) 
+			sb.append(alphanum.charAt(r.nextInt(alphanum.length())));
 		return sb.toString();
 	}
 
 
-	
-	
+
+
 	public static void main(String[] args) {
 		System.out.println(getCurrentTime());
 		System.out.println(generateMD5ID());

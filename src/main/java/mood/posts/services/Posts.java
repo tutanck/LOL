@@ -34,7 +34,7 @@ public class Posts {
 	 * @throws DBException */
 	public static JSONObject addPost(String skey,String desc,double lon,double lat) 
 			throws JSONException, DBException{		
-		PostsDB.addPost(SessionManager.sessionOwner(skey),desc,lon,lat);	
+		PostsDB.addPost(UserSession.sessionOwner(skey),desc,lon,lat);	
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI 
 				,null,null,ServiceCaller.whichServletIsAsking().hashCode()); }
 
@@ -56,7 +56,7 @@ public class Posts {
 			jar.put(new JSONObject()
 					.put("id",dbo.get("_id"))
 					.put("type","post")
-					.put("color",color(SessionManager.sessionOwner(skey),auth))
+					.put("color",color(UserSession.sessionOwner(skey),auth))
 					.put("lat",dbo.get("lat"))
 					.put("lon",dbo.get("lon"))
 					.put("authname",UserDB.getUsernameById(auth)));}
@@ -72,7 +72,7 @@ public class Posts {
 	 * @throws DBException */
 	public static JSONObject userPostsLocation(String skey) throws JSONException, DBException{
 		JSONArray jar=new JSONArray();
-		DBCursor cursor = PostsDB.userPosts(SessionManager.sessionOwner(skey));
+		DBCursor cursor = PostsDB.userPosts(UserSession.sessionOwner(skey));
 		cursor.sort( new BasicDBObject("date",-1)); 
 		cursor.limit(maxInOne);
 		while (cursor.hasNext()) {
@@ -81,7 +81,7 @@ public class Posts {
 			jar.put(new JSONObject()
 					.put("id",dbo.get("_id"))
 					.put("type","post")
-					.put("color",color(SessionManager.sessionOwner(skey),auth))
+					.put("color",color(UserSession.sessionOwner(skey),auth))
 					.put("lat",dbo.get("lat"))		 
 					.put("lon",dbo.get("lon"))
 					.put("authname",UserDB.getUsernameById(auth)));}
@@ -99,7 +99,7 @@ public class Posts {
 	public static JSONObject friendsPostsLocation(String skey) throws DBException, JSONException{ 
 		JSONArray jar=new JSONArray();
 		DBCursor cursor = PostsDB.friendsPosts(
-				FriendDB.friendsSet(SessionManager.sessionOwner(skey)));
+				FriendDB.friendsSet(UserSession.sessionOwner(skey)));
 		cursor.sort( new BasicDBObject("date",-1)); 
 		cursor.limit(maxInOne); 
 		while (cursor.hasNext()){
@@ -108,7 +108,7 @@ public class Posts {
 			jar.put(new JSONObject()
 					.put("id",dbo.get("_id"))
 					.put("type","post")
-					.put("color",color(SessionManager.sessionOwner(skey),auth))
+					.put("color",color(UserSession.sessionOwner(skey),auth))
 					.put("lat",dbo.get("lat"))
 					.put("lon",dbo.get("lon"))
 					.put("authname",UserDB.getUsernameById(auth)));}
@@ -124,7 +124,7 @@ public class Posts {
 	 * @throws JSONException */
 	public static JSONObject publicPostsLocation(String skey) throws DBException, JSONException{ 
 		JSONArray jar=new JSONArray();
-		DBCursor cursor = PostsDB.publicPosts(SessionManager.sessionOwner(skey));
+		DBCursor cursor = PostsDB.publicPosts(UserSession.sessionOwner(skey));
 		cursor.sort( new BasicDBObject("date",-1)); 
 		cursor.limit(maxInOne); 
 		while (cursor.hasNext()){
@@ -133,7 +133,7 @@ public class Posts {
 			jar.put(new JSONObject()
 					.put("id",dbo.get("_id"))
 					.put("type","post")
-					.put("color",color(SessionManager.sessionOwner(skey),auth))
+					.put("color",color(UserSession.sessionOwner(skey),auth))
 					.put("lat",dbo.get("lat"))
 					.put("lon",dbo.get("lon"))
 					.put("authname",UserDB.getUsernameById(auth)));}
@@ -156,7 +156,7 @@ public class Posts {
 		jar.put(new JSONObject()
 				.put("id",dbo.get("_id"))
 				.put("type","post")
-				.put("color",color(SessionManager.sessionOwner(skey),auth))
+				.put("color",color(UserSession.sessionOwner(skey),auth))
 				.put("lat",dbo.get("lat"))
 				.put("lon",dbo.get("lon"))
 				.put("authname",UserDB.getUsernameById(auth))
@@ -176,7 +176,7 @@ public class Posts {
 	 * @throws DBException
 	 * @throws JSONException */
 	public static JSONObject deletePost(String skey,String postID) throws DBException, JSONException{
-		String uid = SessionManager.sessionOwner(skey);
+		String uid = UserSession.sessionOwner(skey);
 		String owner = PostsDB.postAuthor(postID);
 		if(!uid.equals(owner))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD
@@ -197,7 +197,7 @@ public class Posts {
 	 * @throws MongoException
 	 * @throws DBException */
 	public static JSONObject modifyPost(String skey,String postID,String update) throws JSONException, MongoException, DBException{
-		String uid = SessionManager.sessionOwner(skey);
+		String uid = UserSession.sessionOwner(skey);
 		String owner = PostsDB.postAuthor(postID);
 		if(!uid.equals(owner))
 			return ServicesToolBox.reply(ServiceCodes.STATUS_BAD
@@ -278,7 +278,7 @@ public class Posts {
 	 * @throws DBException */@Deprecated
 	 public static JSONObject likePost(String skey,String postID,int nbStars) throws JSONException, DBException{
 		 //TODO verif no multi likes	
-		 PostsDB.like(postID,SessionManager.sessionOwner(skey),nbStars);
+		 PostsDB.like(postID,UserSession.sessionOwner(skey),nbStars);
 		 return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI 
 				 ,null,null,ServiceCaller.whichServletIsAsking().hashCode()); }
 
@@ -291,7 +291,7 @@ public class Posts {
 	  * @throws DBException */@Deprecated
 	  public static JSONObject userPosts(String skey) throws JSONException, DBException{
 		  JSONArray jar=new JSONArray();
-		  DBCursor cursor = PostsDB.userPosts(SessionManager.sessionOwner(skey));
+		  DBCursor cursor = PostsDB.userPosts(UserSession.sessionOwner(skey));
 		  cursor.sort( new BasicDBObject("date",-1)); 
 		  cursor.limit(maxInOne );
 		  while (cursor.hasNext()) {
@@ -319,7 +319,7 @@ public class Posts {
 	   public static JSONObject friendsPosts(String skey) throws DBException, JSONException{ 
 		   JSONArray jar=new JSONArray();
 		   DBCursor cursor = PostsDB.friendsPosts(
-				   FriendDB.friendsSet(SessionManager.sessionOwner(skey)));
+				   FriendDB.friendsSet(UserSession.sessionOwner(skey)));
 		   cursor.sort( new BasicDBObject("date",-1)); 
 		   cursor.limit(maxInOne); 
 		   while (cursor.hasNext()){

@@ -1,6 +1,6 @@
 package mood.users.servlets;
 
-import fr.aj.jeez.servlet.basic.GetServlet;
+import fr.aj.jeez.servlet.online.OnlineGetServlet;
 import mood.users.services.User;
 
 import org.json.JSONObject;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * * @author Anagbla Joan */
 
 @WebServlet(name = "SearchUserServlet" ,urlPatterns={"/user/search"})
-public class SearchUserServlet extends GetServlet {
+public class SearchUserServlet extends OnlineGetServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override

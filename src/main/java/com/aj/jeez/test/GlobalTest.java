@@ -1,4 +1,4 @@
-package fr.aj.jeez.servlet.test;
+package com.aj.jeez.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

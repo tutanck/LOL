@@ -1,4 +1,4 @@
-package regina;
+package com.aj.utils;
 
 import org.json.JSONObject;
 
@@ -18,6 +18,11 @@ public class JSONRefiner {
 			Map<?,?> map
 			){
 		return new JSONObject(map);
+	}
+	
+	
+	public static JSONObject wrap(String key, Object value){
+		return new JSONObject().put(key, value);
 	}
 
 
@@ -69,33 +74,52 @@ public class JSONRefiner {
 	 * Subdivide a json's {trunc} in two json's branches following {subKeys} keys
 	 * One branch will contains all entries whose key is in {subKeys}
 	 * The other branch will contains all entries in initial {trunc} except whose key is in {subKeys}
-	 * @param trunc
+	 * @param trunk
 	 * @param subKeys
 	 * @return  
 	 * @throws AbsentKeyException */
 	public static List<JSONObject> branch(
-			JSONObject trunc,
+			JSONObject trunk,
 			String[]subKeys
 			) throws AbsentKeyException{
 		JSONObject branch0 = new JSONObject();
-		JSONObject branch1 = new JSONObject(trunc.toMap());
+		JSONObject branch1 = new JSONObject(trunk.toMap());
 
 		for(String key : new HashSet<String>(Arrays.asList(subKeys)))
-			if(trunc.has(key)){
-				branch0.put(key, trunc.get(key));
+			if(trunk.has(key)){
+				branch0.put(key, trunk.get(key));
 				branch1.remove(key);
 			}
 			else throw new
-			AbsentKeyException("The key '"+key+"' does not exist in '"+trunc+"'");
+			AbsentKeyException("The key '"+key+"' does not exist in '"+trunk+"'");
 
 		List<JSONObject>node = new ArrayList<>();
 		node.add(0,branch0);
 		node.add(1,branch1);
 		return node;
 	}
+	
+	
+	/**
+	 * @description
+	 * Merge to JSONObject together
+	 * @param branch1
+	 * @param branch2
+	 * @return */
+	public static JSONObject merge(
+			JSONObject branch1,
+			JSONObject branch2
+			){
+		JSONObject trunk = new JSONObject(branch1.toMap());
 
+		for(String key : branch2.keySet())
+			trunk.put(key, branch2.get(key));
+		 
+		return trunk;
+	}
 
-
+	
+	
 	/**
 	 * @Description
 	 * Rename {json}'s keys by replacing them 

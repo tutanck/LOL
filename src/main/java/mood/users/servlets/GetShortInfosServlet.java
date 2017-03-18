@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.aj.jeez.servlet.basic.GetServlet;
+import fr.aj.jeez.servlet.online.OnlineGetServlet;
 import mood.users.services.User;
 
 import org.json.JSONObject;
@@ -17,7 +17,7 @@ import org.json.JSONObject;
  * * @author Anagbla Joan */
 
 @WebServlet(name = "GetShortInfosServlet" ,urlPatterns={"/user/infos"})
-public class GetShortInfosServlet extends GetServlet {
+public class GetShortInfosServlet extends OnlineGetServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override

@@ -38,7 +38,7 @@ public class Messenger {
 	 * @throws JSONException */
 	public static JSONObject newPrivateMessage(String skey,String remoteuser,String message) 
 			throws DBException, JSONException{		
-		MessengerDB.newMessage(SessionManager.sessionOwner(skey)
+		MessengerDB.newMessage(UserSession.sessionOwner(skey)
 				,remoteuser,message);
 		return ServicesToolBox.reply(ServiceCodes.STATUS_KANPEKI
 				,null,null,ServiceCaller.whichServletIsAsking().hashCode());}
@@ -55,7 +55,7 @@ public class Messenger {
 			throws DBException, JSONException{
 		JSONArray jar=new JSONArray();
 		DBCursor cursor =MessengerDB.messages(
-				SessionManager.sessionOwner(skey),remoteuser);
+				UserSession.sessionOwner(skey),remoteuser);
 		cursor.sort(new BasicDBObject("date",-1)); 
 		cursor.limit(maxInOne);
 		while (cursor.hasNext()){
@@ -81,7 +81,7 @@ public class Messenger {
 			throws DBException, JSONException{
 		JSONArray jar=new JSONArray();
 		Set<String>unicqids=new HashSet<>();
-		String uid=SessionManager.sessionOwner(skey);
+		String uid=UserSession.sessionOwner(skey);
 		DBCursor cursor =MessengerDB.messages(uid);
 		cursor.sort(new BasicDBObject("date",-1)); 
 		cursor.limit(maxInOne);

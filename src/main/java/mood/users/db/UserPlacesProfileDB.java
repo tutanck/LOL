@@ -6,9 +6,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
-
-import db.tools.DBConnectionManager;
-import db.tools.DbException;
+import tools.db.DBConnectionManager;
 
 public class UserPlacesProfileDB {
 
@@ -32,7 +30,8 @@ public class UserPlacesProfileDB {
 				.append("$set",
 						new BasicDBObject()
 						.append("places",places)
-						.append("date",new Date()) ),true,false);}
+						.append("date",new Date()) ),true,false);
+	}
 
 	/**
 	 * Return user current profile places without historic
@@ -42,5 +41,6 @@ public class UserPlacesProfileDB {
 				new BasicDBObject().append("uid",uid));
 		if(res!=null)
 			return (String)res.get("places");
-		return null;}
+		return null;
+	}
 }

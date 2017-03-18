@@ -1,4 +1,4 @@
-package regina;
+package com.aj.regina;
 enum DBAction {
 	ADD,
 	UPDATEONE,

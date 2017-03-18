@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.aj.jeez.servlet.basic.PostServlet;
+import fr.aj.jeez.servlet.online.OnlinePostServlet;
 import mood.users.services.User;
 
 import org.json.JSONObject;
@@ -17,7 +17,7 @@ import org.json.JSONObject;
  * @author Anagbla Joan */
 
 @WebServlet(name = "UpdateProfileServlet" ,urlPatterns={"user/update"})
-public class UpdateProfileServlet extends PostServlet {
+public class UpdateProfileServlet extends OnlinePostServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override

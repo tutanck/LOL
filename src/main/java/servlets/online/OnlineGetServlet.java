@@ -1,4 +1,4 @@
-package fr.aj.jeez.servlet.online;
+package servlets.online;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package regina;
+package com.aj.utils;
 
 /**
  * @author Anagbla Joan */
