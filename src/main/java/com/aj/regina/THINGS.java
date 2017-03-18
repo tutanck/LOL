@@ -2,6 +2,7 @@ package com.aj.regina;
 
 import java.util.Date;
 
+import com.aj.utils.ServiceCaller;
 import com.mongodb.*;
 import org.json.JSONObject;
 import tools.db.DBException;
@@ -24,13 +25,12 @@ public class THINGS{
 	 * @throws DBException */
 	public static WriteResult add(
 			JSONObject things,
-			DBCollection collection,
-			String caller
+			DBCollection collection
 	) throws DBException{
 		WriteResult wr = collection.insert(
 				dressJSON(things).append("_date",new Date())
 		);
-		logDBAction(things,collection,caller,DBAction.ADD);
+		logDBAction(things,collection,ServiceCaller.whoIsAskingClass(),DBAction.ADD);
 		return wr;
 	}
 
@@ -46,15 +46,14 @@ public class THINGS{
 	public static WriteResult updateOne(
 			JSONObject where,
 			JSONObject things,
-			DBCollection collection,
-			String caller
+			DBCollection collection
 	) throws DBException{
 		WriteResult wr = collection.update(
 				dressJSON(where),
 				dressJSON(things),
 				false,false
 		);
-		logDBAction(things,collection,caller,DBAction.UPDATEONE);
+		logDBAction(things,collection,ServiceCaller.whoIsAskingClass(),DBAction.UPDATEONE);
 		return wr;
 	}
 
@@ -94,15 +93,14 @@ public class THINGS{
 	public static WriteResult putOne(
 			JSONObject where,
 			JSONObject things,
-			DBCollection collection,
-			String caller
+			DBCollection collection
 	) throws DBException{
 		WriteResult wr = collection.update(
 				dressJSON(where),
 				dressJSON(things).append("_date",new Date()),
 				true,false
 		);
-		logDBAction(things,collection,caller,DBAction.PUTONE);
+		logDBAction(things,collection,ServiceCaller.whoIsAskingClass(),DBAction.PUTONE);
 		return wr;
 	}
 
@@ -118,15 +116,14 @@ public class THINGS{
 	public static WriteResult putAll(
 			JSONObject where,
 			JSONObject things,
-			DBCollection collection,
-			String caller
-	) throws DBException{
+			DBCollection collection
+			) throws DBException{
 		WriteResult wr = collection.update(
 				dressJSON(where),
 				dressJSON(things).append("_date",new Date()),
 				true,true
 		);
-		logDBAction(things,collection,caller,DBAction.PUTALL);
+		logDBAction(things,collection,ServiceCaller.whoIsAskingClass(),DBAction.PUTALL);
 		return wr;
 	}
 
@@ -141,13 +138,12 @@ public class THINGS{
 	 * @throws DBException */
 	public static boolean exists(
 			JSONObject things,
-			DBCollection collection,
-			String caller
+			DBCollection collection
 	) throws DBException{
 		boolean response = collection.find(
 				dressJSON(things)
 		).limit(1).hasNext(); //limit 1 is for optimisation : https://blog.serverdensity.com/checking-if-a-document-exists-mongodb-slow-findone-vs-find/
-		logDBAction(things,collection,caller,DBAction.EXISTS);
+		logDBAction(things,collection,ServiceCaller.whoIsAskingClass(),DBAction.EXISTS);
 		return response;
 	}
 
@@ -160,13 +156,12 @@ public class THINGS{
 	 * @return */
 	public static DBObject getOne(
 			JSONObject things,
-			DBCollection collection,
-			String caller
+			DBCollection collection
 	){
 		DBObject dbo = collection.findOne(
 				dressJSON(things)
 		);
-		logDBAction(things,collection,caller,DBAction.GETONE);
+		logDBAction(things,collection,ServiceCaller.whoIsAskingClass(),DBAction.GETONE);
 		return dbo;
 	}
 
@@ -180,13 +175,12 @@ public class THINGS{
 	 * @return */
 	public static DBCursor get(
 			JSONObject things,
-			DBCollection collection,
-			String caller
+			DBCollection collection
 	){
 		DBCursor dbc = collection.find(
 				dressJSON(things)
 		);
-		logDBAction(things,collection,caller,DBAction.GET);
+		logDBAction(things,collection,ServiceCaller.whoIsAskingClass(),DBAction.GET);
 		return dbc;
 	}
 
@@ -201,11 +195,10 @@ public class THINGS{
 	 * @throws DBException */
 	public static WriteResult remove(
 			JSONObject things,
-			DBCollection collection,
-			String caller
+			DBCollection collection
 	) throws DBException{
 		WriteResult wr = collection.remove(dressJSON(things));
-		logDBAction(things,collection,caller,DBAction.REMOVE);
+		logDBAction(things,collection,ServiceCaller.whoIsAskingClass(),DBAction.REMOVE);
 		return wr;
 	}
 

@@ -7,13 +7,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.aj.jeez.servlet.basic.PostServlet;
 import mood.users.services.UserPlacesProfile;
+import tools.servletspolicy.OfflinePostServlet;
 
 import org.json.JSONObject;
 
 
-public class UpdatePpServlet extends PostServlet {
+public class UpdatePpServlet extends OfflinePostServlet {
 	private static final long serialVersionUID = 1L;
 	public UpdatePpServlet() {super();}
 

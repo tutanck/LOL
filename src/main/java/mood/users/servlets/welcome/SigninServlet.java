@@ -1,7 +1,8 @@
 package mood.users.servlets.welcome;
 
-import fr.aj.jeez.servlet.offline.OfflinePostServlet;
 import mood.users.services.User;
+import tools.servletspolicy.OfflinePostServlet;
+
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;

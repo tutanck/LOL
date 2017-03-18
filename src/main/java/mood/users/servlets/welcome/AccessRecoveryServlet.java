@@ -8,7 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.aj.jeez.servlet.offline.OfflineGetServlet;
+import tools.servletspolicy.OfflineGetServlet;
+
 import mood.users.services.User;
 
 import org.json.JSONObject;

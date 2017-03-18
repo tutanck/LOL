@@ -13,10 +13,11 @@ public interface IJEEZServlet {
 			HttpServletRequest request,
 			HttpServletResponse response, 
 			JSONObject params
-			)throws Exception ;
+			)throws Exception;
 
 	public boolean isAuth(
-			HttpServletRequest request
-			);
+			HttpServletRequest request,
+			JSONObject params
+			)throws Exception;
 
 }

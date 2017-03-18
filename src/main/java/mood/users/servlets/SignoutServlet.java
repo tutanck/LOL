@@ -4,8 +4,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.aj.jeez.servlet.online.OnlinePostServlet;
 import mood.users.services.User;
+import tools.servletspolicy.OnlineGetServlet;
 
 import org.json.JSONObject;
 
@@ -14,7 +14,7 @@ import org.json.JSONObject;
  * * @author Anagbla Joan */
 
 @WebServlet(name = "SignoutServlet" ,urlPatterns={"/signout"})
-public class SignoutServlet extends OnlinePostServlet {
+public class SignoutServlet extends OnlineGetServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override

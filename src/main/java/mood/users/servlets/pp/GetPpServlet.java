@@ -1,6 +1,6 @@
 package mood.users.servlets.pp;
 
-import fr.aj.jeez.servlet.basic.PostServlet;
+import tools.servletspolicy.OfflinePostServlet;
 import mood.users.services.UserPlacesProfile;
 
 import org.json.JSONObject;
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class GetPpServlet extends PostServlet {
+public class GetPpServlet extends OfflinePostServlet {
 	private static final long serialVersionUID = 1L;
 	public GetPpServlet() {super();}
 

@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 
 import com.aj.regina.THINGS;
 import com.aj.utils.AbsentKeyException;
+import com.aj.utils.InvalidKeyException;
 import com.aj.utils.JSONRefiner;
+import com.aj.utils.ServiceCaller;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-
- 
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +32,6 @@ import tools.db.DBConnectionManager;
 import tools.db.DBException;
 import tools.services.ServiceCodes;
 import tools.mailing.SendEmail;
-import tools.services.ServiceCaller;
 import tools.services.ServicesToolBox;
 import tools.services.ShouldNeverOccurException;
 import tools.lingua.Lingua;
@@ -45,7 +44,6 @@ import tools.lingua.StringNotFoundException;
  * to DB instead of just forwarding the DataBus as fast as possible without proper inspection.*/
 public class User{
 
-	private static String caller=User.class.getName();
 	private static DBCollection collection = UserDB.collection;
 	private static DBCollection session = UserSessionDB.collection;
 
@@ -69,13 +67,13 @@ public class User{
 		if(!PatternsHolder.isValidWord(params.getString("username")))
 			return ServicesToolBox.alert(ServiceCodes.INVALID_USERNAME_FORMAT);
 
-		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"username"}),collection,caller))
+		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"username"}),collection))
 			return ServicesToolBox.alert(ServiceCodes.USERNAME_IS_TAKEN);
 
 		if(!PatternsHolder.isValidEmail(params.getString("email")))
 			return ServicesToolBox.alert(ServiceCodes.INVALID_EMAIL_FORMAT);
 
-		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"email"}),collection,caller))
+		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"email"}),collection))
 			return ServicesToolBox.alert(ServiceCodes.EMAIL_IS_TAKEN);
 
 		//TODO check pass format
@@ -84,7 +82,7 @@ public class User{
 				new String[]{"username","pass","email"})
 				.put("confirmed", false)
 				.put("regdate", new Date()),
-				collection,caller);
+				collection);
 
 		/*try { TODO uncomment
 			SendEmail.sendMail(
@@ -118,7 +116,7 @@ public class User{
 			) throws ShouldNeverOccurException, DBException, JSONException{ 
 		String nexturl="/Momento/signin";
 
-		if(!(THINGS.updateOne(params, new JSONObject(), collection, caller).getN()>0))
+		if(!(THINGS.updateOne(params, new JSONObject(), collection).getN()>0))
 			throw new ShouldNeverOccurException("SNO Error : User ID is unknown!");
 
 		return ServicesToolBox.answer(
@@ -155,9 +153,9 @@ public class User{
 			JSONObject byEmail= JSONRefiner.renameJSONKeys(params,new String[]{"username->email"});
 
 			if (THINGS.exists(JSONRefiner.slice(
-					byEmail,new String[]{"email","pass"}),collection,caller))
+					byEmail,new String[]{"email","pass"}),collection))
 				user = THINGS.getOne(JSONRefiner.slice(	
-						byEmail,new String[]{"email"}),collection,caller);
+						byEmail,new String[]{"email"}),collection);
 			else return ServicesToolBox.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
 			break;
 
@@ -167,17 +165,17 @@ public class User{
 			JSONObject byPhone= JSONRefiner.renameJSONKeys(params,new String[]{"username->phone"});
 
 			if (THINGS.exists(JSONRefiner.slice(
-					byPhone,new String[]{"phone","pass"}),collection,caller))
+					byPhone,new String[]{"phone","pass"}),collection))
 				user= THINGS.getOne(JSONRefiner.slice(
-						byPhone,new String[]{"phone"}),collection,caller);
+						byPhone,new String[]{"phone"}),collection);
 			else return ServicesToolBox.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
 			break;	 
 
 		case AWORD:
 			if(THINGS.exists(JSONRefiner.slice(
-					params,new String[]{"username", "pass"}),collection, caller))
+					params,new String[]{"username", "pass"}),collection))
 				user = THINGS.getOne(JSONRefiner.slice(
-						params,new String[]{"username"}),collection,caller);
+						params,new String[]{"username"}),collection);
 			else return ServicesToolBox.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
 			break;
 
@@ -189,7 +187,7 @@ public class User{
 		if(!THINGS.exists(new JSONObject()
 				.put("_id", (String) user.get("_id"))
 				.put("confirmed", true)
-				,collection, caller))
+				,collection))
 			return ServicesToolBox.alert(ServiceCodes.USER_NOT_CONFIRMED);
 
 		String himitsu = ServicesToolBox.generateToken();
@@ -199,7 +197,7 @@ public class User{
 		THINGS.add(new JSONObject()
 				.put("skey",kage)
 				.put("uid", user.get("_id"))
-				,session, caller);
+				,session);
 
 		return ServicesToolBox.answer(
 				new JSONObject()
@@ -232,7 +230,7 @@ public class User{
 				.put("_id",
 						new JSONObject()
 						.put("$ne",params.get("uid")) )
-				,collection,caller))
+				,collection))
 			return ServicesToolBox.alert(ServiceCodes.EMAIL_IS_TAKEN);
 
 		if(clean.has("phone") && THINGS.exists(JSONRefiner.slice(clean,
@@ -240,14 +238,14 @@ public class User{
 				.put("_id",
 						new JSONObject()
 						.put("$ne",params.get("uid")))
-				,collection,caller))
+				,collection))
 			return ServicesToolBox.alert(ServiceCodes.PHONE_IS_TAKEN);
 
 		//Branch the json (dissociate) like separating the yolk from the egg white
 		List<JSONObject> node = JSONRefiner.branch(clean, new String[]{"places"});	
 
 		//Update of user profile in users collection
-		THINGS.putOne(new JSONObject().put("_id",params.get("uid")),node.get(1),collection,caller);
+		THINGS.putOne(new JSONObject().put("_id",params.get("uid")),node.get(1),collection);
 
 		//UserPlacesProfile.updatePp(_id, node.get(0));//TODO 
 
@@ -279,7 +277,7 @@ public class User{
 		else
 			clean.put("_id",params.get("uid"));
 
-		DBObject user=  THINGS.getOne(clean, collection, caller);
+		DBObject user=  THINGS.getOne(clean, collection);
 		return ServicesToolBox.answer(
 				new JSONObject()
 				.put("username",user.get("username"))
@@ -312,7 +310,7 @@ public class User{
 				JSONRefiner.renameJSONKeys(
 						JSONRefiner.slice(params, new String[]{"uther"}),
 						new String[]{"uther->_id"}), 
-				collection, caller);
+				collection);
 
 		return ServicesToolBox.answer(
 				new JSONObject()
@@ -362,7 +360,7 @@ public class User{
 		String nexturl="/Momento/signin.jsp";
 		THINGS.remove(new JSONObject()
 				.put("skey",UserSessionDB.skey(params.getString("token"), params.getString("did")))
-				,session, caller);
+				,session);
 		return ServicesToolBox.answer(
 				new JSONObject()
 				.put("nexturl",nexturl),
@@ -384,7 +382,7 @@ public class User{
 		String nexturl="/Momento/signin.jsp"; 
 
 		//Verify if user email exists
-		if(!THINGS.exists(JSONRefiner.slice(params, new String[]{"email"}),collection,caller))
+		if(!THINGS.exists(JSONRefiner.slice(params, new String[]{"email"}),collection))
 			return ServicesToolBox.alert(ServiceCodes.UNKNOWN_EMAIL_ADDRESS);
 
 		//Generate temporary key (sequence of 32 hexadecimal digits) using MD5 hashes algorithm 
@@ -393,7 +391,7 @@ public class User{
 		THINGS.updateOne(
 				JSONRefiner.wrap("pass", secret),
 				JSONRefiner.slice(params, new String[]{"email"}),
-				collection,caller);
+				collection);
 
 		//Send an email to the applicant
 		try {

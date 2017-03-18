@@ -3,9 +3,10 @@ package mood.users.services;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.aj.utils.ServiceCaller;
+
 import mood.users.db.UserPlacesProfileDB;
 import tools.db.DBException;
-import tools.services.ServiceCaller;
 import tools.services.ServicesToolBox;
 import tools.services.ShouldNeverOccurException;
 

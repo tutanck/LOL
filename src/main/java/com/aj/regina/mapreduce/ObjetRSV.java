@@ -1,4 +1,4 @@
-package mapreduce;
+package com.aj.regina.mapreduce;
 
 import com.mongodb.DBObject;
 

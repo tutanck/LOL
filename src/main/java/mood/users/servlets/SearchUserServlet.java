@@ -1,7 +1,7 @@
 package mood.users.servlets;
 
-import fr.aj.jeez.servlet.online.OnlineGetServlet;
 import mood.users.services.User;
+import tools.servletspolicy.OnlineGetServlet;
 
 import org.json.JSONObject;
 

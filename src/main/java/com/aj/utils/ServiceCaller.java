@@ -1,4 +1,4 @@
-package tools.services;
+package com.aj.utils;
 
 public class ServiceCaller {
 

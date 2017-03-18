@@ -3,11 +3,12 @@ package mood.users.db;
 import org.json.JSONObject;
 
 import com.mongodb.DBCollection;
-
-import fr.aj.regina.JSONRefiner;
-import fr.aj.regina.THINGS;
+import com.aj.utils.AbsentKeyException;
+import com.aj.utils.JSONRefiner;
+import com.aj.regina.THINGS;
 import mood.users.services.User;
 import tools.db.DBConnectionManager;
+import tools.db.DBException;
 
 /**
  * @author AJoan */
@@ -33,6 +34,13 @@ public class UserSessionDB {
 			String did //deviceID
 			){
 		return DigestUtils.sha1Hex(token+did);
+	}
+	
+	public static boolean sessionExists(
+			JSONObject params
+			) throws DBException, AbsentKeyException{
+		return THINGS.exists(
+				JSONRefiner.slice(params,new String[]{"skey"}), UserSessionDB.collection);
 	}
 	
 }
