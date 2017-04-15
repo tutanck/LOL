@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * * @author Anagbla Joan */
 
-@WebServlet(name = "SearchUserServlet" ,urlPatterns={"/user/search"})
+@WebServlet(urlPatterns={"/user/search"})
 public class SearchUserServlet extends OnlineGetServlet {
 	private static final long serialVersionUID = 1L;
 

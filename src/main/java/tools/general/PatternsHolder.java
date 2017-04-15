@@ -31,8 +31,10 @@ public class PatternsHolder {
 	public static String notNums="\\D+";
 	//.+@.+
 	public static String email=".+@.+";
+	private static final String pass = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,})";
 
 	public static final Map<String,String> accents = new HashMap<String, String>();
+	
 	static 
 	{
 		accents.put("e","[йкилe]");
@@ -60,8 +62,6 @@ public class PatternsHolder {
 				(Pattern.compile(
 						PatternsHolder.aword
 						).matcher(input).matches());
-
-
 	}
 
 	
@@ -73,6 +73,13 @@ public class PatternsHolder {
 	public static boolean isValidEmail(String input) {
 		return Pattern.compile(
 				PatternsHolder.email
+				).matcher(input).matches();
+	}
+	
+	
+	public static boolean isValidPass(String input) {
+		return Pattern.compile(
+				PatternsHolder.pass
 				).matcher(input).matches();
 	}
 

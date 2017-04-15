@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,7 +13,7 @@ import tools.servletspolicy.OfflinePostServlet;
 
 import org.json.JSONObject;
 
-
+@WebServlet(urlPatterns={"/pp/update"})
 public class UpdatePpServlet extends OfflinePostServlet {
 	private static final long serialVersionUID = 1L;
 	public UpdatePpServlet() {super();}

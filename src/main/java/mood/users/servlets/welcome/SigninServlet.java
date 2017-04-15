@@ -17,7 +17,7 @@ import java.util.HashSet;
  * Created by Joan on 12/03/2017.
  */
 
-@WebServlet(name = "SigninServlet" ,urlPatterns={"/signin"})
+@WebServlet(urlPatterns={"/signin"})
 public class SigninServlet extends OfflinePostServlet{
 
 	private static final long serialVersionUID = 1L;

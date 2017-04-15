@@ -9,11 +9,10 @@ import tools.servletspolicy.OnlineGetServlet;
 
 import org.json.JSONObject;
 
-
 /**
  * * @author Anagbla Joan */
 
-@WebServlet(name = "SignoutServlet" ,urlPatterns={"/signout"})
+@WebServlet(urlPatterns={"/signout"})
 public class SignoutServlet extends OnlineGetServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -24,6 +23,5 @@ public class SignoutServlet extends OnlineGetServlet {
 			JSONObject params
 			)throws Exception {
 		return User.logout(params);
-		//		response.sendRedirect("signin.jsp");
 	}
 }

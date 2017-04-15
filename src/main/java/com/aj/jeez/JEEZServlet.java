@@ -59,47 +59,48 @@ implements IJEEZServlet{
 	 * @param request
 	 * @param response
 	 * @return
-	 * @throws IOException */
+	 * @throws Exception */
 	protected JSONObject beforeBusiness(
 			HttpServletRequest request,
 			HttpServletResponse response
-			)throws IOException {
+			)throws Exception {
 		
 		response.setContentType("text/plain");
 
-		JSONObject supportedParams = new JSONObject();
-		
-		if(requireAuth && !isAuth(request)){
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "USER UNAUTHENTICATED");
-			return null;
-		}else if(!requireAuth && isAuth(request)){
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "USER ALREADY AUTHENTICATED");
-			return null;
-		}
+		JSONObject params = new JSONObject();
 
-		Map<String,String>incomingParams=MapRefiner.refine(request.getParameterMap());
+		Map<String,String>requestParams=MapRefiner.refine(request.getParameterMap());
 
 		for(String expected : epnIn) {
-			JSONObject res = paramIsValid(incomingParams,expected,supportedParams,true);
+			System.out.println("requestParams : "+requestParams+" - expected : "+expected);
+			JSONObject res = paramIsValid(requestParams,expected,params,true);
 			if (!res.getBoolean("valid")){
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
 				return null;
 			}
-			supportedParams = JSONRefiner.merge(
-					supportedParams,(JSONObject) res.get("supportedParams"));
+			params = JSONRefiner.merge(
+					params,(JSONObject) res.get("supportedParams"));
 		}
 
 		for(String optional : opnIn){
-			JSONObject res = paramIsValid(incomingParams,optional,supportedParams,false);
+			JSONObject res = paramIsValid(requestParams,optional,params,false);
 			if (!res.getBoolean("valid")){
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL MISUSED");
 				return null;
 			}
-			supportedParams = JSONRefiner.merge(
-					supportedParams,(JSONObject) res.get("supportedParams"));
+			params = JSONRefiner.merge(
+					params,(JSONObject) res.get("supportedParams"));
 		}
 		
-		return supportedParams;
+		if(requireAuth && !isAuth(request,params)){
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "USER UNAUTHENTICATED");
+			return null;
+		}else if(!requireAuth && isAuth(request,params)){
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, "USER ALREADY AUTHENTICATED");
+			return null;
+		}
+		
+		return params;
 	}
 
 
@@ -119,11 +120,11 @@ implements IJEEZServlet{
 			HttpServletRequest request, //just a precaution (useless for now)
 			HttpServletResponse response,
 			JSONObject result
-			)throws IOException {
+			)throws Exception {
 
 		if(!resultWellFormed(result)) {
 			response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "SERVICE CURRENTLY UNAVAILABLE");
-			System.err.println("{result} should at least contain all keys in {epnOut}");
+			System.out.println("{result} should at least contain all keys in {epnOut}");
 			return;
 		}
 		response.getWriter().print(result);
@@ -133,11 +134,13 @@ implements IJEEZServlet{
 	/**
 	 * @description
 	 * Default method that check the connectivity of the related service
-	 * @param request */
+	 * @param request 
+	 * @throws Exception */
 	@Override
 	public boolean isAuth(
-			HttpServletRequest request
-			){
+			HttpServletRequest request,
+			JSONObject params
+			) throws Exception{
 		return request.getSession(false)==null;
 	}
 
@@ -147,14 +150,14 @@ implements IJEEZServlet{
 	 * @description
 	 * Check if an incoming parameter is filled (exists and is not empty in the request)
 	 * and properly typed according to epnIn and opnIn definitions
-	 * @param incomingParams
+	 * @param requestParams
 	 * @param typedParameterNameString
 	 * @param supportedParams
 	 * @param strict
 	 * @return */
 	//TODO check if it is necessary to check for null or undefined or other
 	private JSONObject paramIsValid(
-			Map<String,String>incomingParams,
+			Map<String,String>requestParams,
 			String typedParameterNameString,
 			JSONObject supportedParams,
 			boolean strict
@@ -167,13 +170,13 @@ implements IJEEZServlet{
 				.put("valid", true)
 				.put("supportedParams", supportedParams); //no parameter added
 
-		//name|string --> {[0]:name(paramName) , [1]:string(paramType)}
-		String[] typedParameterNameTab = typedParameterNameString.split("|");
+		//name#string --> {[0]:name(paramName) , [1]:string(paramType)}
+		String[] typedParameterNameTab = typedParameterNameString.split("#");
 		String paramName = typedParameterNameTab[0];
-
+		System.out.print(" paramName : "+paramName);
 		//availability test
-		if(!incomingParams.containsKey(paramName)
-				|| incomingParams.get(paramName).equals(""))
+		if(!requestParams.containsKey(paramName)
+				|| requestParams.get(paramName).equals(""))
 			if (strict)
 				return notValid;
 			else
@@ -182,46 +185,48 @@ implements IJEEZServlet{
 		//typing test
 		if (typedParameterNameTab.length >= 2) {//typedef is provided in the template
 			String paramType = typedParameterNameTab[1].trim().toLowerCase();
+			System.out.print(" - paramType : "+paramType);
 			try {
 				//Copy the supported parameter now typed into a restricted json (contains only typed epn and opn)
 				switch (paramType) {
 				case "int":
-					supportedParams.put(paramName, Integer.parseInt(incomingParams.get(paramName)));
+					supportedParams.put(paramName, Integer.parseInt(requestParams.get(paramName)));
 					break;
 
 				case "long":
-					supportedParams.put(paramName, Long.parseLong(incomingParams.get(paramName)));
+					supportedParams.put(paramName, Long.parseLong(requestParams.get(paramName)));
 					break;
 
 				case "float":
-					supportedParams.put(paramName, Float.parseFloat(incomingParams.get(paramName)));
+					supportedParams.put(paramName, Float.parseFloat(requestParams.get(paramName)));
 					break;
 
 				case "double":
-					supportedParams.put(paramName, Double.parseDouble(incomingParams.get(paramName)));
+					supportedParams.put(paramName, Double.parseDouble(requestParams.get(paramName)));
 					break;
 
 				case "boolean":
-					supportedParams.put(paramName, Boolean.parseBoolean(incomingParams.get(paramName)));
+					supportedParams.put(paramName, Boolean.parseBoolean(requestParams.get(paramName)));
 					break;
 
 				default:
-					supportedParams.put(paramName, incomingParams.get(paramName));
+					supportedParams.put(paramName, requestParams.get(paramName));
 					break;
 				}
 			} catch (IllegalArgumentException iae) {
 				return notValid;
 			}
 		}else //Copy the supported parameter as string into a restricted json (contains only tped epn and opn)
-			supportedParams.put(paramName, incomingParams.get(paramName));
+			supportedParams.put(paramName, requestParams.get(paramName));
 
+		System.out.println();
+		
 		return new JSONObject()
 				.put("valid", true)
 				.put("supportedParams", supportedParams); //updated with the valid parameter added
 	}
-
-
-
+	
+	
 	/**
 	 * @description
 	 * Check if the result contains all epnOut's key 

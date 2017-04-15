@@ -3,7 +3,6 @@ package mood.users.services;
 import java.util.Date;
 import java.util.List;
 
-
 import com.aj.regina.THINGS;
 import com.aj.utils.AbsentKeyException;
 import com.aj.utils.InvalidKeyException;
@@ -23,9 +22,10 @@ import mood.users.db.UserDB;
 import mood.users.utils.InputType;
 import tools.general.PatternsHolder;
 import tools.db.DBException;
+import tools.services.JSONResponse;
 import tools.services.ServiceCodes;
-import tools.mailing.SendEmail;
 import tools.services.ServicesToolBox;
+import tools.mailing.SendEmail;
 import tools.services.ShouldNeverOccurException;
 import tools.lingua.Lingua;
 import tools.lingua.StringNotFoundException;
@@ -53,22 +53,24 @@ public class User{
 			JSONObject params
 			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {
 
-		String nexturl="/Momento/signin.jsp";
-
+		//--FORMAT VALIDATION (do all format validations bf remote calls like a db access) 
 		if(!PatternsHolder.isValidWord(params.getString("username")))
-			return ServicesToolBox.alert(ServiceCodes.INVALID_USERNAME_FORMAT);
-
-		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"username"}),collection))
-			return ServicesToolBox.alert(ServiceCodes.USERNAME_IS_TAKEN);
+			return JSONResponse.alert(ServiceCodes.INVALID_USERNAME_FORMAT);
 
 		if(!PatternsHolder.isValidEmail(params.getString("email")))
-			return ServicesToolBox.alert(ServiceCodes.INVALID_EMAIL_FORMAT);
+			return JSONResponse.alert(ServiceCodes.INVALID_EMAIL_FORMAT);
+
+		if(!PatternsHolder.isValidPass(params.getString("pass")))
+			return JSONResponse.alert(ServiceCodes.INVALID_PASS_FORMAT);
+
+		//--DB VALIDATION
+		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"username"}),collection))
+			return JSONResponse.alert(ServiceCodes.USERNAME_IS_TAKEN);		
 
 		if(THINGS.exists(JSONRefiner.slice(params,new String[]{"email"}),collection))
-			return ServicesToolBox.alert(ServiceCodes.EMAIL_IS_TAKEN);
+			return JSONResponse.alert(ServiceCodes.EMAIL_IS_TAKEN);
 
-		//TODO check pass format
-
+		//--DB WRITEACTION
 		THINGS.add(JSONRefiner.slice(params,
 				new String[]{"username","pass","email"})
 				.put("confirmed", false)
@@ -86,10 +88,10 @@ public class User{
 			e.printStackTrace();
 		} */
 
-		return ServicesToolBox.answer(
-				new JSONObject()
-				.put("nexturl",nexturl),				
-				ServiceCaller.whichServletIsAsking().hashCode());
+		return JSONResponse.answer(
+				null,			
+				ServiceCaller.whichServletIsAsking().hashCode()
+				);
 	}
 
 
@@ -105,17 +107,16 @@ public class User{
 	public static JSONObject confirmUser(
 			JSONObject params
 			) throws ShouldNeverOccurException, DBException, JSONException{ 
-		String nexturl="/Momento/signin";
 
-		if(!(THINGS.updateOne(params, new JSONObject(), collection).getN()>0))
-			throw new ShouldNeverOccurException("SNO Error : User ID is unknown!");
+		if(!(THINGS.updateOne(params, 
+				new JSONObject().put("confirmed", true), 
+				collection).getN()>0))
+			return JSONResponse.alert(ServiceCodes.UNKNOWN_USERID);
 
-		return ServicesToolBox.answer(
-				new JSONObject()
-				.put("nexturl",nexturl),				
-				ServiceCaller.whichServletIsAsking().hashCode());}
-
-
+		return JSONResponse.answer(
+				null,
+				ServiceCaller.whichServletIsAsking().hashCode());
+	}
 
 
 
@@ -132,8 +133,6 @@ public class User{
 			JSONObject params
 			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException, InvalidKeyException {
 
-		String nexturl="/Momento/momento.jsp";
-
 		DBObject user;
 
 		switch (PatternsHolder.determineFormat(params.getString("username"))) {
@@ -147,7 +146,7 @@ public class User{
 					byEmail,new String[]{"email","pass"}),collection))
 				user = THINGS.getOne(JSONRefiner.slice(	
 						byEmail,new String[]{"email"}),collection);
-			else return ServicesToolBox.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
+			else return JSONResponse.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
 			break;
 
 		case NUMS:
@@ -159,41 +158,42 @@ public class User{
 					byPhone,new String[]{"phone","pass"}),collection))
 				user= THINGS.getOne(JSONRefiner.slice(
 						byPhone,new String[]{"phone"}),collection);
-			else return ServicesToolBox.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
+			else return JSONResponse.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
 			break;	 
 
 		case AWORD:
+			System.out.println("input format : "+InputType.AWORD);//Debug
+			
 			if(THINGS.exists(JSONRefiner.slice(
 					params,new String[]{"username", "pass"}),collection))
 				user = THINGS.getOne(JSONRefiner.slice(
 						params,new String[]{"username"}),collection);
-			else return ServicesToolBox.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
+			else return JSONResponse.alert(ServiceCodes.WRONG_LOGIN_PASSWORD);
 			break;
 
 		default:
 			System.out.println("input format : "+InputType.UNKNOWN);//Debug
-			return ServicesToolBox.alert(ServiceCodes.INVALID_USERNAME_FORMAT);
+			return JSONResponse.alert(ServiceCodes.INVALID_USERNAME_FORMAT);
 		}
 
 		if(!THINGS.exists(new JSONObject()
 				.put("_id", (String) user.get("_id"))
 				.put("confirmed", true)
 				,collection))
-			return ServicesToolBox.alert(ServiceCodes.USER_NOT_CONFIRMED);
+			return JSONResponse.alert(ServiceCodes.USER_NOT_CONFIRMED);
 
 		String himitsu = ServicesToolBox.generateToken();
 
 		String kage = DigestUtils.shaHex(himitsu+params.getString("did"));
 
 		THINGS.add(new JSONObject()
-						.put("skey",kage)
-						.put("uid", user.get("_id"))
+				.put("skey",kage)
+				.put("uid", user.get("_id"))
 				,session);
 
-		return ServicesToolBox.answer(
+		return JSONResponse.answer(
 				new JSONObject()
 				.put("himitsu", himitsu)
-				.put("nexturl",nexturl)
 				.put("username",user.get("username")),
 				ServiceCaller.whichServletIsAsking().hashCode());
 	}
@@ -222,7 +222,7 @@ public class User{
 						new JSONObject()
 						.put("$ne",params.get("uid")) )
 				,collection))
-			return ServicesToolBox.alert(ServiceCodes.EMAIL_IS_TAKEN);
+			return JSONResponse.alert(ServiceCodes.EMAIL_IS_TAKEN);
 
 		if(clean.has("phone") && THINGS.exists(JSONRefiner.slice(clean,
 				new String[]{"phone"})
@@ -230,7 +230,7 @@ public class User{
 						new JSONObject()
 						.put("$ne",params.get("uid")))
 				,collection))
-			return ServicesToolBox.alert(ServiceCodes.PHONE_IS_TAKEN);
+			return JSONResponse.alert(ServiceCodes.PHONE_IS_TAKEN);
 
 		//Branch the json (dissociate) like separating the yolk from the egg white
 		List<JSONObject> node = JSONRefiner.branch(clean, new String[]{"places"});	
@@ -240,7 +240,7 @@ public class User{
 
 		//UserPlacesProfile.updatePp(_id, node.get(0));//TODO 
 
-		return ServicesToolBox.answer(
+		return JSONResponse.answer(
 				new JSONObject()
 				.put("nexturl",nexturl),
 				ServiceCaller.whichServletIsAsking().hashCode());
@@ -269,7 +269,7 @@ public class User{
 			clean.put("_id",params.get("uid"));
 
 		DBObject user=  THINGS.getOne(clean, collection);
-		return ServicesToolBox.answer(
+		return JSONResponse.answer(
 				new JSONObject()
 				.put("username",user.get("username"))
 				.put("email",user.get("email"))
@@ -303,7 +303,7 @@ public class User{
 						new String[]{"uther->_id"}), 
 				collection);
 
-		return ServicesToolBox.answer(
+		return JSONResponse.answer(
 				new JSONObject()
 				.put("username",user.get("username"))
 				.put("firstname",user.get("firstname"))
@@ -331,7 +331,7 @@ public class User{
 						.put("lastname",rs.getString("lastname")));
 						}*/
 
-		return ServicesToolBox.answer(
+		return JSONResponse.answer(
 				new JSONObject().put("users",""/*jar*/), 
 				ServiceCaller.whichServletIsAsking().hashCode());
 
@@ -350,9 +350,13 @@ public class User{
 			) throws DBException, JSONException, ShouldNeverOccurException {
 		String nexturl="/Momento/signin.jsp";
 		THINGS.remove(new JSONObject()
-				.put("skey",UserSessionDB.skey(params.getString("token"), params.getString("did")))
-				,session);
-		return ServicesToolBox.answer(
+				.put("skey",
+						ServicesToolBox.figureIDOut(
+								params.getString("token"),
+								params.getString("did")
+								)
+						),session);
+		return JSONResponse.answer(
 				new JSONObject()
 				.put("nexturl",nexturl),
 				ServiceCaller.whichServletIsAsking().hashCode());
@@ -370,15 +374,14 @@ public class User{
 	public static JSONObject accessRecover(
 			JSONObject params
 			) throws DBException, JSONException, ShouldNeverOccurException, AbsentKeyException {
-		String nexturl="/Momento/signin.jsp"; 
 
 		//Verify if user email exists
 		if(!THINGS.exists(JSONRefiner.slice(params, new String[]{"email"}),collection))
-			return ServicesToolBox.alert(ServiceCodes.UNKNOWN_EMAIL_ADDRESS);
+			return JSONResponse.alert(ServiceCodes.UNKNOWN_EMAIL_ADDRESS);
 
 		//Generate temporary key (sequence of 32 hexadecimal digits) using MD5 hashes algorithm 
 		//reset password temporarily until user redefine it! 
-		String secret = ServicesToolBox.generateMD5ID();
+		String secret = ServicesToolBox.generateToken();
 		THINGS.updateOne(
 				JSONRefiner.wrap("pass", secret),
 				JSONRefiner.slice(params, new String[]{"email"}),
@@ -393,9 +396,8 @@ public class User{
 			System.out.println("Dictionary Error : Mail not send");
 			e.printStackTrace();
 		}
-		return ServicesToolBox.answer(
-				new JSONObject()
-				.put("nexturl",nexturl),			
+		return JSONResponse.answer(
+				null,			
 				ServiceCaller.whichServletIsAsking().hashCode());
 	}
 

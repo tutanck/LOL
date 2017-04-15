@@ -7,7 +7,7 @@ import com.aj.utils.ServiceCaller;
 
 import mood.users.db.UserPlacesProfileDB;
 import tools.db.DBException;
-import tools.services.ServicesToolBox;
+import tools.services.JSONResponse;
 import tools.services.ShouldNeverOccurException;
 
 
@@ -33,7 +33,7 @@ public class UserPlacesProfile {
 		UserPlacesProfileDB.updatePp(
 				params.getString("uid"),
 				params.getString("places"));
-		return ServicesToolBox.answer(
+		return JSONResponse.answer(
 				null,
 				ServiceCaller.whichServletIsAsking().hashCode());
 		} 
@@ -49,7 +49,7 @@ public class UserPlacesProfile {
 	public static JSONObject getPp(
 			JSONObject params
 			)throws DBException, JSONException, ShouldNeverOccurException{			
-		return ServicesToolBox.answer(
+		return JSONResponse.answer(
 				new JSONObject()
 				.put("places",UserPlacesProfileDB.getPp(
 						params.getString("uid"))),
